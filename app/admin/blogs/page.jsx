@@ -1,0 +1,19 @@
+'use client';
+import { useEffect, useState } from 'react';
+import Link from 'next/link';
+
+export default function BlogManager() {
+  const [posts,setPosts]=useState([]),[loading,setLoading]=useState(true),[error,setError]=useState(''),[search,setSearch]=useState('');
+  async function load() {
+    try { const response=await fetch('/api/admin/posts',{cache:'no-store'});const data=await response.json();if(!response.ok)throw Error(data.error);setPosts(data.posts); }
+    catch(e){setError(e.message);}finally{setLoading(false);}
+  }
+  useEffect(()=>{load();},[]);
+  async function remove(post) {
+    if(!window.confirm('Permanently delete “'+post.title+'”? This cannot be undone.'))return;
+    setError('');
+    try{const response=await fetch('/api/admin/posts/'+post.id,{method:'DELETE'});const data=await response.json();if(!response.ok)throw Error(data.error);await load();}catch(e){setError(e.message);}
+  }
+  const visible=posts.filter(p=>(p.title+' '+p.slug+' '+p.status).toLowerCase().includes(search.toLowerCase()));
+  return <section className="min-h-screen bg-[#0a0f1e] text-white px-4 sm:px-8 py-12"><div className="max-w-6xl mx-auto"><Link href="/admin" className="text-blue-300 text-sm">← Admin dashboard</Link><div className="flex flex-wrap items-center justify-between gap-4 mt-6 mb-8"><div><h1 className="text-3xl font-bold">Blog posts</h1><p className="text-white/50 text-sm mt-2">{posts.filter(p=>p.status==='published').length} published · {posts.filter(p=>p.status==='draft').length} drafts</p></div><Link href="/admin/addBlog" className="bg-blue-600 hover:bg-blue-500 rounded-lg px-5 py-3 font-semibold text-sm">+ New article</Link></div><label className="block text-sm text-white/70 mb-2" htmlFor="post-search">Search articles</label><input id="post-search" value={search} onChange={e=>setSearch(e.target.value)} placeholder="Search by title, slug, or status" className="w-full sm:max-w-md bg-white/5 border border-white/15 rounded-lg px-4 py-3 mb-6 text-sm" />{error&&<p role="alert" className="text-red-300 bg-red-500/10 p-4 rounded-lg mb-5">{error}</p>}{loading?<p className="text-white/50">Loading articles…</p>:!visible.length?<div className="border border-white/10 rounded-xl p-10 text-center text-white/50">{search?'No matching articles.':'No articles yet. Create your first draft to get started.'}</div>:<div className="space-y-3">{visible.map(post=><article key={post.id} className="rounded-xl border border-white/10 bg-white/5 p-5 flex flex-col sm:flex-row justify-between gap-5"><div className="min-w-0"><div className="flex gap-3 items-center mb-2"><span className={'text-xs rounded-full px-3 py-1 '+(post.status==='published'?'bg-green-500/15 text-green-300':'bg-amber-500/15 text-amber-200')}>{post.status}</span>{post.noindex&&<span className="text-xs text-white/40">Noindex</span>}</div><h2 className="font-semibold text-lg break-words">{post.title}</h2><p className="text-xs text-white/40 mt-2 break-all">/blog/{post.slug}</p><p className="text-xs text-white/40 mt-1">Updated {new Date(post.updated_at).toLocaleString('en-IN')}</p></div><div className="flex items-center gap-4 text-sm shrink-0"><Link href={'/admin/blogs/'+post.id} className="text-blue-300">Edit</Link><Link href={post.status==='published'?'/blog/'+post.slug:'/admin/preview/'+post.id} target="_blank" className="text-white/70">{post.status==='published'?'View ↗':'Preview ↗'}</Link><button onClick={()=>remove(post)} className="text-red-300">Delete</button></div></article>)}</div>}<p className="text-xs text-white/40 mt-8">Published posts appear in the existing blog pages. Drafts stay private.</p></div></section>;
+}

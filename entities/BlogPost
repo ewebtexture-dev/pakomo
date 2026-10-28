@@ -1,0 +1,51 @@
+{
+  "name": "BlogPost",
+  "type": "object",
+  "properties": {
+    "title": {
+      "type": "string",
+      "description": "Blog post title"
+    },
+    "slug": {
+      "type": "string",
+      "description": "URL-friendly slug"
+    },
+    "excerpt": {
+      "type": "string",
+      "description": "Short excerpt"
+    },
+    "content": {
+      "type": "string",
+      "description": "Full blog content in markdown"
+    },
+    "category": {
+      "type": "string",
+      "enum": [
+        "quality_control",
+        "testing_standards",
+        "manufacturing",
+        "industry_insights",
+        "product_updates"
+      ],
+      "description": "Blog category"
+    },
+    "image_url": {
+      "type": "string",
+      "description": "Featured image URL"
+    },
+    "author": {
+      "type": "string",
+      "description": "Author name"
+    },
+    "published": {
+      "type": "boolean",
+      "default": true
+    }
+  },
+  "required": [
+    "title",
+    "excerpt",
+    "content",
+    "category"
+  ]
+}

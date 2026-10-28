@@ -1,0 +1,61 @@
+{
+  "name": "QuoteRequest",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string",
+      "description": "Full name"
+    },
+    "email": {
+      "type": "string",
+      "description": "Email address"
+    },
+    "phone": {
+      "type": "string",
+      "description": "Phone number"
+    },
+    "company": {
+      "type": "string",
+      "description": "Company name"
+    },
+    "industry": {
+      "type": "string",
+      "enum": [
+        "packaging",
+        "plastic",
+        "paper",
+        "textile",
+        "automobile",
+        "fmcg",
+        "pharmaceuticals",
+        "electronics",
+        "other"
+      ],
+      "description": "Industry type"
+    },
+    "product_interest": {
+      "type": "string",
+      "description": "Product or testing category of interest"
+    },
+    "message": {
+      "type": "string",
+      "description": "Additional details"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "new",
+        "contacted",
+        "quoted",
+        "closed"
+      ],
+      "default": "new"
+    }
+  },
+  "required": [
+    "name",
+    "email",
+    "phone",
+    "company"
+  ]
+}

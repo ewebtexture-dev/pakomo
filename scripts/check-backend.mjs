@@ -23,12 +23,15 @@ try {
   assert.match(setCookie,/HttpOnly/i);assert.match(setCookie,/SameSite=lax/i);
   cookie=setCookie.split(';')[0];
   assert.equal((await request('/api/auth/session')).status,200);
+  const availableAuthors=(await expectJson(await request('/api/admin/authors'),200)).authors;
+  const authorId=availableAuthors.find(author=>author.active)?.id;
+  assert.ok(authorId,'An active author must be available.');
   const invalidFile=new FormData();invalidFile.set('image',new Blob(['<svg onload="alert(1)"></svg>'],{type:'image/svg+xml'}),'fake.svg');
   assert.equal((await request('/api/admin/uploads',{method:'POST',body:invalidFile})).status,422);
   const image=new FormData();image.set('image',new Blob([fs.readFileSync('assets/Unsplash/blog-1.jpg')],{type:'image/jpeg'}),'featured.jpg');
   uploadUrl=(await expectJson(await request('/api/admin/uploads',{method:'POST',body:image}),201)).url;
   assert.equal((await request(uploadUrl,{authenticated:false})).headers.get('content-type'),'image/jpeg');
-  const payload={title:'Local backend verification',slug,excerpt:'A temporary article used to verify the local backend.',content:'<h2>Verification heading</h2><p>Local review content is rendered on the server.</p><script>alert(1)</script><a href="javascript:alert(2)">Unsafe link</a>',author:'Local Reviewer',category:'testing_standards',image_url:uploadUrl,image_alt:'Testing instruments',meta_title:'Verification SEO title',meta_description:'Verification search description.',status:'draft',noindex:false};
+  const payload={title:'Local backend verification',slug,excerpt:'A temporary article used to verify the local backend.',content:'<h2>Verification heading</h2><p>Local review content is rendered on the server.</p><script>alert(1)</script><a href="javascript:alert(2)">Unsafe link</a>',author_id:authorId,category:'testing_standards',image_url:uploadUrl,image_alt:'Testing instruments',meta_title:'Verification SEO title',meta_description:'Verification search description.',status:'draft',noindex:false};
   const draft=(await expectJson(await request('/api/admin/posts',{method:'POST',body:payload}),201)).post;postId=draft.id;
   assert.doesNotMatch(draft.content,/<script|javascript:/i);
   assert.equal((await request('/blog/'+slug,{authenticated:false})).status,404);

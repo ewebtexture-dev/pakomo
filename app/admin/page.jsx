@@ -58,7 +58,7 @@ export default function AdminDashboard() {
           <p className="text-white/40 text-sm mt-2">Manage your catalog and publish SEO-friendly blog articles.</p>
         </div>
 
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5 w-full max-w-3xl">
+        <div className="grid sm:grid-cols-2 gap-5 w-full max-w-3xl">
           {/* grid sm:grid-cols-2 lg:grid-cols-3 gap-5 w-full max-w-3xl */}
           {/* Add Product */}
           <button
@@ -103,6 +103,10 @@ export default function AdminDashboard() {
             <span className="mt-5 inline-flex items-center text-xs text-emerald-400 font-medium">
               Go to Add Blog →
             </span>
+          </button>
+          <button onClick={()=>router.push('/admin/authors')} className="group relative rounded-2xl border border-white/10 bg-white/5 hover:bg-blue-500/10 hover:border-blue-400/40 transition-all duration-300 p-8 text-left">
+            <div className="w-12 h-12 rounded-xl bg-blue-500/10 border border-blue-400/20 flex items-center justify-center mb-5"><UserCircle className="w-6 h-6 text-blue-400" /></div>
+            <h2 className="text-white font-bold text-lg">Manage Authors</h2><p className="text-white/40 text-sm mt-1.5 leading-relaxed">Create author profiles, add photos and biographies, and assign authors to blog articles.</p><span className="mt-5 inline-flex items-center text-xs text-blue-400 font-medium">Manage authors →</span>
           </button>
         </div>
       </main>

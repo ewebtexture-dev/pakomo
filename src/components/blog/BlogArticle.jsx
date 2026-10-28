@@ -3,6 +3,7 @@ import React from 'react';
 import { ArrowLeft, Calendar, User, Clock, Home, ChevronRight } from 'lucide-react';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
+import styles from './BlogArticle.module.css';
 
 
 
@@ -91,7 +92,7 @@ export default function BlogArticle({ post, blogPosts }) {
                                 <ReactMarkdown>{post.description}</ReactMarkdown>
                             </div> */}
 
-                            <div className="prose prose-slate max-w-none prose-headings:font-bold prose-headings:text-foreground prose-p:text-muted-foreground prose-p:leading-relaxed prose-li:text-muted-foreground prose-strong:text-foreground prose-table:text-sm prose-th:text-foreground prose-td:text-muted-foreground prose-blockquote:text-muted-foreground prose-blockquote:border-primary prose-code:text-primary prose-code:bg-secondary prose-code:px-1 prose-code:rounded"
+                            <div className={styles.content + " prose prose-slate max-w-none prose-headings:font-bold prose-headings:text-foreground prose-p:text-muted-foreground prose-p:leading-relaxed prose-li:text-muted-foreground prose-strong:text-foreground prose-table:text-sm prose-th:text-foreground prose-td:text-muted-foreground prose-blockquote:text-muted-foreground prose-blockquote:border-primary prose-code:text-primary prose-code:bg-secondary prose-code:px-1 prose-code:rounded"}
                                 dangerouslySetInnerHTML={{ __html: post.description }}
                             />
 

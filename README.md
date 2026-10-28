@@ -46,3 +46,23 @@ Data and uploads persist in `.data/website.sqlite` and `.data/uploads/`. Back up
 
 Validation against a running local server: `node scripts/check-backend.mjs`. This checks authentication, draft privacy, upload validation, publishing, server-rendered SEO, redirects, and deletion, then removes its temporary post.
 
+## Rich text editor, authors, and SEO
+
+Both Add Blog and Edit Blog use Quill with visual formatting, headings, lists, alignment, links, undo/redo, and an optional HTML source mode. The toolbar image button opens a Bootstrap-style upload dialog with required alt text and an optional caption. Pasted or dropped image files use the same upload flow. Featured and social-sharing images have separate upload controls. Image uploads accept JPG, PNG, and WebP up to 5 MB. Editor and upload styles are scoped so the public website layout is preserved.
+
+Manage authors at `/admin/authors`. Create or edit profiles with a name, biography, expertise, photo, and website. Select an author in either blog form. Existing author names are migrated to profiles automatically without changing article content. Deactivated authors remain credited on existing posts; new assignments must use an active author. Authors assigned to posts cannot be deleted until the posts are reassigned.
+
+The SEO form includes title and description, focus keyword checks, topic tags, canonical URL, noindex/nofollow, search preview, and Open Graph/Twitter title, description, and image overrides. Author profile details are included in article structured data.
+
+Additional checks:
+
+```powershell
+node scripts/check-blog-migration.mjs
+node scripts/check-authors-seo.mjs
+node scripts/check-admin-ui.mjs
+```
+
+The browser check requires a local Chrome debugging session on port 9222 and the local app on port 3000. Checks create temporary records and remove them afterwards. Database backups and connector credentials are never included in Git.
+
+For the intended Hostinger domain, set `SITE_URL=https://pakmoo.in` in the server environment, select Node.js 24, and keep `DATA_DIRECTORY` on persistent writable storage outside the deployment source directory. Use `npm ci --legacy-peer-deps`, `npm run build`, and `npm start`. Back up the existing database and uploads before deploying. Run `npm run setup:admin` on a new installation to create the initial admin account; existing accounts are preserved.
+

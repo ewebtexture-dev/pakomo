@@ -1,4 +1,7 @@
 'use client'
+
+/* cms:2910 */
+import {useCmsBlock,cmsArray,cmsRender} from '@/components/cms/ContentProvider';
 import React from 'react';
 import { ArrowLeft, Calendar, User, Clock, Home, ChevronRight } from 'lucide-react';
 import { motion } from 'framer-motion';
@@ -17,7 +20,11 @@ const blogCategories = [
     { key: 'product_updates', label: 'Product Updates' },
 ];
 
+const cmsSeed_article_blogCategories=blogCategories;
 export default function BlogArticle({ post, blogPosts }) {
+  const cms=useCmsBlock("blog-template","article");
+  const blogCategories=cmsArray(cmsSeed_article_blogCategories,cms.items_blogCategories);
+
     const getDate = (timestamp) => {
         const date = new Date(timestamp.seconds * 1000);
         const formattedDate = date.toLocaleDateString("en-US", {
@@ -30,10 +37,9 @@ export default function BlogArticle({ post, blogPosts }) {
     if (!post) {
         return (
             <div className="min-h-screen flex flex-col items-center justify-center gap-4">
-                <h2 className="text-2xl font-bold text-foreground">Article not found</h2>
-                <Link href="/blog" className="flex items-center gap-2 text-sm text-primary hover:underline">
-                    <ArrowLeft className="w-4 h-4" /> Back to Blog
-                </Link>
+                <h2 className="text-2xl font-bold text-foreground">{cmsRender(cms.text_1??"Article not found")}</h2>
+                <Link href={cms.href_2??"/blog"} className="flex items-center gap-2 text-sm text-primary hover:underline">
+                    <ArrowLeft className="w-4 h-4" /> {cmsRender(cms.text_3??" Back to Blog")}</Link>
             </div>
         );
     }
@@ -53,20 +59,19 @@ export default function BlogArticle({ post, blogPosts }) {
                 <div className="relative max-w-6xl mx-auto px-4 sm:px-6">
                     {/* Breadcrumb */}
                     <div className="flex items-center gap-1.5 mb-6 flex-wrap text-xs text-white/40">
-                        <Link href="/" className="hover:text-white/70 flex items-center gap-1 transition-colors"><Home className="w-3 h-3" /> Home</Link>
+                        <Link href={cms.href_4??"/"} className="hover:text-white/70 flex items-center gap-1 transition-colors"><Home className="w-3 h-3" /> {cmsRender(cms.text_5??" Home")}</Link>
                         <ChevronRight className="w-3 h-3" />
-                        <Link href="/blog" className="hover:text-white/70 transition-colors">Blog</Link>
+                        <Link href={cms.href_6??"/blog"} className="hover:text-white/70 transition-colors">{cmsRender(cms.text_7??"Blog")}</Link>
                         <ChevronRight className="w-3 h-3" />
                         <span className="text-white/70 line-clamp-1">{post.title}</span>
                     </div>
                     <span className="inline-block text-[10px] font-mono uppercase tracking-widest text-blue-400 mb-3 border border-blue-400/30 px-2.5 py-1 rounded-full">
-                        Pakmoo Blogs
-                    </span>
+                        {cmsRender(cms.text_8??"Pakmoo Blogs")}</span>
                     <h1 className="text-3xl sm:text-4xl font-bold text-white leading-tight">{post.title}</h1>
                     <div className="flex flex-wrap items-center gap-4 mt-5 text-xs text-white/40">
                         <span className="flex items-center gap-1.5"><User className="w-3.5 h-3.5" /> {post.author || "Pakmoo"}</span>
                         <span className="flex items-center gap-1.5"><Calendar className="w-3.5 h-3.5" /> {getDate(post.date)}</span>
-                        <span className="flex items-center gap-1.5"><Clock className="w-3.5 h-3.5" /> {post.readTime || '10 Min'} read</span>
+                        <span className="flex items-center gap-1.5"><Clock className="w-3.5 h-3.5" /> {post.readTime || '10 Min'} {cmsRender(cms.text_9??" read")}</span>
                     </div>
                 </div>
             </section>
@@ -98,10 +103,9 @@ export default function BlogArticle({ post, blogPosts }) {
 
                             {/* Back Link */}
                             <div className="mt-10 pt-8 border-t border-border">
-                                <Link href="/blog" className="flex items-center gap-2 text-sm text-muted-foreground hover:text-primary transition-colors group">
+                                <Link href={cms.href_10??"/blog"} className="flex items-center gap-2 text-sm text-muted-foreground hover:text-primary transition-colors group">
                                     <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
-                                    Back to all articles
-                                </Link>
+                                    {cmsRender(cms.text_11??"Back to all articles")}</Link>
                             </div>
                         </motion.div>
 
@@ -114,7 +118,7 @@ export default function BlogArticle({ post, blogPosts }) {
                                 className="lg:w-64 shrink-0"
                             >
                                 <div className="sticky top-24">
-                                    <span className="text-[10px] font-mono uppercase tracking-widest text-muted-foreground mb-4 block">Related Articles</span>
+                                    <span className="text-[10px] font-mono uppercase tracking-widest text-muted-foreground mb-4 block">{cmsRender(cms.text_12??"Related Articles")}</span>
                                     <div className="space-y-4">
                                         {relatedPosts.map((related, i) => (
                                             <Link
@@ -125,7 +129,7 @@ export default function BlogArticle({ post, blogPosts }) {
                                                 <img src={related.imageUrl} alt={related.title} className="w-full aspect-[16/9] object-cover group-hover:scale-105 transition-transform duration-300" />
                                                 <div className="p-3">
                                                     <h4 className="text-xs font-semibold text-foreground group-hover:text-primary transition-colors leading-snug line-clamp-2">{related.title}</h4>
-                                                    <span className="text-[10px] text-muted-foreground mt-1 block">{related.readTime || "8 Min "} read</span>
+                                                    <span className="text-[10px] text-muted-foreground mt-1 block">{related.readTime || "8 Min "} {cmsRender(cms.text_13??" read")}</span>
                                                 </div>
                                             </Link>
                                         ))}

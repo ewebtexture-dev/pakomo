@@ -1,5 +1,8 @@
 'use client';
 
+
+/* cms:2910 */
+import {useCmsBlock,cmsArray,cmsRender} from '@/components/cms/ContentProvider';
 import React from 'react';
 import Link from 'next/link';
 import { Wrench, Gauge, HeadphonesIcon, FileCheck, GraduationCap, ArrowRight } from 'lucide-react';
@@ -48,20 +51,23 @@ const services = [
   },
 ];
 
+const cmsSeed_services_services=services;
 export default function ServicesPreview() {
+  const cms=useCmsBlock("home","services");
+  const services=cmsArray(cmsSeed_services_services,cms.items_services);
+
   return (
     <section className="py-20 sm:py-16">
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
         <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-12">
           <div>
-            <span className="section-label">What We Offer</span>
-            <h2 className="text-3xl sm:text-4xl font-bold text-foreground mt-1">Our Services</h2>
+            <span className="section-label">{cmsRender(cms.text_1??"What We Offer")}</span>
+            <h2 className="text-3xl sm:text-4xl font-bold text-foreground mt-1">{cmsRender(cms.text_2??"Our Services")}</h2>
             <p className="text-muted-foreground mt-2 text-sm max-w-md">
-              End-to-end support to ensure your instruments perform at their best, always.
-            </p>
+              {cmsRender(cms.text_3??"End-to-end support to ensure your instruments perform at their best, always.")}</p>
           </div>
-          <Link href="/services" className="inline-flex items-center gap-2 text-sm font-semibold text-primary hover:gap-3 transition-all">
-            All Services <ArrowRight className="w-4 h-4" />
+          <Link href={cms.href_4??"/services"} className="inline-flex items-center gap-2 text-sm font-semibold text-primary hover:gap-3 transition-all">
+            {cmsRender(cms.text_5??"All Services ")}<ArrowRight className="w-4 h-4" />
           </Link>
         </div>
 
@@ -75,7 +81,7 @@ export default function ServicesPreview() {
               transition={{ duration: 0.4, delay: i * 0.08 }}
               className="group rounded-2xl border border-border bg-card overflow-hidden hover:shadow-xl hover:-translate-y-1 transition-all duration-300"
             >
-              <Link href="/services">
+              <Link href={cms.href_6??"/services"}>
               <div className="relative h-32 overflow-hidden">
                 <img src={service.image} alt={service.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
@@ -85,7 +91,7 @@ export default function ServicesPreview() {
                   <service.icon className="w-4 h-4" />
                 </div>
                 <h3 className="font-bold text-foreground text-sm">{service.title}</h3>
-                <p className="text-xs text-muted-foreground mt-1.5 leading-relaxed">{service.desc}</p>
+                <p className="text-xs text-muted-foreground mt-1.5 leading-relaxed">{cmsRender(service.desc)}</p>
               </div>
               </Link>
             </motion.div>

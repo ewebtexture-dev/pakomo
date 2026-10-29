@@ -1,6 +1,9 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+
+/* cms:2910 */
+import {useCmsBlock,useCmsCollection,cmsArray,cmsRender} from '@/components/cms/ContentProvider';
+import React, {useState} from 'react';
 import Link from 'next/link';
 import { ArrowRight, ChevronRight } from 'lucide-react';
 import { motion } from 'framer-motion';
@@ -17,8 +20,8 @@ import imgLaboratoryHeatSealer from "@assets/products/polyFilms/HeatSealer.jpeg"
 import img01SaltSprayChamberDigital250l from "@assets/products/paintPlastic/salt-spray-chamber-digital-250l.jpg";
 import img02SaltSprayChamberHmi250l from "@assets/products/paintPlastic/salt-spray-chamber-hmi-250l.jpg";
 import img03SaltSprayChamberDigital450l from "@assets/products/paintPlastic/salt-spray-chamber-hmi-250l.jpg";
-import { collection, getDocs } from "firebase/firestore";
-import { db } from "@/firebase/config";
+
+
 import { CATEGORIES } from '@/utils';
 
 const categories = [{ key: "all", label: "All" }, ...CATEGORIES]
@@ -204,26 +207,18 @@ const tagColors = {
   'New': 'bg-blue-100 text-blue-700 border-blue-200',
 };
 
+const cmsSeed_featured_products=products;
+const cmsSeed_featured_categories=categories;
 export default function FeaturedProducts() {
+  const cms=useCmsBlock("home","featured");
+  const categories=cmsArray(cmsSeed_featured_categories,cms.items_categories);
+
+
   const [active, setActive] = useState('all');
   // const [randomProducts, setRandomProducts] = useState([]);
-  const [products, setProducts] = useState([]);
-  const fetchProducts = async () => {
-    try {
-      const querySnapshot = await getDocs(collection(db, "products"));
-
-      const data = querySnapshot.docs.map((doc) => ({
-        id: doc.id,
-        ...doc.data(),
-      }));
-      setProducts(data);
-    } catch (error) {
-      console.error(error);
-    }
-  };
-  useEffect(() => {
-    fetchProducts();
-  }, []);
+  const products=useCmsCollection("product");
+  
+  
 
   const filtered = active === 'all' ? products : products.filter(p => p.category === active);
   // useEffect(() => {
@@ -241,14 +236,13 @@ export default function FeaturedProducts() {
         {/* Header */}
         <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-10">
           <div>
-            <span className="section-label">Product Catalog</span>
-            <h2 className="text-3xl sm:text-4xl font-bold text-foreground mt-1">Featured Instruments</h2>
+            <span className="section-label">{cmsRender(cms.text_1??"Product Catalog")}</span>
+            <h2 className="text-3xl sm:text-4xl font-bold text-foreground mt-1">{cmsRender(cms.text_2??"Featured Instruments")}</h2>
             <p className="text-muted-foreground mt-2 text-sm max-w-md">
-              200+ precision-engineered testing instruments for diverse industrial needs.
-            </p>
+              {cmsRender(cms.text_3??"200+ precision-engineered testing instruments for diverse industrial needs.")}</p>
           </div>
-          <Link href="/products" className="inline-flex items-center gap-2 text-sm font-semibold text-primary hover:gap-3 transition-all">
-            View All Products <ArrowRight className="w-4 h-4" />
+          <Link href={cms.href_4??"/products"} className="inline-flex items-center gap-2 text-sm font-semibold text-primary hover:gap-3 transition-all">
+            {cmsRender(cms.text_5??"View All Products ")}<ArrowRight className="w-4 h-4" />
           </Link>
         </div>
 
@@ -299,20 +293,20 @@ export default function FeaturedProducts() {
 
               <div className="p-5">
                 <h3 className="font-bold text-foreground">{product.name}</h3>
-                <p className="text-sm text-muted-foreground mt-1.5 leading-relaxed line-clamp-2">{product.desc}</p>
+                <p className="text-sm text-muted-foreground mt-1.5 leading-relaxed line-clamp-2">{cmsRender(product.desc)}</p>
 
                 {/* Spec pills */}
                 <div className="flex flex-wrap gap-2 mt-4">
                   {Object.entries(product.specs).slice(0, 3).map(([key, val]) => (
                     <span key={key} className="px-2.5 py-1 bg-secondary rounded-lg text-[11px] font-medium text-muted-foreground">
-                      <span className="text-foreground font-semibold">{key}:</span> {val}
+                      <span className="text-foreground font-semibold">{key}{cmsRender(cms.text_6??":")}</span> {val}
                     </span>
                   ))}
                 </div>
 
                 <div className="flex items-center justify-between mt-5 pt-4 border-t border-border">
-                  <Link href="/products" className="text-sm font-semibold text-primary flex items-center gap-1 hover:gap-2 transition-all">
-                    View Details <ChevronRight className="w-4 h-4" />
+                  <Link href={cms.href_7??"/products"} className="text-sm font-semibold text-primary flex items-center gap-1 hover:gap-2 transition-all">
+                    {cmsRender(cms.text_8??"View Details ")}<ChevronRight className="w-4 h-4" />
                   </Link>
                 </div>
               </div>

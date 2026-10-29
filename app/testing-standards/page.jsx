@@ -1,5 +1,8 @@
 'use client';
 
+
+/* cms:2910 */
+import {useCmsBlock,useCmsCollection,cmsArray,cmsRender} from '@/components/cms/ContentProvider';
 import React, { useRef, useState } from 'react';
 import PageHeader from '@/components/shared/PageHeader';
 import { motion } from 'framer-motion';
@@ -24,17 +27,21 @@ const standards = [
   {code: 'GeM', name: 'Government e-Marketplace', image: GEMTS, country: 'India', desc: 'GeM is the official online procurement platform of the Government of India for ministries, departments, PSUs, and government organizations. We are a registered GeM seller offering a wide range of laboratory testing instruments and equipment.', methods: ['Government Procurement & Tender Participation', 'Direct Purchase & L1 Procurement', 'Laboratory Testing Equipment Supply', 'Quality Compliance & Certification Support', 'Bulk Institutional Orders' ]}
 ];
 
+const cmsSeed_standards_standards=standards;
 export default function TestingStandardsPage() {
+  const cms=useCmsBlock("testing-standards","standards");
+  const standards=cmsArray(cmsSeed_standards_standards,useCmsCollection("standard",cms.items_standards));
+
   const [active, setActive] = useState(null);
   const detailRef = useRef(null);
 
   return (
     <>
       <PageHeader
-        title="Testing Standards"
-        subtitle="Our instruments comply with major international and national testing standards."
-        breadcrumbs={[{ label: 'Testing Standards' }]}
-        image={testing_standards_1?.src}
+        title={cms.title_1??"Testing Standards"}
+        subtitle={cms.subtitle_2??"Our instruments comply with major international and national testing standards."}
+        breadcrumbs={cmsArray([{ label: 'Testing Standards' }],cms.list_3)}
+        image={cms.image_4??(testing_standards_1?.src)}
       />
 
       <section className="py-12 sm:py-20">
@@ -96,8 +103,8 @@ export default function TestingStandardsPage() {
                         <span className="text-xs text-muted-foreground">{std.country}</span>
                       </div>
                     </div>
-                    <p className="text-sm text-muted-foreground leading-relaxed mb-6">{std.desc}</p>
-                    <h4 className="text-[10px] font-mono uppercase tracking-widest text-muted-foreground mb-3">Supported Test Methods</h4>
+                    <p className="text-sm text-muted-foreground leading-relaxed mb-6">{cmsRender(std.desc)}</p>
+                    <h4 className="text-[10px] font-mono uppercase tracking-widest text-muted-foreground mb-3">{cmsRender(cms.text_5??"Supported Test Methods")}</h4>
                     <div className="space-y-2">
                       {std.methods.map((m, i) => (
                         <div key={i} className="flex items-center gap-2 text-sm text-foreground p-2 bg-secondary">

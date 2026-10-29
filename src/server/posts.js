@@ -3,6 +3,9 @@ import sanitizeHtml from 'sanitize-html';
 import { database } from './database.js';
 import { HttpError } from './http.js';
 import { findAuthor } from './authors.js';
+import {seoSchema} from './content-validation.js';
+import {cleanPayload,revision} from './cms.js';
+import {audit} from './security.js';
 
 export const CATEGORIES = ['quality_control','testing_standards','manufacturing','industry_insights','product_updates'];
 export const siteUrl = () => (process.env.SITE_URL || 'http://localhost:3000').replace(/\/$/,'');
@@ -33,20 +36,18 @@ function serialize(row) {
   const assigned = row.author_id ? findAuthor(row.author_id) : null;
   const authorProfile = assigned ? {id:assigned.id,name:assigned.name,slug:assigned.slug,bio:assigned.bio,job_title:assigned.job_title,avatar_url:assigned.avatar_url,website_url:assigned.website_url} : null;
   const words = sanitizeHtml(row.content,{allowedTags:[],allowedAttributes:{}}).split(/\s+/).filter(Boolean).length;
-  return {...row, author:assigned?.name || row.author, authorProfile, noindex: Boolean(row.noindex), nofollow:Boolean(row.nofollow), imageUrl:row.image_url, imageAlt:row.image_alt,
+  const extra=JSON.parse(row._extra_json||database().prepare('SELECT draft_json FROM post_extras WHERE post_id=?').get(row.id)?.draft_json||'{}');
+  return {...row,...extra, author:assigned?.name || row.author, authorProfile, noindex: Boolean(row.noindex), nofollow:Boolean(row.nofollow), imageUrl:row.image_url, imageAlt:row.image_alt,
     shortDescription:row.excerpt, description:row.content, readTime:Math.max(1,Math.ceil(words/200))+' Min',
     date:{seconds:Math.floor(new Date(row.published_at || row.created_at).getTime()/1000)},
     id:row.id, publicId:row.slug, color:'bg-blue-100 text-blue-700'};
 }
-export function listPosts(includeDrafts = false) {
-  return database().prepare(`SELECT * FROM posts ${includeDrafts?'':"WHERE status='published'"} ORDER BY COALESCE(published_at,created_at) DESC`).all().map(serialize);
-}
-export function findPost(id) { return serialize(database().prepare('SELECT * FROM posts WHERE id=?').get(id)); }
-export function publishedPost(slug) {return serialize(database().prepare("SELECT * FROM posts WHERE slug=? AND status='published'").get(slug));}
-export function redirectForSlug(slug) {
-  return database().prepare("SELECT posts.slug FROM slug_redirects JOIN posts ON posts.id=slug_redirects.post_id WHERE old_slug=? AND status='published'").get(slug)?.slug;
-}
-export function savePost(input, id) {
+export function listPosts(includeDrafts=false){const db=database();if(includeDrafts)return db.prepare('SELECT * FROM posts ORDER BY COALESCE(published_at,created_at) DESC').all().map(serialize);return db.prepare('SELECT p.payload_json,e.published_json FROM post_publications p LEFT JOIN post_extras e ON e.post_id=p.post_id').all().map(row=>serialize({...JSON.parse(row.payload_json),_extra_json:row.published_json||'{}'})).sort((a,b)=>String(b.published_at||b.created_at).localeCompare(String(a.published_at||a.created_at)));}
+export function findPost(id){return serialize(database().prepare('SELECT * FROM posts WHERE id=?').get(id));}
+export function publishedPost(slug){const row=database().prepare('SELECT p.payload_json,e.published_json FROM post_publications p LEFT JOIN post_extras e ON e.post_id=p.post_id WHERE p.slug=?').get(slug);return row?serialize({...JSON.parse(row.payload_json),_extra_json:row.published_json||'{}'}):null;}
+export function redirectForSlug(slug){return database().prepare('SELECT p.slug FROM slug_redirects r JOIN post_publications p ON p.post_id=r.post_id WHERE r.old_slug=?').get(slug)?.slug;}
+export function unpublishPost(id,actor){const db=database();db.prepare('DELETE FROM post_publications WHERE post_id=?').run(id);db.prepare("UPDATE posts SET status='draft' WHERE id=?").run(id);audit(actor,'post.unpublish','post',id);}
+export function savePost(input, id, actor=null) {
   if(!input || typeof input !== 'object' || Array.isArray(input)) throw new HttpError(422,'Invalid article.');
   const existing = id ? findPost(id) : null;
   if(id && !existing) throw new HttpError(404,'Article not found.');
@@ -82,6 +83,7 @@ export function savePost(input, id) {
   const taken = db.prepare('SELECT id FROM posts WHERE slug=?').get(slug);
   const reserved = db.prepare('SELECT post_id FROM slug_redirects WHERE old_slug=?').get(slug);
   if((taken && taken.id!==id) || (reserved && reserved.post_id!==id)) throw new HttpError(409,'This slug is already in use. Please choose another.');
+  const extra=cleanPayload({extra_seo:seoSchema.parse(input.extra_seo||{}),schema:input.schema||{}});if(extra.schema.customJson){try{JSON.parse(extra.schema.customJson);}catch{throw new HttpError(422,'Custom JSON-LD is invalid.');}}
   const now = new Date().toISOString();
   const postId = existing?.id || randomUUID();
   const publishedAt = status==='published' ? (existing?.published_at || now) : existing?.published_at || null;
@@ -93,12 +95,17 @@ export function savePost(input, id) {
   db.exec('BEGIN IMMEDIATE');
   try {
     if(existing) {
+      revision('post',postId,existing,actor);
       db.prepare(`UPDATE posts SET ${columns.map(key=>key+'=?').join(',')} WHERE id=?`).run(...values,postId);
-      if(existing.slug!==slug) db.prepare('INSERT OR REPLACE INTO slug_redirects(old_slug,post_id) VALUES(?,?)').run(existing.slug,postId);
+      const prior=db.prepare('SELECT slug FROM post_publications WHERE post_id=?').get(postId);
+      if(status==='published'&&prior&&prior.slug!==slug)db.prepare('INSERT OR REPLACE INTO slug_redirects(old_slug,post_id) VALUES(?,?)').run(prior.slug,postId);
       db.prepare('DELETE FROM slug_redirects WHERE old_slug=?').run(slug);
     } else {
       db.prepare(`INSERT INTO posts(${columns.join(',')},id,created_at) VALUES(${[...values,postId,now].map(()=>'?').join(',')})`).run(...values,postId,now);
     }
+    db.prepare('INSERT INTO post_extras(post_id,draft_json) VALUES(?,?) ON CONFLICT(post_id) DO UPDATE SET draft_json=excluded.draft_json').run(postId,JSON.stringify(extra));
+    if(status==='published'){const raw=db.prepare('SELECT * FROM posts WHERE id=?').get(postId);db.prepare('INSERT INTO post_publications(post_id,slug,payload_json) VALUES(?,?,?) ON CONFLICT(post_id) DO UPDATE SET slug=excluded.slug,payload_json=excluded.payload_json').run(postId,slug,JSON.stringify(raw));db.prepare('UPDATE post_extras SET published_json=draft_json WHERE post_id=?').run(postId);}
+    audit(actor,status==='published'?'post.publish':'post.save','post',postId);
     db.exec('COMMIT');
   } catch(error) {db.exec('ROLLBACK');if(error.code?.includes('CONSTRAINT') || error.message?.includes('UNIQUE constraint')) throw new HttpError(409,'This slug is already in use.'); throw error;}
   return findPost(postId);

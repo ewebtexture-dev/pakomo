@@ -1,4 +1,7 @@
 'use client';
+
+/* cms:2910 */
+import {useCmsBlock,useCmsCollection,cmsArray,cmsRender} from '@/components/cms/ContentProvider';
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Star, Quote } from 'lucide-react';
@@ -52,7 +55,13 @@ const clients = [
   { name: "Shri Jagannath Steel & Power Ltd.", logo: ShriJagannathSteelPower },
 ];
 
+const cmsSeed_clients_clients=clients;
+const cmsSeed_clients_testimonials=testimonials;
 export default function ClientsPreview() {
+  const cms=useCmsBlock("home","clients");
+  const testimonials=cmsArray(cmsSeed_clients_testimonials,useCmsCollection("testimonial",cms.items_testimonials));
+  const clients=cmsArray(cmsSeed_clients_clients,useCmsCollection("client",cms.items_clients));
+
   const [current, setCurrent] = useState(0);
 
   useEffect(() => {
@@ -64,9 +73,9 @@ export default function ClientsPreview() {
     <section className="py-20 sm:py-16 bg-secondary/40">
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
         <div className="text-center mb-14">
-          <span className="section-label mx-auto justify-center">Trusted By</span>
-          <h2 className="text-3xl sm:text-4xl font-bold text-foreground mt-1">Our Happy Clients</h2>
-          <p className="text-muted-foreground mt-2 text-sm">Partnering with India's leading manufacturers across sectors.</p>
+          <span className="section-label mx-auto justify-center">{cmsRender(cms.text_1??"Trusted By")}</span>
+          <h2 className="text-3xl sm:text-4xl font-bold text-foreground mt-1">{cmsRender(cms.text_2??"Our Happy Clients")}</h2>
+          <p className="text-muted-foreground mt-2 text-sm">{cmsRender(cms.text_3??"Partnering with India's leading manufacturers across sectors.")}</p>
         </div>
 
         {/* Client Logos */}
@@ -112,12 +121,11 @@ export default function ClientsPreview() {
                   ))}
                 </div>
                 <p className="text-lg sm:text-xl text-foreground leading-relaxed font-medium">
-                  "{testimonials[current].quote}"
-                </p>
+                  {cmsRender(cms.text_4??"\"")}{testimonials[current].quote}{cmsRender(cms.text_5??"\"")}</p>
                 <div className="flex items-center gap-4 mt-8">
                   <div>
                     <p className="font-bold text-foreground">{testimonials[current].name}</p>
-                    <p className="text-sm text-muted-foreground">{testimonials[current].role}, {testimonials[current].company}</p>
+                    <p className="text-sm text-muted-foreground">{testimonials[current].role}{cmsRender(cms.text_6??", ")}{testimonials[current].company}</p>
                   </div>
                 </div>
               </motion.div>

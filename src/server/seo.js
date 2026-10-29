@@ -6,15 +6,16 @@ export function articleMetadata(post) {
   const socialImage=post.og_image || post.image_url;
   const image=socialImage?new URL(socialImage,siteUrl()).href:null;
   const socialTitle=post.og_title || title, socialDescription=post.og_description || description;
+  const extra=post.extra_seo||{};const twitterImage=extra.twitterImage?new URL(extra.twitterImage,siteUrl()).href:image;
   return {title,description,keywords:post.meta_keywords?post.meta_keywords.split(',').map(tag=>tag.trim()).filter(Boolean):undefined,
     authors:[{name:post.author,...(post.authorProfile?.website_url?{url:post.authorProfile.website_url}:{})}],alternates:{canonical:url},
     robots:{index:!post.noindex,follow:!post.nofollow},
     openGraph:{type:'article',title:socialTitle,description:socialDescription,url,siteName:'PAKMOO Testing Instruments',publishedTime:post.published_at,modifiedTime:post.updated_at,authors:[post.authorProfile?.website_url || post.author],...(image?{images:[{url:image,alt:post.image_alt}]}:{})},
-    twitter:{card:'summary_large_image',title:socialTitle,description:socialDescription,...(image?{images:[image]}:{})}};
+    twitter:{card:extra.twitterCard||'summary_large_image',title:extra.twitterTitle||socialTitle,description:extra.twitterDescription||socialDescription,...(twitterImage?{images:[twitterImage]}:{})}};
 }
 export function articleSchema(post) {
   const url=post.canonical_url || siteUrl()+'/blog/'+post.slug;
-  return {'@context':'https://schema.org','@graph':[
+  const result={'@context':'https://schema.org','@graph':[
     {'@type':'BlogPosting','@id':url+'#article',headline:post.title,description:post.meta_description || post.excerpt,
       datePublished:post.published_at,dateModified:post.updated_at,
       articleSection:post.category.replaceAll('_',' '), keywords:post.meta_keywords || post.focus_keyword || undefined,
@@ -29,4 +30,7 @@ export function articleSchema(post) {
       {'@type':'ListItem',position:2,name:'Blog',item:siteUrl()+'/blog'},
       {'@type':'ListItem',position:3,name:post.title,item:url}]}
   ]};
+  if(post.schema?.customJson){const custom=JSON.parse(post.schema.customJson);result['@graph'].push(...(Array.isArray(custom)?custom:custom['@graph']||[custom]));}
+  if(post.schema?.type&&post.schema.type!=='WebPage')result['@graph'][0]['@type']=post.schema.type;
+  return result;
 }

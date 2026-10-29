@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Eye, EyeOff, Lock, User } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+
 
 export default function AdminLogin() {
   const router = useRouter();
@@ -51,7 +51,7 @@ export default function AdminLogin() {
           <form onSubmit={handleLogin} className="space-y-4">
             <div className="space-y-1.5">
               <label className="text-xs font-medium text-white/50">
-                Username
+                Email or username
               </label>
               <div className="relative">
                 <User className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-white/30" />
@@ -61,7 +61,7 @@ export default function AdminLogin() {
                   onChange={(e) =>
                     setForm((f) => ({ ...f, username: e.target.value }))
                   }
-                  placeholder="Enter username"
+                  placeholder="Enter email or username"
                   required
                   className="w-full h-10 pl-9 pr-3 rounded-lg border border-white/10 bg-white/5 text-white text-sm placeholder:text-white/20 focus:outline-none focus:ring-1 focus:ring-primary"
                 />
@@ -108,6 +108,7 @@ export default function AdminLogin() {
               Sign In
             </Button>
           </form>
+          <a href="/admin/forgot-password" className="block text-sm text-blue-300 mt-4">Forgot password?</a>
 
           <div className="mt-5 pt-4 border-t border-white/10">
             <p className="text-[10px] text-white/20 text-center font-mono">

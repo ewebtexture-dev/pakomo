@@ -1,6 +1,16 @@
 
 **About**
 
+## CMS release 2910
+
+The site now extends the original admin into a page and collection CMS, with draft/published snapshots, revisions, media/PDF management, SEO and schema forms, an enquiry inbox, roles and email-based OTP password reset. The existing public design is retained. Product management now uses SQLite after importing the authoritative 85-record Firebase snapshot; Firebase records are not deleted. The older Firebase-only notes below describe the previous release.
+
+See [the admin guide](docs/ADMIN-GUIDE.md) and [the approved field map/schema](docs/cms-audit-2910/README.md). Sign in at `/admin/login` (the legacy `/login` remains supported).
+
+Configure a random server-only `CMS_SECRET_KEY` of at least 32 characters, `SITE_URL`, and persistent `DATA_DIRECTORY` using `.env.example`. Configure SMTP in the Super Admin panel or environment before testing real email/OTP delivery. No SMTP sender credentials or owner-approved legal text were supplied, so mail requires configuration and legal pages start as drafts.
+
+Run `npm.cmd run check:cms` for isolated OTP, scorer and migration checks. Against a running local server, run `node scripts/check-cms-api.mjs`, `node scripts/check-backend.mjs`, `node scripts/check-authors-seo.mjs` and `node scripts/check-smtp-otp.mjs`. The SMTP integration check sends only to a local SMTP sink and restores settings afterwards. Browser regression checks require the existing Chrome debugging session on port 9222. Finish with `npm.cmd run build` before deployment.
+
 
 This project contains everything you need to run your app locally.
 

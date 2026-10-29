@@ -1,5 +1,8 @@
 'use client';
 
+
+/* cms:2910 */
+import {useCmsBlock,useCmsCollection,cmsArray,cmsRender} from '@/components/cms/ContentProvider';
 import React from 'react';
 import Link from 'next/link';
 import PageHeader from '@/components/shared/PageHeader';
@@ -10,19 +13,23 @@ import {applications} from './applicationData'
 
 
 export default function ApplicationsPage() {
+  const cms=useCmsBlock("applications","listing");
+  const cmsApplications=useCmsCollection("application",applications);
+  
+
   return (
     <>
       <PageHeader
-        title="Applications"
-        subtitle="Our testing instruments serve 8+ major industry verticals with specialized solutions."
-        breadcrumbs={[{ label: 'Applications' }]}
-        image={applications_1_1?.src}
+        title={cms.title_1??"Applications"}
+        subtitle={cms.subtitle_2??"Our testing instruments serve 8+ major industry verticals with specialized solutions."}
+        breadcrumbs={cmsArray([{ label: 'Applications' }],cms.list_3)}
+        image={cms.image_4??(applications_1_1?.src)}
       />
 
       <section className="py-12 sm:py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
           <div className="grid sm:grid-cols-2 gap-5">
-            {applications.map((app, i) => (
+            {cmsApplications.map((app, i) => (
               <motion.div
                 key={i}
                 initial={{ opacity: 0, y: 20 }}
@@ -50,13 +57,13 @@ export default function ApplicationsPage() {
                 </div>
 
                 <div className="p-5">
-                  <p className="text-sm text-muted-foreground leading-relaxed">{app.desc}</p>
+                  <p className="text-sm text-muted-foreground leading-relaxed">{cmsRender(app.desc)}</p>
                   <div className="mt-4 pt-4 border-t border-border">
-                    <span className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Key Tests</span>
+                    <span className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">{cmsRender(cms.text_5??"Key Tests")}</span>
                     <p className="text-sm text-foreground mt-1.5 font-medium">{app.tests}</p>
                   </div>
                   <Link href={`/applications/${app.id}`} className="inline-flex items-center gap-1.5 mt-4 text-sm font-semibold text-primary hover:gap-3 transition-all">
-                    View Instruments <ArrowRight className="w-3.5 h-3.5" />
+                    {cmsRender(cms.text_6??"View Instruments ")}<ArrowRight className="w-3.5 h-3.5" />
                   </Link>
                 </div>
               </motion.div>

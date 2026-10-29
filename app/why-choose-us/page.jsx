@@ -1,5 +1,8 @@
 'use client';
 
+
+/* cms:2910 */
+import {useCmsBlock,cmsArray,cmsRender} from '@/components/cms/ContentProvider';
 import React from 'react';
 import { useQuote } from '@/lib/QuoteContext';
 import PageHeader from '@/components/shared/PageHeader';
@@ -32,16 +35,24 @@ const capabilities = [
   { value: '15+', unit: '', label: 'Service Centers' },
 ];
 
+const cmsSeed_why_capabilities=capabilities;
+const cmsSeed_why_qaProcess=qaProcess;
+const cmsSeed_why_strengths=strengths;
 export default function WhyChooseUsPage() {
+  const cms=useCmsBlock("why-choose-us","why");
+  const strengths=cmsArray(cmsSeed_why_strengths,cms.items_strengths);
+  const qaProcess=cmsArray(cmsSeed_why_qaProcess,cms.items_qaProcess);
+  const capabilities=cmsArray(cmsSeed_why_capabilities,cms.items_capabilities);
+
   const { openQuote } = useQuote();
 
   return (
     <>
       <PageHeader
-        title="Why Choose Us"
-        subtitle="Three decades of engineering excellence and unwavering commitment to precision."
-        breadcrumbs={[{ label: 'Why Choose Us' }]}
-        image={why_choose_us_1?.src}
+        title={cms.title_1??"Why Choose Us"}
+        subtitle={cms.subtitle_2??"Three decades of engineering excellence and unwavering commitment to precision."}
+        breadcrumbs={cmsArray([{ label: 'Why Choose Us' }],cms.list_3)}
+        image={cms.image_4??(why_choose_us_1?.src)}
       />
 
       <section className="py-12 sm:py-20">
@@ -60,7 +71,7 @@ export default function WhyChooseUsPage() {
                   <s.icon className="w-5 h-5" />
                 </div>
                 <h3 className="font-semibold text-foreground">{s.title}</h3>
-                <p className="text-xs text-muted-foreground mt-2 leading-relaxed">{s.desc}</p>
+                <p className="text-xs text-muted-foreground mt-2 leading-relaxed">{cmsRender(s.desc)}</p>
               </motion.div>
             ))}
           </div>
@@ -69,8 +80,8 @@ export default function WhyChooseUsPage() {
 
       <section className="py-12 sm:py-20 bg-secondary border-y border-border">
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
-          <span className="text-[11px] font-mono uppercase tracking-widest text-primary mb-2 block">Quality Assurance</span>
-          <h2 className="text-2xl sm:text-3xl font-bold text-foreground mb-10">Our Quality Process</h2>
+          <span className="text-[11px] font-mono uppercase tracking-widest text-primary mb-2 block">{cmsRender(cms.text_5??"Quality Assurance")}</span>
+          <h2 className="text-2xl sm:text-3xl font-bold text-foreground mb-10">{cmsRender(cms.text_6??"Our Quality Process")}</h2>
           <div className="grid sm:grid-cols-2 lg:grid-cols-5 gap-4">
             {qaProcess.map((p, i) => (
               <motion.div
@@ -83,7 +94,7 @@ export default function WhyChooseUsPage() {
               >
                 <span className="text-3xl font-mono font-bold text-primary/20">{p.step}</span>
                 <h3 className="font-semibold text-foreground text-sm mt-2">{p.title}</h3>
-                <p className="text-xs text-muted-foreground mt-1.5 leading-relaxed">{p.desc}</p>
+                <p className="text-xs text-muted-foreground mt-1.5 leading-relaxed">{cmsRender(p.desc)}</p>
               </motion.div>
             ))}
           </div>
@@ -92,8 +103,8 @@ export default function WhyChooseUsPage() {
 
       <section className="py-12 sm:py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
-          <span className="text-[11px] font-mono uppercase tracking-widest text-primary mb-2 block">Capabilities</span>
-          <h2 className="text-2xl sm:text-3xl font-bold text-foreground mb-10">Manufacturing Scale</h2>
+          <span className="text-[11px] font-mono uppercase tracking-widest text-primary mb-2 block">{cmsRender(cms.text_7??"Capabilities")}</span>
+          <h2 className="text-2xl sm:text-3xl font-bold text-foreground mb-10">{cmsRender(cms.text_8??"Manufacturing Scale")}</h2>
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
             {capabilities.map((c, i) => (
               <div key={i} className="p-6 border border-border bg-card text-center">
@@ -105,8 +116,8 @@ export default function WhyChooseUsPage() {
           </div>
 
           <div className="mt-12 text-center">
-            <Button onClick={openQuote} className="bg-primary text-primary-foreground h-11 px-8 text-sm font-semibold gap-2">
-              Get a Custom Quote <ArrowRight className="w-4 h-4" />
+            <Button onClick={cms.button_link_1?()=>window.location.assign(cms.button_link_1):openQuote} className="bg-primary text-primary-foreground h-11 px-8 text-sm font-semibold gap-2">
+              {cmsRender(cms.text_9??"Get a Custom Quote ")}<ArrowRight className="w-4 h-4" />
             </Button>
           </div>
         </div>

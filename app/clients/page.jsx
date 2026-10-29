@@ -1,5 +1,8 @@
 "use client";
 
+
+/* cms:2910 */
+import {useCmsBlock,useCmsCollection,cmsArray,cmsRender} from '@/components/cms/ContentProvider';
 import React, { useState, useEffect } from "react";
 import PageHeader from "@/components/shared/PageHeader";
 import { motion, AnimatePresence } from "framer-motion";
@@ -70,7 +73,15 @@ const industries = [
   { name: "Electronics", count: 15 },
 ];
 
+const cmsSeed_clients_industries=industries;
+const cmsSeed_clients_testimonials=testimonials;
+const cmsSeed_clients_clients=clients;
 export default function ClientsPage() {
+  const cms=useCmsBlock("clients","clients");
+  const clients=cmsArray(cmsSeed_clients_clients,useCmsCollection("client",cms.items_clients));
+  const testimonials=cmsArray(cmsSeed_clients_testimonials,useCmsCollection("testimonial",cms.items_testimonials));
+  const industries=cmsArray(cmsSeed_clients_industries,cms.items_industries);
+
   const [current, setCurrent] = useState(0);
 
   useEffect(() => {
@@ -84,20 +95,18 @@ export default function ClientsPage() {
   return (
     <>
       <PageHeader
-        title="Our Clients"
-        subtitle="Trusted by 445+ industries across India and internationally."
-        breadcrumbs={[{ label: "Our Clients" }]}
-        image={clients_1?.src}
+        title={cms.title_1??"Our Clients"}
+        subtitle={cms.subtitle_2??"Trusted by 445+ industries across India and internationally."}
+        breadcrumbs={cmsArray([{ label: "Our Clients" }],cms.list_3)}
+        image={cms.image_4??(clients_1?.src)}
       />
 
       <section className="py-12 sm:py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
           <span className="text-[11px] font-mono uppercase tracking-widest text-primary mb-2 block">
-            Trusted By
-          </span>
+            {cmsRender(cms.text_5??"Trusted By")}</span>
           <h2 className="text-2xl font-bold text-foreground mb-8">
-            Our Valued Clients
-          </h2>
+            {cmsRender(cms.text_6??"Our Valued Clients")}</h2>
           <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-6 gap-3">
             {clients.map((client, i) => (
               <motion.div
@@ -124,23 +133,19 @@ export default function ClientsPage() {
       <section className="py-12 sm:py-20 bg-secondary border-y border-border">
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
           <span className="text-[11px] font-mono uppercase tracking-widest text-primary mb-2 block">
-            Sectors
-          </span>
+            {cmsRender(cms.text_7??"Sectors")}</span>
           <h2 className="text-2xl font-bold text-foreground mb-8">
-            Industries Served
-          </h2>
+            {cmsRender(cms.text_8??"Industries Served")}</h2>
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
             {industries.map((ind, i) => (
               <div key={i} className="p-5 border border-border bg-card">
                 <span className="text-2xl font-mono font-bold text-primary">
-                  {ind.count}+
-                </span>
+                  {ind.count}{cmsRender(cms.text_9??"+")}</span>
                 <span className="block text-sm font-semibold text-foreground mt-1">
                   {ind.name}
                 </span>
                 <span className="text-[10px] text-muted-foreground">
-                  Companies served
-                </span>
+                  {cmsRender(cms.text_10??"Companies served")}</span>
               </div>
             ))}
           </div>
@@ -150,11 +155,9 @@ export default function ClientsPage() {
       <section className="py-12 sm:py-20">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 text-center">
           <span className="text-[11px] font-mono uppercase tracking-widest text-primary mb-2 block">
-            Testimonials
-          </span>
+            {cmsRender(cms.text_11??"Testimonials")}</span>
           <h2 className="text-2xl font-bold text-foreground mb-8">
-            What Our Clients Say
-          </h2>
+            {cmsRender(cms.text_12??"What Our Clients Say")}</h2>
 
           <Quote className="w-8 h-8 text-primary/20 mx-auto mb-6" />
           <div className="relative min-h-[140px]">
@@ -167,14 +170,13 @@ export default function ClientsPage() {
                 transition={{ duration: 0.4 }}
               >
                 <p className="text-base sm:text-lg text-foreground leading-relaxed italic">
-                  "{testimonials[current].quote}"
-                </p>
+                  {cmsRender(cms.text_13??"\"")}{testimonials[current].quote}{cmsRender(cms.text_14??"\"")}</p>
                 <div className="mt-6">
                   <p className="font-semibold text-foreground text-sm">
                     {testimonials[current].name}
                   </p>
                   <p className="text-xs text-muted-foreground">
-                    {testimonials[current].role},{" "}
+                    {testimonials[current].role}{cmsRender(cms.text_15??",")}{" "}
                     {testimonials[current].company}
                   </p>
                 </div>

@@ -2,10 +2,12 @@ import { DatabaseSync } from 'node:sqlite';
 import { mkdirSync } from 'node:fs';
 import path from 'node:path';
 import { randomUUID } from 'node:crypto';
+import { migrateCms } from './cms-migrations.js';
+import {dataDirectory} from './data-directory.js';
 
 export function database() {
   if (globalThis.__pakmooDatabase) return globalThis.__pakmooDatabase;
-  const directory = process.env.DATA_DIRECTORY || path.join(process.cwd(), '.data');
+  const directory = dataDirectory();
   mkdirSync(directory, { recursive: true });
   const db = new DatabaseSync(path.join(directory, 'website.sqlite'));
   db.exec(`
@@ -73,6 +75,7 @@ export function database() {
     db.exec('CREATE INDEX IF NOT EXISTS posts_author_id ON posts(author_id)');
     db.exec('COMMIT');
   } catch (error) { db.exec('ROLLBACK'); db.close(); throw error; }
+  migrateCms(db);
   globalThis.__pakmooDatabase = db;
   return db;
 }

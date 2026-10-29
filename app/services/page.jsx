@@ -1,5 +1,8 @@
 'use client';
 
+
+/* cms:2910 */
+import {useCmsBlock,useCmsCollection,cmsArray,cmsRender} from '@/components/cms/ContentProvider';
 import React from 'react';
 import { useQuote } from '@/lib/QuoteContext';
 import PageHeader from '@/components/shared/PageHeader';
@@ -76,16 +79,20 @@ const services = [
   },
 ];
 
+const cmsSeed_listing_services=services;
 export default function ServicesPage() {
+  const cms=useCmsBlock("services","listing");
+  const services=cmsArray(cmsSeed_listing_services,useCmsCollection("service",cms.items_services));
+
   const { openQuote } = useQuote();
 
   return (
     <>
       <PageHeader
-        title="Our Services"
-        subtitle="End-to-end support services to ensure your testing instruments perform at their best."
-        breadcrumbs={[{ label: 'Services' }]}
-        image={services_1?.src}
+        title={cms.title_1??"Our Services"}
+        subtitle={cms.subtitle_2??"End-to-end support services to ensure your testing instruments perform at their best."}
+        breadcrumbs={cmsArray([{ label: 'Services' }],cms.list_3)}
+        image={cms.image_4??(services_1?.src)}
       />
 
       <section className="py-12 sm:py-20">
@@ -107,7 +114,7 @@ export default function ServicesPage() {
               </div>
               <div className="p-4">
                 <h3 className="font-bold text-foreground text-sm">{service.title}</h3>
-                <p className="text-xs text-muted-foreground mt-1.5 leading-relaxed">{service.desc}</p>
+                <p className="text-xs text-muted-foreground mt-1.5 leading-relaxed">{cmsRender(service.desc)}</p>
               </div>
               </Link>
             </motion.div>
@@ -115,8 +122,8 @@ export default function ServicesPage() {
           </div>
 
           <div className="mt-12 text-center">
-            <Button onClick={openQuote} className="bg-primary text-primary-foreground h-11 px-8 text-sm font-semibold gap-2">
-              Get Service Quote <ArrowRight className="w-4 h-4" />
+            <Button onClick={cms.button_link_1?()=>window.location.assign(cms.button_link_1):openQuote} className="bg-primary text-primary-foreground h-11 px-8 text-sm font-semibold gap-2">
+              {cmsRender(cms.text_5??"Get Service Quote ")}<ArrowRight className="w-4 h-4" />
             </Button>
           </div>
         </div>

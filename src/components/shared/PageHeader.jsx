@@ -1,3 +1,7 @@
+'use client';
+
+/* cms:2910 */
+import {useCmsBlock,cmsRender} from '@/components/cms/ContentProvider';
 import React from 'react';
 import Link from 'next/link';
 import { ChevronRight, Home } from 'lucide-react';
@@ -19,6 +23,9 @@ import { ChevronRight, Home } from 'lucide-react';
  * @param {PageHeaderProps} props
  */
 export default function PageHeader({ title, subtitle, breadcrumbs = [], image }) {
+  const cms=useCmsBlock("global","breadcrumbs");
+  
+
   return (
     <section className="relative bg-[#0a0f1e] py-20 sm:py-24 overflow-hidden">
       {/* Background image */}
@@ -35,9 +42,8 @@ export default function PageHeader({ title, subtitle, breadcrumbs = [], image })
         {/* Breadcrumbs */}
         {breadcrumbs.length > 0 && (
           <div className="flex items-center gap-1.5 mb-4 flex-wrap">
-            <Link href="/" className="text-xs text-white/40 hover:text-white/60 transition-colors flex items-center gap-1">
-              <Home className="w-3 h-3" /> Home
-            </Link>
+            <Link href={cms.href_1??"/"} className="text-xs text-white/40 hover:text-white/60 transition-colors flex items-center gap-1">
+              <Home className="w-3 h-3" /> {cmsRender(cms.text_2??" Home")}</Link>
             {breadcrumbs.map((crumb, i) => (
               <React.Fragment key={i}>
                 <ChevronRight className="w-3 h-3 text-white/20" />

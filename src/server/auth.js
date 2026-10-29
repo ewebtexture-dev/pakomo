@@ -1,15 +1,17 @@
 import { createHash, randomBytes, scryptSync, timingSafeEqual } from 'node:crypto';
 import { cookies } from 'next/headers';
 import { database } from './database.js';
+import bcrypt from 'bcryptjs';
 
 export const SESSION_COOKIE = 'pakmoo_session';
 export const SESSION_DURATION = 60 * 60 * 8;
 export function hashToken(value) { return createHash('sha256').update(value).digest('hex'); }
 export function getSession(token) {
   if (!token || !/^[a-f0-9]{64}$/.test(token)) return null;
-  return database().prepare(`SELECT admins.id, admins.username FROM sessions
-    JOIN admins ON admins.id = sessions.admin_id WHERE token_hash = ? AND expires_at > ?`)
+  const row=database().prepare(`SELECT admins.id, admins.username,admins.email,admins.display_name AS name,admins.role FROM sessions
+    JOIN admins ON admins.id = sessions.admin_id WHERE token_hash = ? AND expires_at > ? AND admins.active=1`)
     .get(hashToken(token), Date.now()) || null;
+  return row?{...row}:null;
 }
 export async function currentAdmin() {
   return getSession((await cookies()).get(SESSION_COOKIE)?.value);
@@ -21,10 +23,11 @@ export function login(username, password) {
   if (attempts?.reset_at > Date.now() && attempts.attempts >= 8) {
     return { error: 'Too many attempts. Please try again in 15 minutes.', status: 429 };
   }
-  const admin = db.prepare('SELECT * FROM admins WHERE username = ?').get(key);
-  const candidate = scryptSync(String(password).slice(0, 256), admin?.salt || 'missing-account-salt', 64);
-  const expected = admin ? Buffer.from(admin.password_hash, 'hex') : Buffer.alloc(64);
-  if (!admin || !timingSafeEqual(candidate, expected)) {
+  const admin = db.prepare('SELECT * FROM admins WHERE username = ? OR email = ?').get(key,key);
+  let valid=false;
+  if(admin?.hash_scheme==='bcrypt')valid=bcrypt.compareSync(String(password),admin.password_hash);
+  else {const candidate=scryptSync(String(password).slice(0,256),admin?.salt||'missing-account-salt',64);const expected=admin?Buffer.from(admin.password_hash,'hex'):Buffer.alloc(64);valid=expected.length===candidate.length&&timingSafeEqual(candidate,expected);}
+  if (!admin || !admin.active || !valid) {
     const count = attempts?.reset_at > Date.now() ? attempts.attempts + 1 : 1;
     db.prepare(`INSERT INTO login_attempts(username, attempts, reset_at) VALUES(?,?,?)
       ON CONFLICT(username) DO UPDATE SET attempts=excluded.attempts, reset_at=excluded.reset_at`)
@@ -32,11 +35,12 @@ export function login(username, password) {
     return { error: 'Invalid username or password.', status: 401 };
   }
   db.prepare('DELETE FROM login_attempts WHERE username = ?').run(key);
+  if(admin.hash_scheme!=='bcrypt'&&Buffer.byteLength(String(password))<=72)db.prepare("UPDATE admins SET password_hash=?,salt='',hash_scheme='bcrypt' WHERE id=?").run(bcrypt.hashSync(String(password),12),admin.id);
   db.prepare('DELETE FROM sessions WHERE expires_at < ?').run(Date.now());
   const token = randomBytes(32).toString('hex');
   db.prepare('INSERT INTO sessions(token_hash,admin_id,expires_at) VALUES(?,?,?)')
     .run(hashToken(token), admin.id, Date.now() + SESSION_DURATION * 1000);
-  return { token, admin: { username: admin.username, name: 'PAKMOO Admin', email: 'admin@pakmoo.com' } };
+  return { token, admin: { id:admin.id, username: admin.username, name:admin.display_name, email:admin.email,role:admin.role } };
 }
 export function sessionCookie(token, request, maxAge = SESSION_DURATION) {
   return { name: SESSION_COOKIE, value: token, httpOnly: true, sameSite: 'lax',

@@ -1,6 +1,6 @@
 import { notFound, permanentRedirect } from 'next/navigation';
 import BlogArticle from '@/components/blog/BlogArticle';
-import { publishedPost, redirectForSlug, listPosts, siteUrl } from '@/server/posts';
+import {publishedPost,redirectForSlug,listPosts} from '@/server/posts';
 import { articleMetadata, articleSchema } from '@/server/seo';
 export const dynamic='force-dynamic';
 export const runtime='nodejs';

@@ -1,4 +1,7 @@
 'use client';
+
+/* cms:2910 */
+import {useCmsBlock,useCmsCollection,cmsArray,cmsRender} from '@/components/cms/ContentProvider';
 import React from 'react';
 import { motion } from 'framer-motion';
 import ASTMTS from '@assets/TestingStandards/ASTMTS.jpg'
@@ -24,21 +27,24 @@ const standards = [
 // Duplicate items for seamless looping
 const duplicatedStandards = [...standards, ...standards];
 
+const cmsSeed_standards_standards=standards;
 export default function StandardsSection() {
+  const cms=useCmsBlock("home","standards");
+  const standards=cmsArray(cmsSeed_standards_standards,useCmsCollection("standard",cms.items_standards)).map(item=>({...item,name:item.home_name||item.name,count:item.home_count||item.count}));
+  const duplicatedStandards=[...standards,...standards];
+
   return (
     <section className="py-20 sm:py-16 bg-secondary/40 overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
         <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-12">
           <div>
-            <span className="section-label">Compliance</span>
+            <span className="section-label">{cmsRender(cms.text_1??"Compliance")}</span>
 
             <h2 className="text-3xl sm:text-4xl font-bold text-foreground mt-1">
-              Global Testing Standards
-            </h2>
+              {cmsRender(cms.text_2??"Global Testing Standards")}</h2>
 
             <p className="text-muted-foreground mt-2 text-sm max-w-md">
-              Our testing instruments adhere to stringent international standards, making them suitable for use in global markets.
-            </p>
+              {cmsRender(cms.text_3??"Our testing instruments adhere to stringent international standards, making them suitable for use in global markets.")}</p>
           </div>
         </div>
 
@@ -47,7 +53,7 @@ export default function StandardsSection() {
           <motion.div
             className="flex gap-4 w-max"
             animate={{
-              x: ['0%', '-50%'],
+              x: cmsArray(['0%', '-50%'],cms.list_4),
             }}
             transition={{
               duration: 20,

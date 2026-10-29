@@ -1,0 +1,51 @@
+{
+  "manufacture": {
+    "paragraphs": [
+      "text_8"
+    ],
+    "titleKey": "text_7"
+  },
+  "calibration": {
+    "paragraphs": [
+      "text_8"
+    ],
+    "titleKey": "text_7"
+  },
+  "maintenance": {
+    "paragraphs": [
+      "text_8"
+    ],
+    "titleKey": "text_7"
+  },
+  "documentation": {
+    "paragraphs": [
+      "text_8"
+    ],
+    "titleKey": "text_7"
+  },
+  "instrument": {
+    "paragraphs": [
+      "text_8"
+    ],
+    "titleKey": "text_7"
+  },
+  "support": {
+    "paragraphs": [
+      "text_8"
+    ],
+    "titleKey": "text_7"
+  },
+  "installation": {
+    "paragraphs": [
+      "text_8",
+      "text_9"
+    ],
+    "titleKey": "text_7"
+  },
+  "consultation": {
+    "paragraphs": [
+      "text_8"
+    ],
+    "titleKey": "text_7"
+  }
+}

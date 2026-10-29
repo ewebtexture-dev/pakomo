@@ -1,5 +1,9 @@
 'use client';
 
+
+/* cms:2910 */
+import MenuBranch from '@/components/cms/MenuBranch';
+import {useCmsBlock,cmsArray,cmsRender} from '@/components/cms/ContentProvider';
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
@@ -21,7 +25,11 @@ const navLinks = [
   { label: 'Contact', path: '/contact' },
 ];
 
+const cmsSeed_header_navLinks=navLinks;
 export default function Navbar({ onRequestQuote }) {
+  const cms=useCmsBlock("global","header");
+  const navLinks=cmsArray(cmsSeed_header_navLinks,cms.items_navLinks);
+
   const [mobileOpen, setMobileOpen] = useState(false);
   const pathname = usePathname();
 
@@ -37,11 +45,11 @@ export default function Navbar({ onRequestQuote }) {
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
         <div className="flex items-center justify-between h-16 lg:h-[72px]">
           {/* Logo */}
-          <Link href="/" className="flex items-center gap-3 shrink-0">
+          <Link href={cms.href_1??"/"} className="flex items-center gap-3 shrink-0">
             <div className="w-10 h-10 bg-gradient-to-br from-primary to-blue-700 rounded-xl flex items-center justify-center shadow-lg shadow-primary/40">
               <img
-                src={Logo?.src}
-                alt="Pakmoo team"
+                src={cms.image_2??(Logo?.src)}
+                alt={cms.alt_3??"Pakmoo team"}
                 height={100}
                 width={100}
               />
@@ -50,22 +58,22 @@ export default function Navbar({ onRequestQuote }) {
               <span className="text-white font-extrabold text-lg tracking-tight">P</span>
             </div> */}
             <div className="hidden sm:block">
-              <span className="font-extrabold text-lg tracking-tight" style={{ color: 'hsl(var(--foreground))' }}>PAKMOO</span>
-              <span className="block text-[9px] tracking-[0.2em] uppercase font-medium" style={{ color: 'hsl(var(--muted-foreground))' }}>Testing Instruments</span>
+              <span className="font-extrabold text-lg tracking-tight" style={{ color: 'hsl(var(--foreground))' }}>{cmsRender(cms.text_4??"PAKMOO")}</span>
+              <span className="block text-[9px] tracking-[0.2em] uppercase font-medium" style={{ color: 'hsl(var(--muted-foreground))' }}>{cmsRender(cms.text_5??"Testing Instruments")}</span>
             </div>
           </Link>
 
           {/* Desktop Nav */}
           <nav className="hidden xl:flex items-center gap-0.5">
             {navLinks.map((link) => (
-              <Link
+              <MenuBranch key={link.path} item={link}><Link
                 key={link.path}
                 href={link.path}
                 className={`px-3 py-2 text-[13px] font-medium transition-colors relative ${pathname === link.path
                   ? 'text-primary'
                   : 'text-muted-foreground hover:text-foreground'
                   }`}
-              >
+               target={link.newTab?"_blank":undefined} rel={link.newTab?"noopener noreferrer":undefined}>
                 {link.label}
                 {link.path === '/'
                   ? pathname === '/'
@@ -75,20 +83,19 @@ export default function Navbar({ onRequestQuote }) {
                       className={`absolute bottom-0 left-3 right-3 h-0.5 ${'bg-primary'}`}
                     />
                   )}
-              </Link>
+              </Link></MenuBranch>
             ))}
           </nav>
 
           {/* CTA */}
           <div className="flex items-center gap-3">
             <Button
-              onClick={onRequestQuote}
+              onClick={cms.button_link_1?()=>window.location.assign(cms.button_link_1):onRequestQuote}
               className={`hidden sm:flex items-center gap-2 text-xs font-semibold px-5 h-9 transition-all ${'bg-primary hover:bg-primary/90 text-primary-foreground shadow-md shadow-primary/25'
                 }`}
             >
               <FileText className="w-3.5 h-3.5" />
-              Request a Quote
-            </Button>
+              {cmsRender(cms.text_6??"Request a Quote")}</Button>
             <button
               className={`xl:hidden p-2 ${'text-foreground'}`}
               onClick={() => setMobileOpen(!mobileOpen)}
@@ -110,24 +117,23 @@ export default function Navbar({ onRequestQuote }) {
           >
             <nav className="max-w-7xl mx-auto px-4 py-4 space-y-1">
               {navLinks.map((link) => (
-                <Link
+                <MenuBranch key={link.path} item={link}><Link
                   key={link.path}
                   href={link.path}
                   className={`block px-4 py-2.5 text-sm font-medium transition-colors ${pathname === link.path
                     ? 'text-primary bg-primary/5'
                     : 'text-muted-foreground hover:text-foreground hover:bg-secondary'
                     }`}
-                >
+                 target={link.newTab?"_blank":undefined} rel={link.newTab?"noopener noreferrer":undefined}>
                   {link.label}
-                </Link>
+                </Link></MenuBranch>
               ))}
               <div className="pt-3 px-4">
                 <Button
                   onClick={() => { onRequestQuote(); setMobileOpen(false); }}
                   className="w-full bg-primary text-primary-foreground text-sm"
                 >
-                  Request a Quote
-                </Button>
+                  {cmsRender(cms.text_7??"Request a Quote")}</Button>
               </div>
             </nav>
           </motion.div>

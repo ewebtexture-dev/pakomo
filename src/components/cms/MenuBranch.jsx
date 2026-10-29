@@ -1,0 +1,3 @@
+'use client';
+import Link from 'next/link';
+export default function MenuBranch({item,children}){const items=item.children?.filter(entry=>entry.enabled!==false)||[];if(!items.length)return children;return <div className="relative group">{children}<div className="hidden group-hover:block group-focus-within:block absolute left-0 top-full min-w-56 max-w-xs bg-card text-foreground border border-border rounded-xl shadow-xl p-2 z-50">{items.map((entry,index)=><MenuBranch item={entry} key={entry.id||entry.path||index}><Link className="block px-3 py-2 text-sm rounded-lg hover:bg-secondary" href={entry.path||'/'} target={entry.newTab?'_blank':undefined} rel={entry.newTab?'noopener noreferrer':undefined}>{entry.label}</Link></MenuBranch>)}</div></div>;}

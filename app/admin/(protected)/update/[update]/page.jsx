@@ -1,0 +1,1 @@
+import {redirect} from 'next/navigation';import {listContent} from '@/server/cms';export default async function Page({params}){const {update}=await params;const row=listContent('product').find(p=>p.key===update||p.payload.sourceFirebaseId===update||p.id===update);redirect(row?'/admin/catalog/products/'+row.id:'/admin/catalog/products');}

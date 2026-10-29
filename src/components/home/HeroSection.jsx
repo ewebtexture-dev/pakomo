@@ -1,5 +1,8 @@
 'use client';
 
+
+/* cms:2910 */
+import {useCmsBlock,cmsArray,cmsRender} from '@/components/cms/ContentProvider';
 import React from 'react';
 import Link from 'next/link';
 import { useQuote } from '@/lib/QuoteContext';
@@ -10,7 +13,11 @@ import why_choose_us_1 from '@assets/Unsplash/why-choose-us-1.jpg';
 
 const badges = ['ISO 9001:2015', 'ASTM Compliant', 'BIS Certified', 'NABL Traceable'];
 
+const cmsSeed_hero_badges=badges;
 export default function HeroSection() {
+  const cms=useCmsBlock("home","hero");
+  const badges=cmsArray(cmsSeed_hero_badges,cms.items_badges);
+
   const { openQuote } = useQuote();
 
   return (
@@ -18,8 +25,8 @@ export default function HeroSection() {
       {/* Background Image with gradient overlay */}
       <div className="absolute inset-0">
         <img
-          src={why_choose_us_1?.src}
-          alt="Industrial testing laboratory"
+          src={cms.image_1??(why_choose_us_1?.src)}
+          alt={cms.alt_2??"Industrial testing laboratory"}
           className="w-full h-full object-cover opacity-30"
         />
         <div className="absolute inset-0 bg-gradient-to-r from-[#0a0f1e] via-[#0a0f1e]/90 to-[#0a0f1e]/50" />
@@ -46,8 +53,7 @@ export default function HeroSection() {
             >
               <span className="w-2 h-2 bg-primary rounded-full animate-pulse" />
               <span className="text-xs font-semibold text-primary tracking-wide uppercase">
-                40+ Years of Precision Engineering
-              </span>
+                {cmsRender(cms.text_3??"40+ Years of Precision Engineering")}</span>
             </motion.div>
 
             {/* Heading */}
@@ -57,14 +63,11 @@ export default function HeroSection() {
               transition={{ duration: 0.7, delay: 0.1 }}
               className="text-4xl sm:text-5xl lg:text-6xl font-bold text-white leading-[1.1] tracking-tight"
             >
-              Precision Testing
-              <br />
+              {cmsRender(cms.text_4??"Precision Testing")}<br />
               <span className="bg-gradient-to-r from-blue-400 to-primary bg-clip-text text-transparent">
-                Instruments
-              </span>
+                {cmsRender(cms.text_5??"Instruments")}</span>
               <br />
-              for Industry
-            </motion.h1>
+              {cmsRender(cms.text_6??"for Industry")}</motion.h1>
 
             {/* Subheading */}
             <motion.p
@@ -73,9 +76,7 @@ export default function HeroSection() {
               transition={{ duration: 0.7, delay: 0.2 }}
               className="text-base sm:text-lg text-white/60 mt-6 max-w-lg leading-relaxed"
             >
-              Delivering reliable, accurate & industry-compliant testing solutions 
-              trusted by <span className="text-white font-semibold">445+ industries</span> worldwide across packaging, plastic, paper, textile and more.
-            </motion.p>
+              {cmsRender(cms.text_7??"Delivering reliable, accurate & industry-compliant testing solutions trusted by ")}<span className="text-white font-semibold">{cmsRender(cms.text_8??"445+ industries")}</span> {cmsRender(cms.text_9??" worldwide across packaging, plastic, paper, textile and more.")}</motion.p>
 
             {/* CTAs */}
             <motion.div
@@ -84,19 +85,17 @@ export default function HeroSection() {
               transition={{ duration: 0.7, delay: 0.3 }}
               className="flex flex-wrap gap-4 mt-10"
             >
-              <Link href="/products">
+              <Link href={cms.href_10??"/products"}>
                 <Button className="bg-primary hover:bg-primary/90 text-white h-12 px-8 text-sm font-semibold gap-2 rounded-full shadow-lg shadow-primary/30 hover:shadow-primary/50 transition-all">
-                  Explore Products
-                  <ArrowRight className="w-4 h-4" />
+                  {cmsRender(cms.text_11??"Explore Products")}<ArrowRight className="w-4 h-4" />
                 </Button>
               </Link>
               <Button
                 variant="outline"
-                onClick={openQuote}
+                onClick={cms.button_link_1?()=>window.location.assign(cms.button_link_1):openQuote}
                 className="border-white/20 text-white hover:bg-white/10 h-12 px-8 text-sm font-semibold rounded-full backdrop-blur-sm"
               >
-                Request a Quote
-              </Button>
+                {cmsRender(cms.text_12??"Request a Quote")}</Button>
             </motion.div>
 
             {/* Trust strips */}
@@ -122,12 +121,12 @@ export default function HeroSection() {
             transition={{ duration: 0.8, delay: 0.4 }}
             className="hidden lg:grid grid-cols-2 gap-4"
           >
-            {[
+            {cmsArray([
               { value: '200+', label: 'Products', sub: 'Testing instruments', color: 'from-blue-500/20 to-primary/10' },
               { value: '445+', label: 'Industries', sub: 'Served globally', color: 'from-cyan-500/20 to-blue-500/10' },
               { value: '525+', label: 'Applications', sub: 'Across sectors', color: 'from-indigo-500/20 to-blue-500/10' },
               { value: '40+', label: 'Years', sub: 'Of excellence', color: 'from-violet-500/20 to-primary/10' },
-            ].map((stat, i) => (
+            ],cms.list_13).map((stat, i) => (
               <motion.div
                 key={i}
                 initial={{ opacity: 0, y: 20 }}
@@ -150,7 +149,7 @@ export default function HeroSection() {
           transition={{ delay: 1 }}
           className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2"
         >
-          <span className="text-[10px] text-white/30 tracking-widest uppercase">Scroll</span>
+          <span className="text-[10px] text-white/30 tracking-widest uppercase">{cmsRender(cms.text_14??"Scroll")}</span>
           <div className="w-px h-10 bg-gradient-to-b from-white/20 to-transparent" />
         </motion.div>
       </div>

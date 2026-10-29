@@ -1,16 +1,3 @@
-import { NextResponse } from "next/server";
-
-export function middleware(request) {
-  const adminCookie = request.cookies.get("pakmoo_session");
-
-  if (!adminCookie) {
-    return NextResponse.redirect(new URL("/login", request.url));
-  }
-
-  // The admin layout and every admin API validate the session in the database.
-  return NextResponse.next();
-}
-
-export const config = {
-  matcher: ["/admin/:path*"],
-};
+import {NextResponse} from 'next/server';
+export async function middleware(request){const path=request.nextUrl.pathname;if(path.startsWith('/admin')&&!['/admin/login','/admin/forgot-password'].includes(path)&&!request.cookies.get('pakmoo_session')?.value)return NextResponse.redirect(new URL('/admin/login',request.url));if(path.startsWith('/api/admin/')&&!request.cookies.get('pakmoo_session')?.value)return NextResponse.json({error:'Please sign in.'},{status:401});if(!/^\/(api|admin|login)(\/|$)/.test(path)){try{const url=new URL('/api/redirects/resolve',process.env.SITE_URL||request.url);url.searchParams.set('path',path);const response=await fetch(url,{signal:AbortSignal.timeout(1500),cache:'no-store'}),data=await response.json();if(data.redirect)return NextResponse.redirect(new URL(data.redirect.to_url,request.url),data.redirect.status);}catch{}}const headers=new Headers(request.headers);headers.set('x-cms-path',path);return NextResponse.next({request:{headers}});}
+export const config={matcher:['/((?!_next|media/|favicon.ico|icon.png|.*\\.(?:jpg|jpeg|png|webp|svg|css|js|woff|woff2)$).*)']};

@@ -1,4 +1,7 @@
 'use client';
+
+/* cms:2910 */
+import {useCmsBlock,cmsArray} from '@/components/cms/ContentProvider';
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, useInView } from 'framer-motion';
 
@@ -27,7 +30,11 @@ function AnimatedCounter({ value, suffix, inView }) {
   return <span className="font-bold text-4xl sm:text-5xl text-foreground tabular-nums">{count}{suffix}</span>;
 }
 
+const cmsSeed_counters_stats=stats;
 export default function StatsSection() {
+  const cms=useCmsBlock("home","counters");
+  const stats=cmsArray(cmsSeed_counters_stats,cms.items_stats);
+
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: '-100px' });
 

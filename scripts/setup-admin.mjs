@@ -9,7 +9,7 @@ const password=process.env.ADMIN_PASSWORD || randomBytes(15).toString('base64url
 if(password.length<12)throw Error('Use a password with at least 12 characters.');
 const salt=randomBytes(24).toString('hex');
 const hash=scryptSync(password,salt,64).toString('hex');
-if(existing){db.prepare('UPDATE admins SET password_hash=?,salt=? WHERE id=?').run(hash,salt,existing.id);db.prepare('DELETE FROM sessions WHERE admin_id=?').run(existing.id);}
+if(existing){db.prepare("UPDATE admins SET password_hash=?,salt=?,hash_scheme='scrypt' WHERE id=?").run(hash,salt,existing.id);db.prepare('DELETE FROM sessions WHERE admin_id=?').run(existing.id);}
 else db.prepare('INSERT INTO admins(username,password_hash,salt) VALUES(?,?,?)').run(username,hash,salt);
 fs.mkdirSync('.data',{recursive:true});
 fs.writeFileSync('.data/.htaccess','Require all denied\n');

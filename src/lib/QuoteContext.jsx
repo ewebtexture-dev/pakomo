@@ -6,12 +6,13 @@ const QuoteContext = createContext(null);
 
 export function QuoteProvider({ children }) {
   const [isQuoteOpen, setIsQuoteOpen] = useState(false);
+  const [quotePrefill,setQuotePrefill]=useState('');
 
-  const openQuote = () => setIsQuoteOpen(true);
+  const openQuote = (prefill='') => {setQuotePrefill(typeof prefill==='string'?prefill:'');setIsQuoteOpen(true);};
   const closeQuote = () => setIsQuoteOpen(false);
 
   return (
-    <QuoteContext.Provider value={{ isQuoteOpen, openQuote, closeQuote }}>
+    <QuoteContext.Provider value={{ isQuoteOpen, openQuote, closeQuote,quotePrefill }}>
       {children}
     </QuoteContext.Provider>
   );

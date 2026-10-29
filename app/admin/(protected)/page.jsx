@@ -1,9 +1,9 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { Button } from "@/components/ui/button";
+
 import Link from "next/link";
-import { Pen, Trash, Plus, BookOpen } from "lucide-react";
+import {BookOpen} from "lucide-react";
 import { PlusCircle, RefreshCw, LogOut, UserCircle, ShieldCheck } from 'lucide-react';
 import { useRouter } from "next/navigation";
 

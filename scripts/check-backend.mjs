@@ -54,6 +54,8 @@ try {
   await expectJson(await request('/api/admin/posts/'+postId,{method:'PUT',body:{...payload,slug:nextSlug,status:'published'}}),200);
   const old=await request('/blog/'+slug,{redirect:'manual'});assert.equal(old.status,308);assert.ok(old.headers.get('location').endsWith('/blog/'+nextSlug));
   await expectJson(await request('/api/admin/posts/'+postId,{method:'PUT',body:{...payload,slug:nextSlug,status:'draft'}}),200);
+  assert.equal((await request('/blog/'+nextSlug)).status,200);
+  await expectJson(await request('/api/admin/posts/'+postId,{method:'PUT',body:{action:'unpublish'}}),200);
   assert.equal((await request('/blog/'+nextSlug)).status,404);
   await expectJson(await request('/api/admin/posts/'+postId,{method:'DELETE'}),200);postId='';
   assert.equal((await request('/blog/'+nextSlug)).status,404);

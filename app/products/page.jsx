@@ -1,6 +1,9 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+
+/* cms:2910 */
+import {useCmsBlock,useCmsCollection,cmsArray,cmsRender} from '@/components/cms/ContentProvider';
+import React, {useState} from "react";
 import { useQuote } from "@/lib/QuoteContext";
 import PageHeader from "@/components/shared/PageHeader";
 import { Search, ArrowRight, X } from "lucide-react";
@@ -11,52 +14,41 @@ import products_1 from "@assets/Unsplash/products-1.jpg";
 import products_1_1 from "@assets/Unsplash/products-1.jpg";
 import products_1_2 from "@assets/Unsplash/products-1.jpg";
 import Link from "next/link";
-import { collection, getDocs } from "firebase/firestore";
-import { db } from "@/firebase/config";
+
+
 import { CATEGORIES } from '@/utils';
 
 const Categories = [{ key: "all", label: "All Products" }, ...CATEGORIES]
 
-export default function ProductsPage() {
+const cmsSeed_listing_Categories=Categories;
+export default function ProductsPage({initialCategory="all"}) {
+  const cms=useCmsBlock("products","listing");
+  const Categories=cmsArray(cmsSeed_listing_Categories,cms.items_Categories);
+
   const { openQuote } = useQuote();
   const [search, setSearch] = useState("");
-  const [activeCategory, setActiveCategory] = useState("all");
+  const [activeCategory, setActiveCategory] = useState(initialCategory);
   const [selectedProduct, setSelectedProduct] = useState(null);
-  const [products, setProducts] = useState([]);
+  const products=useCmsCollection("product");
 
   const filtered = products.filter((p) => {
     const matchCategory =
-      activeCategory === "all" || p.category === activeCategory;
+      activeCategory === "all" || (p.category_ids?.includes(activeCategory)||p.category===activeCategory);
     const matchSearch =
       p.name.toLowerCase().includes(search.toLowerCase()) ||
       p.desc.toLowerCase().includes(search.toLowerCase());
     return matchCategory && matchSearch;
   });
-  const fetchProducts = async () => {
-
-    try {
-      const querySnapshot = await getDocs(collection(db, "products"));
-
-      const data = querySnapshot.docs.map((doc) => ({
-        id: doc.id,
-        ...doc.data(),
-      }));
-      setProducts(data);
-    } catch (error) {
-      console.error(error);
-    }
-  };
-  useEffect(() => {
-    fetchProducts();
-  }, []);
+  
+  
 
   return (
     <>
       <PageHeader
-        title="Our Products"
-        subtitle="200+ precision testing instruments for diverse industrial applications."
-        breadcrumbs={[{ label: "Products" }]}
-        image={products_1?.src}
+        title={cms.title_1??"Our Products"}
+        subtitle={cms.subtitle_2??"200+ precision testing instruments for diverse industrial applications."}
+        breadcrumbs={cmsArray([{ label: "Products" }],cms.list_3)}
+        image={cms.image_4??(products_1?.src)}
       />
 
       <section className="py-12 sm:py-16">
@@ -67,7 +59,7 @@ export default function ProductsPage() {
                 <div className="relative">
                   <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
                   <Input
-                    placeholder="Search instruments..."
+                    placeholder={cms.placeholder_5??"Search instruments..."}
                     value={search}
                     onChange={(e) => setSearch(e.target.value)}
                     className="pl-9 h-9 text-sm"
@@ -75,8 +67,7 @@ export default function ProductsPage() {
                 </div>
                 <div className="space-y-0.5">
                   <span className="text-[10px] font-mono uppercase tracking-widest text-muted-foreground mb-2 block">
-                    Categories
-                  </span>
+                    {cmsRender(cms.text_6??"Categories")}</span>
                   {Categories.map((cat) => (
                     <button
                       key={cat.key}
@@ -97,8 +88,7 @@ export default function ProductsPage() {
             <div className="flex-1">
               <div className="flex items-center justify-between mb-6">
                 <p className="text-xs text-muted-foreground font-mono">
-                  {filtered.length} instruments found
-                </p>
+                  {filtered.length} {cmsRender(cms.text_7??" instruments found")}</p>
               </div>
               <div className="grid sm:grid-cols-2 xl:grid-cols-3 gap-4">
                 {filtered.map((product, i) => (
@@ -122,7 +112,7 @@ export default function ProductsPage() {
                         {product.name}
                       </h3>
                       <p className="text-xs text-muted-foreground mt-1 line-clamp-2">
-                        {product.desc}
+                        {cmsRender(product.desc)}
                       </p>
                       <div className="grid grid-cols-3 gap-2 mt-3 pt-3 border-t border-border">
                         {Object.entries(product.specs)
@@ -176,12 +166,11 @@ export default function ProductsPage() {
                 {selectedProduct.name}
               </h2>
               <p className="text-sm text-muted-foreground mt-2 leading-relaxed">
-                {selectedProduct.desc}
+                {cmsRender(selectedProduct.desc)}
               </p>
 
               <h4 className="text-xs font-mono uppercase tracking-widest font-bold text-foreground mt-6 mb-3">
-                Technical Specifications
-              </h4>
+                {cmsRender(cms.text_8??"Technical Specifications")}</h4>
               <div className="grid grid-cols-3 gap-4 p-4 bg-secondary border border-border">
                 {Object.entries(selectedProduct.specs).map(([key, val]) => (
                   <div key={key}>
@@ -196,8 +185,7 @@ export default function ProductsPage() {
               </div>
 
               <h4 className="text-xs font-mono uppercase tracking-widest font-bold text-foreground mt-6 mb-3">
-                Features
-              </h4>
+                {cmsRender(cms.text_9??"Features")}</h4>
               <ul className="space-y-1.5">
                 {selectedProduct.features.map((f, i) => (
                   <li
@@ -205,30 +193,29 @@ export default function ProductsPage() {
                     className="flex items-center gap-2 text-sm text-muted-foreground"
                   >
                     <div className="w-1 h-1 bg-primary shrink-0" />
-                    {f}
+                    {cmsRender(f)}
                   </li>
                 ))}
               </ul>
 
               <div className="flex gap-3 mt-8">
                 <Button
-                  onClick={openQuote}
+                  onClick={cms.button_link_1?()=>window.location.assign(cms.button_link_1):openQuote}
                   className="flex-1 bg-primary text-primary-foreground h-10 text-sm font-semibold gap-2"
                 >
-                  Request Quote <ArrowRight className="w-4 h-4" />
+                  {cmsRender(cms.text_10??"Request Quote ")}<ArrowRight className="w-4 h-4" />
                 </Button>
                 <Button
                   variant="outline"
                   onClick={() => setSelectedProduct(null)}
                   className="h-10 text-sm"
                 >
-                  Close
-                </Button>
+                  {cmsRender(cms.text_11??"Close")}</Button>
               </div>
               <div>
                 <Button className="flex-1 w-full mt-3 bg-primary text-primary-foreground h-10 text-sm font-semibold gap-2">
-                  <Link href={"/products/" + selectedProduct.id}>
-                    View Full Detail{" "}
+                  <Link href={"/products/" + (selectedProduct._slug||selectedProduct.id)}>
+                    {cmsRender(cms.text_12??"View Full Detail")}{" "}
                   </Link>{" "}
                   <ArrowRight className="w-4 h-4" />
                 </Button>

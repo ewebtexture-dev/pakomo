@@ -3,10 +3,13 @@ import { randomUUID } from 'node:crypto';
 import { mkdir, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 import { requireAdmin, readBody, apiError, HttpError } from '@/server/http';
+import sharp from 'sharp';
+import {dataDirectory} from '@/server/data-directory';
+import {database} from '@/server/database';
 export const runtime='nodejs';
 export async function POST(request) {
   try {
-    await requireAdmin(request);
+    const actor=await requireAdmin(request);
     if(Number(request.headers.get('content-length'))>6*1024*1024)throw new HttpError(413,'Images must be no larger than 5 MB.');
     if(!request.headers.get('content-type')?.startsWith('multipart/form-data;'))throw new HttpError(415,'Send a multipart image upload.');
     const body=await readBody(request,6*1024*1024);
@@ -18,10 +21,12 @@ export async function POST(request) {
     else if(buffer.subarray(0,8).equals(Buffer.from([137,80,78,71,13,10,26,10])))ext='png';
     else if(buffer.toString('ascii',0,4)==='RIFF' && buffer.toString('ascii',8,12)==='WEBP')ext='webp';
     else throw new HttpError(422,'Only valid JPG, PNG, and WebP images are allowed.');
-    const directory=path.join(process.env.DATA_DIRECTORY || path.join(process.cwd(),'.data'),'uploads');
+    const directory=path.join(dataDirectory(),'uploads');
     await mkdir(directory,{recursive:true});
-    const filename=randomUUID()+'.'+ext;
-    await writeFile(path.join(directory,filename),buffer,{flag:'wx'});
-    return NextResponse.json({url:'/media/'+filename},{status:201});
+    const id=randomUUID(),filename=id+'.'+ext;
+    let optimized,metadata;try{const image=sharp(buffer,{limitInputPixels:40000000}).rotate().resize({width:2400,height:2400,fit:'inside',withoutEnlargement:true});optimized=await (ext==='jpg'?image.jpeg({quality:85}):ext==='png'?image.png({compressionLevel:9}):image.webp({quality:85})).toBuffer();metadata=await sharp(optimized).metadata();}catch{throw new HttpError(422,'This image could not be decoded. Choose a valid image.');}
+    await writeFile(path.join(directory,filename),optimized,{flag:'wx'});
+    database().prepare('INSERT INTO media(id,filename,url,original_name,mime,bytes,width,height,created_by,created_at) VALUES(?,?,?,?,?,?,?,?,?,?)').run(id,filename,'/media/'+filename,String(file.name||filename).slice(0,250),ext==='jpg'?'image/jpeg':'image/'+ext,optimized.length,metadata.width,metadata.height,actor.id,new Date().toISOString());
+    return NextResponse.json({url:'/media/'+filename,id,width:metadata.width,height:metadata.height},{status:201});
   }catch(error){return apiError(error);}
 }

@@ -1,5 +1,8 @@
 'use client';
 
+
+/* cms:2910 */
+import {useCmsBlock,cmsArray,cmsRender} from '@/components/cms/ContentProvider';
 import React from 'react';
 import PageHeader from '@/components/shared/PageHeader';
 import { Calendar, ArrowRight, User } from 'lucide-react';
@@ -10,6 +13,9 @@ import blog_1 from '@assets/Unsplash/blog-1.jpg';
 import Link from 'next/link';
 
 export default function BlogListing({ blogsData }) {
+  const cms=useCmsBlock("blog","listing");
+  
+
   const getDate = (timestamp) => {
     const date = new Date(timestamp.seconds * 1000);
     const formattedDate = date.toLocaleDateString("en-US", {
@@ -22,10 +28,10 @@ export default function BlogListing({ blogsData }) {
   return (
     <>
       <PageHeader
-        title="Blog & Insights"
-        subtitle="Industry insights, testing standards guides, and product updates from our experts."
-        breadcrumbs={[{ label: 'Blog' }]}
-        image={blog_1?.src}
+        title={cms.title_1??"Blog & Insights"}
+        subtitle={cms.subtitle_2??"Industry insights, testing standards guides, and product updates from our experts."}
+        breadcrumbs={cmsArray([{ label: 'Blog' }],cms.list_3)}
+        image={cms.image_4??(blog_1?.src)}
       />
 
       <section className="py-12 sm:py-16">
@@ -60,7 +66,7 @@ export default function BlogListing({ blogsData }) {
             </div> */}
 
             <div className="flex-1">
-              <p className="text-xs text-muted-foreground font-mono">{blogsData.length} articles found</p>
+              <p className="text-xs text-muted-foreground font-mono">{blogsData.length} {cmsRender(cms.text_5??" articles found")}</p>
               <div className="space-y-4">
                 {blogsData.map((post, i) => (
                   <Link href={`/blog/${post.id}`} key={i} className="block">
@@ -86,10 +92,9 @@ export default function BlogListing({ blogsData }) {
                         <p className="text-xs text-muted-foreground mt-2 leading-relaxed line-clamp-2">{post.shortDescription}</p>
                         <div className="flex items-center justify-between mt-3">
                           <span className="text-xs text-muted-foreground flex items-center gap-1">
-                            <User className="w-3 h-3" /> {post.author || 'Pakmoo'} · {post.readTime || '10 Min'} read
-                          </span>
+                            <User className="w-3 h-3" /> {post.author || 'Pakmoo'} {cmsRender(cms.text_6??" · ")}{post.readTime || '10 Min'} {cmsRender(cms.text_7??" read")}</span>
                           <span className="text-xs font-medium text-primary flex items-center gap-1">
-                            Read More <ArrowRight className="w-3 h-3" />
+                            {cmsRender(cms.text_8??"Read More ")}<ArrowRight className="w-3 h-3" />
                           </span>
                         </div>
                       </div>

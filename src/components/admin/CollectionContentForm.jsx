@@ -1,0 +1,4 @@
+'use client';
+import CmsField from './CmsField';
+import {collectionDefinitions} from '@/cms/collection-definitions';
+export default function CollectionContentForm({record,onChange,relations={}}){const definition=collectionDefinitions[record.kind],payload={...definition.defaults,...record.payload};return <div className="space-y-5">{definition.sections.map(([label,fields])=><details open key={label} className="border border-white/15 rounded-xl p-5"><summary className="font-semibold cursor-pointer">{label}</summary><div className="space-y-5 mt-5">{fields.map(name=><CmsField key={name} name={name} label={name.replace(/_/g,' ').replace(/([A-Z])/g,' $1')} type={relations[name]?'reference':undefined} options={relations[name]} value={payload[name]} onChange={value=>onChange({...payload,[name]:value,...(name==='category_ids'?{category:value[0]||''}:{}),...(name==='name'||name==='title'?{}:{})})}/>)}</div></details>)}</div>;}

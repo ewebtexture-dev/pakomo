@@ -1,0 +1,2650 @@
+{
+  "home": {
+    "title": "home",
+    "sections": [
+      {
+        "key": "hero",
+        "label": "Hero",
+        "fields": [
+          {
+            "key": "items_badges",
+            "type": "repeater",
+            "label": "badges",
+            "group": "Hero"
+          },
+          {
+            "key": "image_1",
+            "type": "image",
+            "label": "src: why_choose_us_1",
+            "group": "Hero"
+          },
+          {
+            "key": "alt_2",
+            "type": "text",
+            "label": "alt: Industrial testing laboratory",
+            "group": "Hero"
+          },
+          {
+            "key": "text_3",
+            "type": "text",
+            "label": "40+ Years of Precision Engineering",
+            "group": "Hero"
+          },
+          {
+            "key": "text_4",
+            "type": "text",
+            "label": "Precision Testing",
+            "group": "Hero"
+          },
+          {
+            "key": "text_5",
+            "type": "text",
+            "label": "Instruments",
+            "group": "Hero"
+          },
+          {
+            "key": "text_6",
+            "type": "text",
+            "label": "for Industry",
+            "group": "Hero"
+          },
+          {
+            "key": "text_7",
+            "type": "text",
+            "label": "Delivering reliable, accurate & industry-compliant testing solutions trusted by",
+            "group": "Hero"
+          },
+          {
+            "key": "text_8",
+            "type": "text",
+            "label": "445+ industries",
+            "group": "Hero"
+          },
+          {
+            "key": "text_9",
+            "type": "text",
+            "label": "worldwide across packaging, plastic, paper, textile and more.",
+            "group": "Hero"
+          },
+          {
+            "key": "href_10",
+            "type": "url",
+            "label": "href: /products",
+            "group": "Hero"
+          },
+          {
+            "key": "text_11",
+            "type": "text",
+            "label": "Explore Products",
+            "group": "Hero"
+          },
+          {
+            "key": "text_12",
+            "type": "text",
+            "label": "Request a Quote",
+            "group": "Hero"
+          },
+          {
+            "key": "list_13",
+            "type": "repeater",
+            "label": "Items 13",
+            "group": "Hero"
+          },
+          {
+            "key": "text_14",
+            "type": "text",
+            "label": "Scroll",
+            "group": "Hero"
+          },
+          {
+            "key": "button_link_1",
+            "type": "url",
+            "label": "Button 1 destination (empty opens quote form)",
+            "group": "Hero"
+          }
+        ]
+      },
+      {
+        "key": "counters",
+        "label": "Counters strip",
+        "fields": [
+          {
+            "key": "items_stats",
+            "type": "repeater",
+            "label": "stats",
+            "group": "Counters strip"
+          }
+        ]
+      },
+      {
+        "key": "featured",
+        "label": "Featured Instruments",
+        "fields": [
+          {
+            "key": "items_categories",
+            "type": "repeater",
+            "label": "categories",
+            "group": "Featured Instruments"
+          },
+          {
+            "key": "text_1",
+            "type": "text",
+            "label": "Product Catalog",
+            "group": "Featured Instruments"
+          },
+          {
+            "key": "text_2",
+            "type": "text",
+            "label": "Featured Instruments",
+            "group": "Featured Instruments"
+          },
+          {
+            "key": "text_3",
+            "type": "text",
+            "label": "200+ precision-engineered testing instruments for diverse industrial needs.",
+            "group": "Featured Instruments"
+          },
+          {
+            "key": "href_4",
+            "type": "url",
+            "label": "href: /products",
+            "group": "Featured Instruments"
+          },
+          {
+            "key": "text_5",
+            "type": "text",
+            "label": "View All Products",
+            "group": "Featured Instruments"
+          },
+          {
+            "key": "text_6",
+            "type": "text",
+            "label": ":",
+            "group": "Featured Instruments"
+          },
+          {
+            "key": "href_7",
+            "type": "url",
+            "label": "href: /products",
+            "group": "Featured Instruments"
+          },
+          {
+            "key": "text_8",
+            "type": "text",
+            "label": "View Details",
+            "group": "Featured Instruments"
+          }
+        ]
+      },
+      {
+        "key": "why",
+        "label": "Why Industries Choose Us",
+        "fields": [
+          {
+            "key": "items_reasons",
+            "type": "repeater",
+            "label": "reasons",
+            "group": "Why Industries Choose Us"
+          },
+          {
+            "key": "image_1",
+            "type": "image",
+            "label": "src: why_choose_us_1",
+            "group": "Why Industries Choose Us"
+          },
+          {
+            "key": "alt_2",
+            "type": "text",
+            "label": "alt: Laboratory background",
+            "group": "Why Industries Choose Us"
+          },
+          {
+            "key": "text_3",
+            "type": "text",
+            "label": "Why Pakmoo",
+            "group": "Why Industries Choose Us"
+          },
+          {
+            "key": "text_4",
+            "type": "text",
+            "label": "Why Industries Choose Us",
+            "group": "Why Industries Choose Us"
+          },
+          {
+            "key": "text_5",
+            "type": "text",
+            "label": "Three decades of engineering excellence backed by rigorous quality standards and a relentless focus on precisi",
+            "group": "Why Industries Choose Us"
+          }
+        ]
+      },
+      {
+        "key": "standards",
+        "label": "Global Testing Standards",
+        "fields": [
+          {
+            "key": "text_1",
+            "type": "text",
+            "label": "Compliance",
+            "group": "Global Testing Standards"
+          },
+          {
+            "key": "text_2",
+            "type": "text",
+            "label": "Global Testing Standards",
+            "group": "Global Testing Standards"
+          },
+          {
+            "key": "text_3",
+            "type": "text",
+            "label": "Our testing instruments adhere to stringent international standards, making them suitable for use in global ma",
+            "group": "Global Testing Standards"
+          },
+          {
+            "key": "list_4",
+            "type": "repeater",
+            "label": "Items 4",
+            "group": "Global Testing Standards"
+          }
+        ]
+      },
+      {
+        "key": "services",
+        "label": "Our Services",
+        "fields": [
+          {
+            "key": "items_services",
+            "type": "repeater",
+            "label": "services",
+            "group": "Our Services"
+          },
+          {
+            "key": "text_1",
+            "type": "text",
+            "label": "What We Offer",
+            "group": "Our Services"
+          },
+          {
+            "key": "text_2",
+            "type": "text",
+            "label": "Our Services",
+            "group": "Our Services"
+          },
+          {
+            "key": "text_3",
+            "type": "text",
+            "label": "End-to-end support to ensure your instruments perform at their best, always.",
+            "group": "Our Services"
+          },
+          {
+            "key": "href_4",
+            "type": "url",
+            "label": "href: /services",
+            "group": "Our Services"
+          },
+          {
+            "key": "text_5",
+            "type": "text",
+            "label": "All Services",
+            "group": "Our Services"
+          },
+          {
+            "key": "href_6",
+            "type": "url",
+            "label": "href: /services",
+            "group": "Our Services"
+          }
+        ]
+      },
+      {
+        "key": "clients",
+        "label": "Our Happy Clients & Testimonials",
+        "fields": [
+          {
+            "key": "text_1",
+            "type": "text",
+            "label": "Trusted By",
+            "group": "Our Happy Clients"
+          },
+          {
+            "key": "text_2",
+            "type": "text",
+            "label": "Our Happy Clients",
+            "group": "Our Happy Clients"
+          },
+          {
+            "key": "text_3",
+            "type": "text",
+            "label": "Partnering with India's leading manufacturers across sectors.",
+            "group": "Our Happy Clients"
+          },
+          {
+            "key": "text_4",
+            "type": "text",
+            "label": "\"",
+            "group": "Our Happy Clients"
+          },
+          {
+            "key": "text_5",
+            "type": "text",
+            "label": "\"",
+            "group": "Our Happy Clients"
+          },
+          {
+            "key": "text_6",
+            "type": "text",
+            "label": ",",
+            "group": "Our Happy Clients"
+          }
+        ]
+      },
+      {
+        "key": "cta",
+        "label": "CTA banner",
+        "fields": [
+          {
+            "key": "image_1",
+            "type": "image",
+            "label": "src: testing_standards_1",
+            "group": "Find the Perfect Testing"
+          },
+          {
+            "key": "alt_2",
+            "type": "text",
+            "label": "alt: Quality testing laboratory",
+            "group": "Find the Perfect Testing"
+          },
+          {
+            "key": "text_3",
+            "type": "text",
+            "label": "Get Started Today",
+            "group": "Find the Perfect Testing"
+          },
+          {
+            "key": "text_4",
+            "type": "text",
+            "label": "Find the Perfect Testing",
+            "group": "Find the Perfect Testing"
+          },
+          {
+            "key": "text_5",
+            "type": "text",
+            "label": "Instrument for Your Industry",
+            "group": "Find the Perfect Testing"
+          },
+          {
+            "key": "text_6",
+            "type": "text",
+            "label": "Our experts will help you choose the right solution. Get a custom quote with specs, pricing and delivery timel",
+            "group": "Find the Perfect Testing"
+          },
+          {
+            "key": "text_7",
+            "type": "text",
+            "label": "Request a Free Quote",
+            "group": "Find the Perfect Testing"
+          },
+          {
+            "key": "href_8",
+            "type": "url",
+            "label": "href: tel:+918595362719",
+            "group": "Find the Perfect Testing"
+          },
+          {
+            "key": "text_9",
+            "type": "text",
+            "label": "Call Us Now",
+            "group": "Find the Perfect Testing"
+          },
+          {
+            "key": "button_link_1",
+            "type": "url",
+            "label": "Button 1 destination (empty opens quote form)",
+            "group": "CTA banner"
+          }
+        ]
+      },
+      {
+        "key": "blog",
+        "label": "Blog preview",
+        "fields": [
+          {
+            "key": "text_1",
+            "type": "text",
+            "label": "Latest Insights",
+            "group": "From Our Blog"
+          },
+          {
+            "key": "text_2",
+            "type": "text",
+            "label": "From Our Blog",
+            "group": "From Our Blog"
+          },
+          {
+            "key": "text_3",
+            "type": "text",
+            "label": "Stay updated with testing standards, industry insights and product news.",
+            "group": "From Our Blog"
+          },
+          {
+            "key": "href_4",
+            "type": "url",
+            "label": "href: /blog",
+            "group": "From Our Blog"
+          },
+          {
+            "key": "text_5",
+            "type": "text",
+            "label": "All Articles",
+            "group": "From Our Blog"
+          },
+          {
+            "key": "text_6",
+            "type": "text",
+            "label": "Read more",
+            "group": "From Our Blog"
+          }
+        ]
+      }
+    ]
+  },
+  "about": {
+    "title": "about",
+    "sections": [
+      {
+        "key": "about",
+        "label": "About Us",
+        "fields": [
+          {
+            "key": "items_timeline",
+            "type": "repeater",
+            "label": "timeline",
+            "group": "About Us"
+          },
+          {
+            "key": "items_values",
+            "type": "repeater",
+            "label": "values",
+            "group": "About Us"
+          },
+          {
+            "key": "items_strengths",
+            "type": "repeater",
+            "label": "strengths",
+            "group": "About Us"
+          },
+          {
+            "key": "title_1",
+            "type": "text",
+            "label": "title: About Us",
+            "group": "About Us"
+          },
+          {
+            "key": "subtitle_2",
+            "type": "text",
+            "label": "subtitle: Four decades of precision engineering and unwavering commitment to quality testing solutions.",
+            "group": "About Us"
+          },
+          {
+            "key": "list_3",
+            "type": "repeater",
+            "label": "Items 3",
+            "group": "About Us"
+          },
+          {
+            "key": "image_4",
+            "type": "image",
+            "label": "image: About",
+            "group": "About Us"
+          },
+          {
+            "key": "text_5",
+            "type": "text",
+            "label": "Who We Are",
+            "group": "Precision in Every Instrument"
+          },
+          {
+            "key": "text_6",
+            "type": "text",
+            "label": "Precision in Every Instrument",
+            "group": "Precision in Every Instrument"
+          },
+          {
+            "key": "text_7",
+            "type": "richtext",
+            "label": "Pakmoo Testing Instrument Pvt. Ltd. is a leading manufacturer of precision testing instruments, serving divers",
+            "group": "Precision in Every Instrument"
+          },
+          {
+            "key": "text_8",
+            "type": "richtext",
+            "label": "With over 40 years of engineering expertise, we have built a reputation for delivering accurate, reliable, and",
+            "group": "Precision in Every Instrument"
+          },
+          {
+            "key": "text_9",
+            "type": "richtext",
+            "label": "From our state-of-the-art manufacturing facility, we design and produce 200+ testing instruments that are trus",
+            "group": "Precision in Every Instrument"
+          },
+          {
+            "key": "image_10",
+            "type": "image",
+            "label": "src: AboutUsBanner",
+            "group": "Precision in Every Instrument"
+          },
+          {
+            "key": "alt_11",
+            "type": "text",
+            "label": "alt: Pakmoo manufacturing facility",
+            "group": "Precision in Every Instrument"
+          },
+          {
+            "key": "text_12",
+            "type": "text",
+            "label": "10+",
+            "group": "Precision in Every Instrument"
+          },
+          {
+            "key": "text_13",
+            "type": "text",
+            "label": "Years of Excellence",
+            "group": "Precision in Every Instrument"
+          },
+          {
+            "key": "text_14",
+            "type": "text",
+            "label": "Our Journey",
+            "group": "Company History"
+          },
+          {
+            "key": "text_15",
+            "type": "text",
+            "label": "Company History",
+            "group": "Company History"
+          },
+          {
+            "key": "text_16",
+            "type": "text",
+            "label": "Our Strengths",
+            "group": "Manufacturing Expertise"
+          },
+          {
+            "key": "text_17",
+            "type": "text",
+            "label": "Manufacturing Expertise",
+            "group": "Manufacturing Expertise"
+          }
+        ]
+      }
+    ]
+  },
+  "products": {
+    "title": "products",
+    "sections": [
+      {
+        "key": "listing",
+        "label": "Products catalogue",
+        "fields": [
+          {
+            "key": "items_Categories",
+            "type": "repeater",
+            "label": " Categories",
+            "group": "Products catalogue"
+          },
+          {
+            "key": "title_1",
+            "type": "text",
+            "label": "title: Our Products",
+            "group": "Products catalogue"
+          },
+          {
+            "key": "subtitle_2",
+            "type": "text",
+            "label": "subtitle: 200+ precision testing instruments for diverse industrial applications.",
+            "group": "Products catalogue"
+          },
+          {
+            "key": "list_3",
+            "type": "repeater",
+            "label": "Items 3",
+            "group": "Products catalogue"
+          },
+          {
+            "key": "image_4",
+            "type": "image",
+            "label": "image: products_1",
+            "group": "Products catalogue"
+          },
+          {
+            "key": "placeholder_5",
+            "type": "text",
+            "label": "placeholder: Search instruments...",
+            "group": "Products catalogue"
+          },
+          {
+            "key": "text_6",
+            "type": "text",
+            "label": "Categories",
+            "group": "Products catalogue"
+          },
+          {
+            "key": "text_7",
+            "type": "text",
+            "label": "instruments found",
+            "group": "Products catalogue"
+          },
+          {
+            "key": "text_8",
+            "type": "text",
+            "label": "Technical Specifications",
+            "group": "Products catalogue"
+          },
+          {
+            "key": "text_9",
+            "type": "text",
+            "label": "Features",
+            "group": "Products catalogue"
+          },
+          {
+            "key": "text_10",
+            "type": "text",
+            "label": "Request Quote",
+            "group": "Products catalogue"
+          },
+          {
+            "key": "text_11",
+            "type": "text",
+            "label": "Close",
+            "group": "Products catalogue"
+          },
+          {
+            "key": "text_12",
+            "type": "text",
+            "label": "View Full Detail",
+            "group": "Products catalogue"
+          },
+          {
+            "key": "button_link_1",
+            "type": "url",
+            "label": "Button 1 destination (empty opens quote form)",
+            "group": "Products catalogue"
+          }
+        ]
+      }
+    ]
+  },
+  "product-template": {
+    "title": "product template",
+    "sections": [
+      {
+        "key": "detail",
+        "label": "Product detail labels",
+        "fields": [
+          {
+            "key": "text_1",
+            "type": "text",
+            "label": "Product not found",
+            "group": "Product detail labels"
+          },
+          {
+            "key": "href_2",
+            "type": "url",
+            "label": "href: /products",
+            "group": "Product detail labels"
+          },
+          {
+            "key": "text_3",
+            "type": "text",
+            "label": "Back to Products",
+            "group": "Product detail labels"
+          },
+          {
+            "key": "href_4",
+            "type": "url",
+            "label": "href: /",
+            "group": "Product detail labels"
+          },
+          {
+            "key": "text_5",
+            "type": "text",
+            "label": "Home",
+            "group": "Product detail labels"
+          },
+          {
+            "key": "href_6",
+            "type": "url",
+            "label": "href: /products",
+            "group": "Product detail labels"
+          },
+          {
+            "key": "text_7",
+            "type": "text",
+            "label": "Products",
+            "group": "Product detail labels"
+          },
+          {
+            "key": "text_8",
+            "type": "text",
+            "label": "Request a Quote",
+            "group": "Product detail labels"
+          },
+          {
+            "key": "href_9",
+            "type": "url",
+            "label": "href: tel:+918595362719",
+            "group": "Product detail labels"
+          },
+          {
+            "key": "text_10",
+            "type": "text",
+            "label": "Call Us",
+            "group": "Product detail labels"
+          },
+          {
+            "key": "text_11",
+            "type": "text",
+            "label": "Technical Specifications",
+            "group": "Key Features"
+          },
+          {
+            "key": "href_12",
+            "type": "url",
+            "label": "href: /products",
+            "group": "Key Features"
+          },
+          {
+            "key": "text_13",
+            "type": "text",
+            "label": "Back to all products",
+            "group": "Key Features"
+          },
+          {
+            "key": "text_14",
+            "type": "text",
+            "label": "Key Features",
+            "group": "Key Features"
+          },
+          {
+            "key": "text_15",
+            "type": "text",
+            "label": "Maintenance Tips",
+            "group": "Key Features"
+          },
+          {
+            "key": "text_16",
+            "type": "text",
+            "label": "Applications",
+            "group": "Key Features"
+          },
+          {
+            "key": "text_17",
+            "type": "text",
+            "label": "Interested in this instrument?",
+            "group": "Key Features"
+          },
+          {
+            "key": "text_18",
+            "type": "text",
+            "label": "Get a customized quote.",
+            "group": "Key Features"
+          },
+          {
+            "key": "text_19",
+            "type": "text",
+            "label": "Request a Quote",
+            "group": "Key Features"
+          },
+          {
+            "key": "href_20",
+            "type": "url",
+            "label": "href: /contact",
+            "group": "Key Features"
+          },
+          {
+            "key": "text_21",
+            "type": "text",
+            "label": "Contact Our Team",
+            "group": "Key Features"
+          },
+          {
+            "key": "text_22",
+            "type": "text",
+            "label": "Conclusion",
+            "group": "Key Features"
+          }
+        ]
+      },
+      {
+        "key": "faq",
+        "label": "Product FAQ labels",
+        "fields": [
+          {
+            "key": "text_1",
+            "type": "text",
+            "label": "FAQ",
+            "group": "Frequently Asked Questions"
+          },
+          {
+            "key": "text_2",
+            "type": "text",
+            "label": "Frequently Asked Questions",
+            "group": "Frequently Asked Questions"
+          },
+          {
+            "key": "text_3",
+            "type": "text",
+            "label": "Common questions about our instruments, services, and support.",
+            "group": "Frequently Asked Questions"
+          }
+        ]
+      }
+    ]
+  },
+  "applications": {
+    "title": "applications",
+    "sections": [
+      {
+        "key": "listing",
+        "label": "Applications listing",
+        "fields": [
+          {
+            "key": "title_1",
+            "type": "text",
+            "label": "title: Applications",
+            "group": "Applications listing"
+          },
+          {
+            "key": "subtitle_2",
+            "type": "text",
+            "label": "subtitle: Our testing instruments serve 8+ major industry verticals with specialized solutions.",
+            "group": "Applications listing"
+          },
+          {
+            "key": "list_3",
+            "type": "repeater",
+            "label": "Items 3",
+            "group": "Applications listing"
+          },
+          {
+            "key": "image_4",
+            "type": "image",
+            "label": "image: applications_1_1",
+            "group": "Applications listing"
+          },
+          {
+            "key": "text_5",
+            "type": "text",
+            "label": "Key Tests",
+            "group": "Applications listing"
+          },
+          {
+            "key": "text_6",
+            "type": "text",
+            "label": "View Instruments",
+            "group": "Applications listing"
+          }
+        ]
+      }
+    ]
+  },
+  "application-template": {
+    "title": "application template",
+    "sections": [
+      {
+        "key": "detail",
+        "label": "Application detail labels",
+        "fields": [
+          {
+            "key": "title_1",
+            "type": "text",
+            "label": "title: Application Not Found",
+            "group": "Application detail labels"
+          },
+          {
+            "key": "subtitle_2",
+            "type": "text",
+            "label": "subtitle: The application you're looking for doesn't exist.",
+            "group": "Application detail labels"
+          },
+          {
+            "key": "list_3",
+            "type": "repeater",
+            "label": "Items 3",
+            "group": "Application detail labels"
+          },
+          {
+            "key": "href_4",
+            "type": "url",
+            "label": "href: /applications",
+            "group": "Application detail labels"
+          },
+          {
+            "key": "text_5",
+            "type": "text",
+            "label": "Back to Applications",
+            "group": "Application detail labels"
+          },
+          {
+            "key": "list_6",
+            "type": "repeater",
+            "label": "Items 6",
+            "group": "Application detail labels"
+          },
+          {
+            "key": "text_7",
+            "type": "text",
+            "label": "Instruments",
+            "group": "Application detail labels"
+          },
+          {
+            "key": "text_8",
+            "type": "text",
+            "label": "Key Tests",
+            "group": "Application detail labels"
+          },
+          {
+            "key": "href_9",
+            "type": "url",
+            "label": "href: /contact",
+            "group": "Application detail labels"
+          },
+          {
+            "key": "text_10",
+            "type": "text",
+            "label": "Request a Quote",
+            "group": "Application detail labels"
+          },
+          {
+            "key": "text_11",
+            "type": "text",
+            "label": "Instruments",
+            "group": "Products for"
+          },
+          {
+            "key": "text_12",
+            "type": "text",
+            "label": "Products for",
+            "group": "Products for"
+          },
+          {
+            "key": "placeholder_13",
+            "type": "text",
+            "label": "placeholder: Search instruments...",
+            "group": "Products for"
+          },
+          {
+            "key": "text_14",
+            "type": "text",
+            "label": "instruments found",
+            "group": "Products for"
+          },
+          {
+            "key": "text_15",
+            "type": "text",
+            "label": "No instruments found matching your search.",
+            "group": "Products for"
+          },
+          {
+            "key": "text_16",
+            "type": "text",
+            "label": "Why Choose Pakmo",
+            "group": "Products for"
+          },
+          {
+            "key": "text_17",
+            "type": "text",
+            "label": "Specialized Solutions for",
+            "group": "Products for"
+          },
+          {
+            "key": "list_18",
+            "type": "repeater",
+            "label": "Items 18",
+            "group": "Products for"
+          },
+          {
+            "key": "href_19",
+            "type": "url",
+            "label": "href: /applications",
+            "group": "Products for"
+          },
+          {
+            "key": "text_20",
+            "type": "text",
+            "label": "Back to All Applications",
+            "group": "Products for"
+          }
+        ]
+      }
+    ]
+  },
+  "services": {
+    "title": "services",
+    "sections": [
+      {
+        "key": "listing",
+        "label": "Services listing",
+        "fields": [
+          {
+            "key": "title_1",
+            "type": "text",
+            "label": "title: Our Services",
+            "group": "Services listing"
+          },
+          {
+            "key": "subtitle_2",
+            "type": "text",
+            "label": "subtitle: End-to-end support services to ensure your testing instruments perform at their best.",
+            "group": "Services listing"
+          },
+          {
+            "key": "list_3",
+            "type": "repeater",
+            "label": "Items 3",
+            "group": "Services listing"
+          },
+          {
+            "key": "image_4",
+            "type": "image",
+            "label": "image: services_1",
+            "group": "Services listing"
+          },
+          {
+            "key": "text_5",
+            "type": "text",
+            "label": "Get Service Quote",
+            "group": "Services listing"
+          },
+          {
+            "key": "button_link_1",
+            "type": "url",
+            "label": "Button 1 destination (empty opens quote form)",
+            "group": "Services listing"
+          }
+        ]
+      }
+    ]
+  },
+  "testing-standards": {
+    "title": "testing standards",
+    "sections": [
+      {
+        "key": "standards",
+        "label": "Testing standards",
+        "fields": [
+          {
+            "key": "title_1",
+            "type": "text",
+            "label": "title: Testing Standards",
+            "group": "Testing standards"
+          },
+          {
+            "key": "subtitle_2",
+            "type": "text",
+            "label": "subtitle: Our instruments comply with major international and national testing standards.",
+            "group": "Testing standards"
+          },
+          {
+            "key": "list_3",
+            "type": "repeater",
+            "label": "Items 3",
+            "group": "Testing standards"
+          },
+          {
+            "key": "image_4",
+            "type": "image",
+            "label": "image: testing_standards_1",
+            "group": "Testing standards"
+          },
+          {
+            "key": "text_5",
+            "type": "text",
+            "label": "Supported Test Methods",
+            "group": "Supported Test Methods"
+          }
+        ]
+      }
+    ]
+  },
+  "clients": {
+    "title": "clients",
+    "sections": [
+      {
+        "key": "clients",
+        "label": "Clients & testimonials",
+        "fields": [
+          {
+            "key": "items_industries",
+            "type": "repeater",
+            "label": "industries",
+            "group": "Clients & testimonials"
+          },
+          {
+            "key": "title_1",
+            "type": "text",
+            "label": "title: Our Clients",
+            "group": "Clients & testimonials"
+          },
+          {
+            "key": "subtitle_2",
+            "type": "text",
+            "label": "subtitle: Trusted by 445+ industries across India and internationally.",
+            "group": "Clients & testimonials"
+          },
+          {
+            "key": "list_3",
+            "type": "repeater",
+            "label": "Items 3",
+            "group": "Clients & testimonials"
+          },
+          {
+            "key": "image_4",
+            "type": "image",
+            "label": "image: clients_1",
+            "group": "Clients & testimonials"
+          },
+          {
+            "key": "text_5",
+            "type": "text",
+            "label": "Trusted By",
+            "group": "Our Valued Clients"
+          },
+          {
+            "key": "text_6",
+            "type": "text",
+            "label": "Our Valued Clients",
+            "group": "Our Valued Clients"
+          },
+          {
+            "key": "text_7",
+            "type": "text",
+            "label": "Sectors",
+            "group": "Industries Served"
+          },
+          {
+            "key": "text_8",
+            "type": "text",
+            "label": "Industries Served",
+            "group": "Industries Served"
+          },
+          {
+            "key": "text_9",
+            "type": "text",
+            "label": "+",
+            "group": "Industries Served"
+          },
+          {
+            "key": "text_10",
+            "type": "text",
+            "label": "Companies served",
+            "group": "Industries Served"
+          },
+          {
+            "key": "text_11",
+            "type": "text",
+            "label": "Testimonials",
+            "group": "What Our Clients Say"
+          },
+          {
+            "key": "text_12",
+            "type": "text",
+            "label": "What Our Clients Say",
+            "group": "What Our Clients Say"
+          },
+          {
+            "key": "text_13",
+            "type": "text",
+            "label": "\"",
+            "group": "What Our Clients Say"
+          },
+          {
+            "key": "text_14",
+            "type": "text",
+            "label": "\"",
+            "group": "What Our Clients Say"
+          },
+          {
+            "key": "text_15",
+            "type": "text",
+            "label": ",",
+            "group": "What Our Clients Say"
+          }
+        ]
+      }
+    ]
+  },
+  "why-choose-us": {
+    "title": "why choose us",
+    "sections": [
+      {
+        "key": "why",
+        "label": "Why Choose Us",
+        "fields": [
+          {
+            "key": "items_strengths",
+            "type": "repeater",
+            "label": "strengths",
+            "group": "Why Choose Us"
+          },
+          {
+            "key": "items_qaProcess",
+            "type": "repeater",
+            "label": "qa Process",
+            "group": "Why Choose Us"
+          },
+          {
+            "key": "items_capabilities",
+            "type": "repeater",
+            "label": "capabilities",
+            "group": "Why Choose Us"
+          },
+          {
+            "key": "title_1",
+            "type": "text",
+            "label": "title: Why Choose Us",
+            "group": "Why Choose Us"
+          },
+          {
+            "key": "subtitle_2",
+            "type": "text",
+            "label": "subtitle: Three decades of engineering excellence and unwavering commitment to precision.",
+            "group": "Why Choose Us"
+          },
+          {
+            "key": "list_3",
+            "type": "repeater",
+            "label": "Items 3",
+            "group": "Why Choose Us"
+          },
+          {
+            "key": "image_4",
+            "type": "image",
+            "label": "image: why_choose_us_1",
+            "group": "Why Choose Us"
+          },
+          {
+            "key": "text_5",
+            "type": "text",
+            "label": "Quality Assurance",
+            "group": "Our Quality Process"
+          },
+          {
+            "key": "text_6",
+            "type": "text",
+            "label": "Our Quality Process",
+            "group": "Our Quality Process"
+          },
+          {
+            "key": "text_7",
+            "type": "text",
+            "label": "Capabilities",
+            "group": "Manufacturing Scale"
+          },
+          {
+            "key": "text_8",
+            "type": "text",
+            "label": "Manufacturing Scale",
+            "group": "Manufacturing Scale"
+          },
+          {
+            "key": "text_9",
+            "type": "text",
+            "label": "Get a Custom Quote",
+            "group": "Manufacturing Scale"
+          },
+          {
+            "key": "button_link_1",
+            "type": "url",
+            "label": "Button 1 destination (empty opens quote form)",
+            "group": "Why Choose Us"
+          }
+        ]
+      }
+    ]
+  },
+  "blog": {
+    "title": "blog",
+    "sections": [
+      {
+        "key": "listing",
+        "label": "Blog listing",
+        "fields": [
+          {
+            "key": "title_1",
+            "type": "text",
+            "label": "title: Blog & Insights",
+            "group": "Blog listing"
+          },
+          {
+            "key": "subtitle_2",
+            "type": "text",
+            "label": "subtitle: Industry insights, testing standards guides, and product updates from our experts.",
+            "group": "Blog listing"
+          },
+          {
+            "key": "list_3",
+            "type": "repeater",
+            "label": "Items 3",
+            "group": "Blog listing"
+          },
+          {
+            "key": "image_4",
+            "type": "image",
+            "label": "image: blog_1",
+            "group": "Blog listing"
+          },
+          {
+            "key": "text_5",
+            "type": "text",
+            "label": "articles found",
+            "group": "Blog listing"
+          },
+          {
+            "key": "text_6",
+            "type": "text",
+            "label": "·",
+            "group": "Blog listing"
+          },
+          {
+            "key": "text_7",
+            "type": "text",
+            "label": "read",
+            "group": "Blog listing"
+          },
+          {
+            "key": "text_8",
+            "type": "text",
+            "label": "Read More",
+            "group": "Blog listing"
+          }
+        ]
+      }
+    ]
+  },
+  "blog-template": {
+    "title": "blog template",
+    "sections": [
+      {
+        "key": "article",
+        "label": "Article labels",
+        "fields": [
+          {
+            "key": "items_blogCategories",
+            "type": "repeater",
+            "label": "blog Categories",
+            "group": "Article labels"
+          },
+          {
+            "key": "text_1",
+            "type": "text",
+            "label": "Article not found",
+            "group": "Article labels"
+          },
+          {
+            "key": "href_2",
+            "type": "url",
+            "label": "href: /blog",
+            "group": "Article labels"
+          },
+          {
+            "key": "text_3",
+            "type": "text",
+            "label": "Back to Blog",
+            "group": "Article labels"
+          },
+          {
+            "key": "href_4",
+            "type": "url",
+            "label": "href: /",
+            "group": "Article labels"
+          },
+          {
+            "key": "text_5",
+            "type": "text",
+            "label": "Home",
+            "group": "Article labels"
+          },
+          {
+            "key": "href_6",
+            "type": "url",
+            "label": "href: /blog",
+            "group": "Article labels"
+          },
+          {
+            "key": "text_7",
+            "type": "text",
+            "label": "Blog",
+            "group": "Article labels"
+          },
+          {
+            "key": "text_8",
+            "type": "text",
+            "label": "Pakmoo Blogs",
+            "group": "Article labels"
+          },
+          {
+            "key": "text_9",
+            "type": "text",
+            "label": "read",
+            "group": "Article labels"
+          },
+          {
+            "key": "href_10",
+            "type": "url",
+            "label": "href: /blog",
+            "group": "Article labels"
+          },
+          {
+            "key": "text_11",
+            "type": "text",
+            "label": "Back to all articles",
+            "group": "Article labels"
+          },
+          {
+            "key": "text_12",
+            "type": "text",
+            "label": "Related Articles",
+            "group": "Article labels"
+          },
+          {
+            "key": "text_13",
+            "type": "text",
+            "label": "read",
+            "group": "Article labels"
+          }
+        ]
+      }
+    ]
+  },
+  "contact": {
+    "title": "contact",
+    "sections": [
+      {
+        "key": "contact",
+        "label": "Contact Us",
+        "fields": [
+          {
+            "key": "items_contactInfo",
+            "type": "repeater",
+            "label": "contact Info",
+            "group": "Contact Us"
+          },
+          {
+            "key": "title_1",
+            "type": "text",
+            "label": "title: Contact Us",
+            "group": "Contact Us"
+          },
+          {
+            "key": "subtitle_2",
+            "type": "text",
+            "label": "subtitle: Get in touch with our team for inquiries, quotes, or technical support.",
+            "group": "Contact Us"
+          },
+          {
+            "key": "list_3",
+            "type": "repeater",
+            "label": "Items 3",
+            "group": "Contact Us"
+          },
+          {
+            "key": "image_4",
+            "type": "image",
+            "label": "src: clients_1",
+            "group": "Contact Us"
+          },
+          {
+            "key": "alt_5",
+            "type": "text",
+            "label": "alt: Our office",
+            "group": "Contact Us"
+          },
+          {
+            "key": "text_6",
+            "type": "text",
+            "label": "Get In Touch",
+            "group": "Contact Information"
+          },
+          {
+            "key": "text_7",
+            "type": "text",
+            "label": "Contact Information",
+            "group": "Contact Information"
+          },
+          {
+            "key": "text_8",
+            "type": "text",
+            "label": "Have a question? Need a quote or technical support? Our experts are ready to help.",
+            "group": "Contact Information"
+          },
+          {
+            "key": "href_9",
+            "type": "url",
+            "label": "href: https://wa.me/918595362719?text=Hi%2C%20I%20need%20information%20about%20testing%20instruments",
+            "group": "Contact Information"
+          },
+          {
+            "key": "text_10",
+            "type": "text",
+            "label": "Chat on WhatsApp",
+            "group": "Contact Information"
+          },
+          {
+            "key": "text_11",
+            "type": "text",
+            "label": "Get instant reply from our team",
+            "group": "Contact Information"
+          },
+          {
+            "key": "text_12",
+            "type": "text",
+            "label": "Send Us a Message",
+            "group": "Contact Information"
+          },
+          {
+            "key": "text_13",
+            "type": "text",
+            "label": "We'll get back to you within 24 hours.",
+            "group": "Contact Information"
+          },
+          {
+            "key": "text_14",
+            "type": "text",
+            "label": "Message Sent Successfully!",
+            "group": "Contact Information"
+          },
+          {
+            "key": "text_15",
+            "type": "text",
+            "label": "Our team will contact you within 24 hours.",
+            "group": "Contact Information"
+          },
+          {
+            "key": "text_16",
+            "type": "text",
+            "label": "Full Name *",
+            "group": "Contact Information"
+          },
+          {
+            "key": "placeholder_17",
+            "type": "text",
+            "label": "placeholder: Enter Name",
+            "group": "Contact Information"
+          },
+          {
+            "key": "text_18",
+            "type": "text",
+            "label": "Email *",
+            "group": "Contact Information"
+          },
+          {
+            "key": "placeholder_19",
+            "type": "text",
+            "label": "placeholder: Enter Email",
+            "group": "Contact Information"
+          },
+          {
+            "key": "text_20",
+            "type": "text",
+            "label": "Phone *",
+            "group": "Contact Information"
+          },
+          {
+            "key": "placeholder_21",
+            "type": "text",
+            "label": "placeholder: Enter Phone No.",
+            "group": "Contact Information"
+          },
+          {
+            "key": "text_22",
+            "type": "text",
+            "label": "Subject",
+            "group": "Contact Information"
+          },
+          {
+            "key": "placeholder_23",
+            "type": "text",
+            "label": "placeholder: Product inquiry",
+            "group": "Contact Information"
+          },
+          {
+            "key": "text_24",
+            "type": "text",
+            "label": "Message *",
+            "group": "Contact Information"
+          },
+          {
+            "key": "placeholder_25",
+            "type": "text",
+            "label": "placeholder: Describe your requirements in detail...",
+            "group": "Contact Information"
+          },
+          {
+            "key": "text_26",
+            "type": "text",
+            "label": "Send Message",
+            "group": "Contact Information"
+          },
+          {
+            "key": "image_27",
+            "type": "image",
+            "label": "src: contact_1",
+            "group": "Contact Us"
+          },
+          {
+            "key": "alt_28",
+            "type": "text",
+            "label": "alt: Pakmoo team",
+            "group": "Contact Us"
+          },
+          {
+            "key": "title_29",
+            "type": "text",
+            "label": "title: Office Location",
+            "group": "Contact Us"
+          }
+        ]
+      }
+    ]
+  },
+  "global": {
+    "title": "global",
+    "sections": [
+      {
+        "key": "header",
+        "label": "Header & navigation",
+        "fields": [
+          {
+            "key": "items_navLinks",
+            "type": "repeater",
+            "label": "nav Links",
+            "group": "Header & navigation"
+          },
+          {
+            "key": "href_1",
+            "type": "url",
+            "label": "href: /",
+            "group": "Header & navigation"
+          },
+          {
+            "key": "image_2",
+            "type": "image",
+            "label": "src: Logo",
+            "group": "Header & navigation"
+          },
+          {
+            "key": "alt_3",
+            "type": "text",
+            "label": "alt: Pakmoo team",
+            "group": "Header & navigation"
+          },
+          {
+            "key": "text_4",
+            "type": "text",
+            "label": "PAKMOO",
+            "group": "Header & navigation"
+          },
+          {
+            "key": "text_5",
+            "type": "text",
+            "label": "Testing Instruments",
+            "group": "Header & navigation"
+          },
+          {
+            "key": "text_6",
+            "type": "text",
+            "label": "Request a Quote",
+            "group": "Header & navigation"
+          },
+          {
+            "key": "text_7",
+            "type": "text",
+            "label": "Request a Quote",
+            "group": "Header & navigation"
+          },
+          {
+            "key": "button_link_1",
+            "type": "url",
+            "label": "Button 1 destination (empty opens quote form)",
+            "group": "Header & navigation"
+          }
+        ]
+      },
+      {
+        "key": "footer",
+        "label": "Footer",
+        "fields": [
+          {
+            "key": "items_quickLinks",
+            "type": "repeater",
+            "label": "quick Links",
+            "group": "Footer"
+          },
+          {
+            "key": "items_productLinks",
+            "type": "repeater",
+            "label": "product Links",
+            "group": "Footer"
+          },
+          {
+            "key": "items_standards",
+            "type": "repeater",
+            "label": "standards",
+            "group": "Footer"
+          },
+          {
+            "key": "text_1",
+            "type": "text",
+            "label": "Global Standards Compliance",
+            "group": "Footer"
+          },
+          {
+            "key": "image_2",
+            "type": "image",
+            "label": "src: Logo",
+            "group": "Footer"
+          },
+          {
+            "key": "alt_3",
+            "type": "text",
+            "label": "alt: Pakmoo",
+            "group": "Footer"
+          },
+          {
+            "key": "text_4",
+            "type": "text",
+            "label": "PAKMOO",
+            "group": "Footer"
+          },
+          {
+            "key": "text_5",
+            "type": "text",
+            "label": "Testing Instruments",
+            "group": "Footer"
+          },
+          {
+            "key": "text_6",
+            "type": "text",
+            "label": "Elevate Your Product Standards With Our Premium Lab Testing Instruments & Equipments",
+            "group": "Footer"
+          },
+          {
+            "key": "text_7",
+            "type": "text",
+            "label": "Plot No. 574, Aasharam Marg, Siddiq Nagar, Sihani Road, Ghaziabad 201001",
+            "group": "Footer"
+          },
+          {
+            "key": "href_8",
+            "type": "url",
+            "label": "href: tel:+918595362719",
+            "group": "Footer"
+          },
+          {
+            "key": "text_9",
+            "type": "text",
+            "label": "8595362719",
+            "group": "Footer"
+          },
+          {
+            "key": "href_10",
+            "type": "url",
+            "label": "href: tel:+918586962719",
+            "group": "Footer"
+          },
+          {
+            "key": "text_11",
+            "type": "text",
+            "label": "8586962719",
+            "group": "Footer"
+          },
+          {
+            "key": "href_12",
+            "type": "url",
+            "label": "href: mailto:info@pakmoo.in",
+            "group": "Footer"
+          },
+          {
+            "key": "text_13",
+            "type": "text",
+            "label": "info@pakmoo.in",
+            "group": "Footer"
+          },
+          {
+            "key": "text_14",
+            "type": "text",
+            "label": "Quick Links",
+            "group": "Footer"
+          },
+          {
+            "key": "text_15",
+            "type": "text",
+            "label": "Products",
+            "group": "Footer"
+          },
+          {
+            "key": "text_16",
+            "type": "text",
+            "label": "Stay Updated",
+            "group": "Footer"
+          },
+          {
+            "key": "text_17",
+            "type": "text",
+            "label": "Get the latest updates on testing standards and new products.",
+            "group": "Footer"
+          },
+          {
+            "key": "href_18",
+            "type": "url",
+            "label": "href: https://www.facebook.com/share/1DmcSx8XwQ/",
+            "group": "Footer"
+          },
+          {
+            "key": "href_19",
+            "type": "url",
+            "label": "href: https://www.instagram.com/pakmootesting?igsh=dnl6dTNkbnQ2cTYw",
+            "group": "Footer"
+          },
+          {
+            "key": "text_20",
+            "type": "text",
+            "label": "©",
+            "group": "Footer"
+          },
+          {
+            "key": "text_21",
+            "type": "text",
+            "label": "Pakmoo Testing Instruments All rights reserved.",
+            "group": "Footer"
+          },
+          {
+            "key": "href_22",
+            "type": "url",
+            "label": "href: #",
+            "group": "Footer"
+          },
+          {
+            "key": "text_23",
+            "type": "text",
+            "label": "Privacy Policy",
+            "group": "Footer"
+          },
+          {
+            "key": "href_24",
+            "type": "url",
+            "label": "href: #",
+            "group": "Footer"
+          },
+          {
+            "key": "text_25",
+            "type": "text",
+            "label": "Terms of Service",
+            "group": "Footer"
+          }
+        ]
+      },
+      {
+        "key": "quote",
+        "label": "Quote modal",
+        "fields": [
+          {
+            "key": "items_industries",
+            "type": "repeater",
+            "label": "industries",
+            "group": "Quote modal"
+          },
+          {
+            "key": "text_1",
+            "type": "text",
+            "label": "Request a Quote",
+            "group": "Quote modal"
+          },
+          {
+            "key": "text_2",
+            "type": "text",
+            "label": "Tell us about your testing requirements and we'll get back within 24 hours.",
+            "group": "Quote modal"
+          },
+          {
+            "key": "text_3",
+            "type": "text",
+            "label": "Quote Request Submitted!",
+            "group": "Quote modal"
+          },
+          {
+            "key": "text_4",
+            "type": "text",
+            "label": "Our team will contact you shortly.",
+            "group": "Quote modal"
+          },
+          {
+            "key": "text_5",
+            "type": "text",
+            "label": "Full Name *",
+            "group": "Quote modal"
+          },
+          {
+            "key": "placeholder_6",
+            "type": "text",
+            "label": "placeholder: Enter Name",
+            "group": "Quote modal"
+          },
+          {
+            "key": "text_7",
+            "type": "text",
+            "label": "Email *",
+            "group": "Quote modal"
+          },
+          {
+            "key": "placeholder_8",
+            "type": "text",
+            "label": "placeholder: Enter Email",
+            "group": "Quote modal"
+          },
+          {
+            "key": "text_9",
+            "type": "text",
+            "label": "Phone *",
+            "group": "Quote modal"
+          },
+          {
+            "key": "placeholder_10",
+            "type": "text",
+            "label": "placeholder: Enter Phone No.",
+            "group": "Quote modal"
+          },
+          {
+            "key": "text_11",
+            "type": "text",
+            "label": "Company *",
+            "group": "Quote modal"
+          },
+          {
+            "key": "placeholder_12",
+            "type": "text",
+            "label": "placeholder: Company name",
+            "group": "Quote modal"
+          },
+          {
+            "key": "text_13",
+            "type": "text",
+            "label": "Industry",
+            "group": "Quote modal"
+          },
+          {
+            "key": "placeholder_14",
+            "type": "text",
+            "label": "placeholder: Select industry",
+            "group": "Quote modal"
+          },
+          {
+            "key": "text_15",
+            "type": "text",
+            "label": "Product Interest",
+            "group": "Quote modal"
+          },
+          {
+            "key": "placeholder_16",
+            "type": "text",
+            "label": "placeholder: e.g. Tensile Tester",
+            "group": "Quote modal"
+          },
+          {
+            "key": "text_17",
+            "type": "text",
+            "label": "Additional Details",
+            "group": "Quote modal"
+          },
+          {
+            "key": "placeholder_18",
+            "type": "text",
+            "label": "placeholder: Describe your testing requirements...",
+            "group": "Quote modal"
+          }
+        ]
+      },
+      {
+        "key": "mobile",
+        "label": "Mobile enquiry bar",
+        "fields": [
+          {
+            "key": "href_1",
+            "type": "url",
+            "label": "href: tel:+918595362719",
+            "group": "Mobile enquiry bar"
+          },
+          {
+            "key": "text_2",
+            "type": "text",
+            "label": "Call Now",
+            "group": "Mobile enquiry bar"
+          },
+          {
+            "key": "href_3",
+            "type": "url",
+            "label": "href: https://wa.me/918595362719?text=Hi%2C%20I%20need%20information%20about%20testing%20instruments",
+            "group": "Mobile enquiry bar"
+          },
+          {
+            "key": "text_4",
+            "type": "text",
+            "label": "WhatsApp",
+            "group": "Mobile enquiry bar"
+          }
+        ]
+      },
+      {
+        "key": "whatsapp",
+        "label": "WhatsApp button",
+        "fields": [
+          {
+            "key": "href_1",
+            "type": "url",
+            "label": "href: https://wa.me/918595362719?text=Hi%2C%20I%20need%20information%20about%20testing%20instruments",
+            "group": "WhatsApp button"
+          },
+          {
+            "key": "aria_label_2",
+            "type": "text",
+            "label": "aria-label: Chat on WhatsApp",
+            "group": "WhatsApp button"
+          }
+        ]
+      },
+      {
+        "key": "breadcrumbs",
+        "label": "Breadcrumb labels",
+        "fields": [
+          {
+            "key": "href_1",
+            "type": "url",
+            "label": "href: /",
+            "group": "Breadcrumb labels"
+          },
+          {
+            "key": "text_2",
+            "type": "text",
+            "label": "Home",
+            "group": "Breadcrumb labels"
+          }
+        ]
+      }
+    ]
+  },
+  "service-manufacture": {
+    "title": "service manufacture",
+    "sections": [
+      {
+        "key": "detail",
+        "label": "manufacture service",
+        "fields": [
+          {
+            "key": "title_1",
+            "type": "text",
+            "label": "title: Our Services / Manufacture",
+            "group": "manufacture service"
+          },
+          {
+            "key": "subtitle_2",
+            "type": "text",
+            "label": "subtitle: End-to-end support services to ensure your testing instruments perform at their best.",
+            "group": "manufacture service"
+          },
+          {
+            "key": "list_3",
+            "type": "repeater",
+            "label": "Items 3",
+            "group": "manufacture service"
+          },
+          {
+            "key": "image_4",
+            "type": "image",
+            "label": "image: services_1",
+            "group": "manufacture service"
+          },
+          {
+            "key": "image_5",
+            "type": "image",
+            "label": "src: Manufacturing",
+            "group": "Manufacturing of Testing Instruments"
+          },
+          {
+            "key": "alt_6",
+            "type": "text",
+            "label": "alt: Manufacturing",
+            "group": "Manufacturing of Testing Instruments"
+          },
+          {
+            "key": "text_7",
+            "type": "text",
+            "label": "Manufacturing of Testing Instruments",
+            "group": "Manufacturing of Testing Instruments"
+          },
+          {
+            "key": "text_8",
+            "type": "richtext",
+            "label": "We specialize in designing and manufacturing high-performance testing instruments tailored to diverse industri",
+            "group": "Manufacturing of Testing Instruments"
+          },
+          {
+            "key": "text_9",
+            "type": "text",
+            "label": "Get Service Quote",
+            "group": "Manufacturing of Testing Instruments"
+          },
+          {
+            "key": "button_link_1",
+            "type": "url",
+            "label": "Button 1 destination (empty opens quote form)",
+            "group": "manufacture service"
+          }
+        ]
+      }
+    ]
+  },
+  "service-calibration": {
+    "title": "service calibration",
+    "sections": [
+      {
+        "key": "detail",
+        "label": "calibration service",
+        "fields": [
+          {
+            "key": "title_1",
+            "type": "text",
+            "label": "title: Our Services / Calibration Services",
+            "group": "calibration service"
+          },
+          {
+            "key": "subtitle_2",
+            "type": "text",
+            "label": "subtitle: End-to-end support services to ensure your testing instruments perform at their best.",
+            "group": "calibration service"
+          },
+          {
+            "key": "list_3",
+            "type": "repeater",
+            "label": "Items 3",
+            "group": "calibration service"
+          },
+          {
+            "key": "image_4",
+            "type": "image",
+            "label": "image: services_1",
+            "group": "calibration service"
+          },
+          {
+            "key": "image_5",
+            "type": "image",
+            "label": "src: CalibrationServices",
+            "group": "Calibration Services"
+          },
+          {
+            "key": "alt_6",
+            "type": "text",
+            "label": "alt: CalibrationServices",
+            "group": "Calibration Services"
+          },
+          {
+            "key": "text_7",
+            "type": "text",
+            "label": "Calibration Services",
+            "group": "Calibration Services"
+          },
+          {
+            "key": "text_8",
+            "type": "richtext",
+            "label": "Regular calibration ensures your instruments perform at peak accuracy. We provide: Precise calibration service",
+            "group": "Calibration Services"
+          },
+          {
+            "key": "text_9",
+            "type": "text",
+            "label": "Get Service Quote",
+            "group": "Calibration Services"
+          },
+          {
+            "key": "button_link_1",
+            "type": "url",
+            "label": "Button 1 destination (empty opens quote form)",
+            "group": "calibration service"
+          }
+        ]
+      }
+    ]
+  },
+  "service-maintenance": {
+    "title": "service maintenance",
+    "sections": [
+      {
+        "key": "detail",
+        "label": "maintenance service",
+        "fields": [
+          {
+            "key": "title_1",
+            "type": "text",
+            "label": "title: Our Services / Repair and Maintenance Services",
+            "group": "maintenance service"
+          },
+          {
+            "key": "subtitle_2",
+            "type": "text",
+            "label": "subtitle: End-to-end support services to ensure your testing instruments perform at their best.",
+            "group": "maintenance service"
+          },
+          {
+            "key": "list_3",
+            "type": "repeater",
+            "label": "Items 3",
+            "group": "maintenance service"
+          },
+          {
+            "key": "image_4",
+            "type": "image",
+            "label": "image: services_1",
+            "group": "maintenance service"
+          },
+          {
+            "key": "image_5",
+            "type": "image",
+            "label": "src: Repair",
+            "group": "Repair and Maintenance Services"
+          },
+          {
+            "key": "alt_6",
+            "type": "text",
+            "label": "alt: Repair",
+            "group": "Repair and Maintenance Services"
+          },
+          {
+            "key": "text_7",
+            "type": "text",
+            "label": "Repair and Maintenance Services",
+            "group": "Repair and Maintenance Services"
+          },
+          {
+            "key": "text_8",
+            "type": "richtext",
+            "label": "Keep your instruments running smoothly with our repair and maintenance solutions: Expert diagnostics and repai",
+            "group": "Repair and Maintenance Services"
+          },
+          {
+            "key": "text_9",
+            "type": "text",
+            "label": "Get Service Quote",
+            "group": "Repair and Maintenance Services"
+          },
+          {
+            "key": "button_link_1",
+            "type": "url",
+            "label": "Button 1 destination (empty opens quote form)",
+            "group": "maintenance service"
+          }
+        ]
+      }
+    ]
+  },
+  "service-documentation": {
+    "title": "service documentation",
+    "sections": [
+      {
+        "key": "detail",
+        "label": "documentation service",
+        "fields": [
+          {
+            "key": "title_1",
+            "type": "text",
+            "label": "title: Our Services / Validation Documentation",
+            "group": "documentation service"
+          },
+          {
+            "key": "subtitle_2",
+            "type": "text",
+            "label": "subtitle: End-to-end support services to ensure your testing instruments perform at their best.",
+            "group": "documentation service"
+          },
+          {
+            "key": "list_3",
+            "type": "repeater",
+            "label": "Items 3",
+            "group": "documentation service"
+          },
+          {
+            "key": "image_4",
+            "type": "image",
+            "label": "image: services_1",
+            "group": "documentation service"
+          },
+          {
+            "key": "image_5",
+            "type": "image",
+            "label": "src: Validation",
+            "group": "Validation Documentation"
+          },
+          {
+            "key": "alt_6",
+            "type": "text",
+            "label": "alt: Validation",
+            "group": "Validation Documentation"
+          },
+          {
+            "key": "text_7",
+            "type": "text",
+            "label": "Validation Documentation",
+            "group": "Validation Documentation"
+          },
+          {
+            "key": "text_8",
+            "type": "richtext",
+            "label": "Ensuring compliance with regulatory standards is critical in industries like pharmaceuticals and manufacturing",
+            "group": "Validation Documentation"
+          },
+          {
+            "key": "text_9",
+            "type": "text",
+            "label": "Get Service Quote",
+            "group": "Validation Documentation"
+          },
+          {
+            "key": "button_link_1",
+            "type": "url",
+            "label": "Button 1 destination (empty opens quote form)",
+            "group": "documentation service"
+          }
+        ]
+      }
+    ]
+  },
+  "service-instrument": {
+    "title": "service instrument",
+    "sections": [
+      {
+        "key": "detail",
+        "label": "instrument service",
+        "fields": [
+          {
+            "key": "title_1",
+            "type": "text",
+            "label": "title: Our Services / Custom Instrument",
+            "group": "instrument service"
+          },
+          {
+            "key": "subtitle_2",
+            "type": "text",
+            "label": "subtitle: End-to-end support services to ensure your testing instruments perform at their best.",
+            "group": "instrument service"
+          },
+          {
+            "key": "list_3",
+            "type": "repeater",
+            "label": "Items 3",
+            "group": "instrument service"
+          },
+          {
+            "key": "image_4",
+            "type": "image",
+            "label": "image: services_1",
+            "group": "instrument service"
+          },
+          {
+            "key": "image_5",
+            "type": "image",
+            "label": "src: Custom",
+            "group": "Custom Instrument"
+          },
+          {
+            "key": "alt_6",
+            "type": "text",
+            "label": "alt: Custom",
+            "group": "Custom Instrument"
+          },
+          {
+            "key": "text_7",
+            "type": "text",
+            "label": "Custom Instrument",
+            "group": "Custom Instrument"
+          },
+          {
+            "key": "text_8",
+            "type": "richtext",
+            "label": "We provide tailored solutions to meet unique testing challenges, including: Designing custom testing instrumen",
+            "group": "Custom Instrument"
+          },
+          {
+            "key": "text_9",
+            "type": "text",
+            "label": "Get Service Quote",
+            "group": "Custom Instrument"
+          },
+          {
+            "key": "button_link_1",
+            "type": "url",
+            "label": "Button 1 destination (empty opens quote form)",
+            "group": "instrument service"
+          }
+        ]
+      }
+    ]
+  },
+  "service-support": {
+    "title": "service support",
+    "sections": [
+      {
+        "key": "detail",
+        "label": "support service",
+        "fields": [
+          {
+            "key": "title_1",
+            "type": "text",
+            "label": "title: Our Services / Technical Support",
+            "group": "support service"
+          },
+          {
+            "key": "subtitle_2",
+            "type": "text",
+            "label": "subtitle: End-to-end support services to ensure your testing instruments perform at their best.",
+            "group": "support service"
+          },
+          {
+            "key": "list_3",
+            "type": "repeater",
+            "label": "Items 3",
+            "group": "support service"
+          },
+          {
+            "key": "image_4",
+            "type": "image",
+            "label": "image: services_1",
+            "group": "support service"
+          },
+          {
+            "key": "image_5",
+            "type": "image",
+            "label": "src: TechnicalSupport",
+            "group": "Technical Support"
+          },
+          {
+            "key": "alt_6",
+            "type": "text",
+            "label": "alt: TechnicalSupport",
+            "group": "Technical Support"
+          },
+          {
+            "key": "text_7",
+            "type": "text",
+            "label": "Technical Support",
+            "group": "Technical Support"
+          },
+          {
+            "key": "text_8",
+            "type": "richtext",
+            "label": "Empower your team to make the best use of our instruments with our expert support and training services: Compr",
+            "group": "Technical Support"
+          },
+          {
+            "key": "text_9",
+            "type": "text",
+            "label": "Get Service Quote",
+            "group": "Technical Support"
+          },
+          {
+            "key": "button_link_1",
+            "type": "url",
+            "label": "Button 1 destination (empty opens quote form)",
+            "group": "support service"
+          }
+        ]
+      }
+    ]
+  },
+  "service-installation": {
+    "title": "service installation",
+    "sections": [
+      {
+        "key": "detail",
+        "label": "installation service",
+        "fields": [
+          {
+            "key": "title_1",
+            "type": "text",
+            "label": "title: Our Services / Installation and Setup Services",
+            "group": "installation service"
+          },
+          {
+            "key": "subtitle_2",
+            "type": "text",
+            "label": "subtitle: End-to-end support services to ensure your testing instruments perform at their best.",
+            "group": "installation service"
+          },
+          {
+            "key": "list_3",
+            "type": "repeater",
+            "label": "Items 3",
+            "group": "installation service"
+          },
+          {
+            "key": "image_4",
+            "type": "image",
+            "label": "image: services_1",
+            "group": "installation service"
+          },
+          {
+            "key": "image_5",
+            "type": "image",
+            "label": "src: Setup",
+            "group": "Installation and Setup Services"
+          },
+          {
+            "key": "alt_6",
+            "type": "text",
+            "label": "alt: Setup",
+            "group": "Installation and Setup Services"
+          },
+          {
+            "key": "text_7",
+            "type": "text",
+            "label": "Installation and Setup Services",
+            "group": "Installation and Setup Services"
+          },
+          {
+            "key": "text_8",
+            "type": "text",
+            "label": "Ensure seamless integration of your instruments with our installation services:",
+            "group": "Installation and Setup Services"
+          },
+          {
+            "key": "text_9",
+            "type": "richtext",
+            "label": "Professional installation and setup by our qualified technicians. Initial testing and verification to ensure o",
+            "group": "Installation and Setup Services"
+          },
+          {
+            "key": "text_10",
+            "type": "text",
+            "label": "Get Service Quote",
+            "group": "Installation and Setup Services"
+          },
+          {
+            "key": "button_link_1",
+            "type": "url",
+            "label": "Button 1 destination (empty opens quote form)",
+            "group": "installation service"
+          }
+        ]
+      }
+    ]
+  },
+  "service-consultation": {
+    "title": "service consultation",
+    "sections": [
+      {
+        "key": "detail",
+        "label": "consultation service",
+        "fields": [
+          {
+            "key": "title_1",
+            "type": "text",
+            "label": "title: Our Services / Consultation Services",
+            "group": "consultation service"
+          },
+          {
+            "key": "subtitle_2",
+            "type": "text",
+            "label": "subtitle: End-to-end support services to ensure your testing instruments perform at their best.",
+            "group": "consultation service"
+          },
+          {
+            "key": "list_3",
+            "type": "repeater",
+            "label": "Items 3",
+            "group": "consultation service"
+          },
+          {
+            "key": "image_4",
+            "type": "image",
+            "label": "image: services_1",
+            "group": "consultation service"
+          },
+          {
+            "key": "image_5",
+            "type": "image",
+            "label": "src: Consultation",
+            "group": "Consultation Services"
+          },
+          {
+            "key": "alt_6",
+            "type": "text",
+            "label": "alt: Consultation",
+            "group": "Consultation Services"
+          },
+          {
+            "key": "text_7",
+            "type": "text",
+            "label": "Consultation Services",
+            "group": "Consultation Services"
+          },
+          {
+            "key": "text_8",
+            "type": "richtext",
+            "label": "Our experts can guide you in choosing the best solutions for your testing and validation needs: Designing cust",
+            "group": "Consultation Services"
+          },
+          {
+            "key": "text_9",
+            "type": "text",
+            "label": "Get Service Quote",
+            "group": "Consultation Services"
+          },
+          {
+            "key": "button_link_1",
+            "type": "url",
+            "label": "Button 1 destination (empty opens quote form)",
+            "group": "consultation service"
+          }
+        ]
+      }
+    ]
+  }
+}

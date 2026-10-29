@@ -1,0 +1,401 @@
+{
+  "checkedDate": "2026-10-29",
+  "timezone": "Asia/Calcutta",
+  "origin": "https://pakmoo.in",
+  "method": "Read-only HTTP GET and server HTML heading extraction; no browser visual comparison or form submissions",
+  "firebaseProducts": {
+    "count": 85,
+    "method": "Read-only Firestore products query using existing project configuration; private raw snapshot excluded from Git"
+  },
+  "routes": [
+    {
+      "path": "/",
+      "status": 200,
+      "title": "PAKMOO Testing Instruments",
+      "headings": [
+        "Precision TestingInstrumentsfor Industry",
+        "Featured Instruments",
+        "Why Industries Choose Us",
+        "High Accuracy",
+        "Standards Compliance",
+        "Advanced Technology",
+        "Expert Support",
+        "Durable Equipment",
+        "Custom Solutions",
+        "Global Testing Standards",
+        "Our Services",
+        "Equipment Installation",
+        "Calibration Services",
+        "Technical Support",
+        "Custom Instrument Solutions",
+        "Training &amp; Consultation",
+        "Our Happy Clients",
+        "Find the Perfect TestingInstrument for Your Industry",
+        "From Our Blog"
+      ]
+    },
+    {
+      "path": "/about",
+      "status": 200,
+      "title": "PAKMOO Testing Instruments",
+      "headings": [
+        "About Us",
+        "Precision in Every Instrument",
+        "Our Mission",
+        "Our Vision",
+        "Company History",
+        "Manufacturing Expertise",
+        "10+ Years Experience",
+        "150+ Engineers",
+        "50,000 sq. ft. Facility",
+        "100% Quality Tested"
+      ]
+    },
+    {
+      "path": "/products",
+      "status": 200,
+      "title": "PAKMOO Testing Instruments",
+      "headings": [
+        "Our Products"
+      ]
+    },
+    {
+      "path": "/applications",
+      "status": 200,
+      "title": "PAKMOO Testing Instruments",
+      "headings": [
+        "Applications",
+        "Adhesive Testing Instruments",
+        "Aerospace Testing Instruments",
+        "Aluminium Composite Panel Testing Instruments",
+        "Automotive Material &amp; Parts Testing Instruments",
+        "Bathware Testing Instruments",
+        "Blow Molding Testing Instruments",
+        "Electronics And Electrical Testing Instruments",
+        "Color Measurement Testing Instruments",
+        "Environmental Chamber Testing Instruments",
+        "Cable Testing Instruments"
+      ]
+    },
+    {
+      "path": "/services",
+      "status": 200,
+      "title": "PAKMOO Testing Instruments",
+      "headings": [
+        "Our Services",
+        "Manufacturing of Testing Instruments",
+        "Calibration Services",
+        "Repair and Maintenance Services",
+        "Validation Documentation (IQ, OQ, PQ)",
+        "Custom Instrument Solutions",
+        "Technical Support and Training",
+        "Installation and Setup Services",
+        "Consultation Services"
+      ]
+    },
+    {
+      "path": "/testing-standards",
+      "status": 200,
+      "title": "PAKMOO Testing Instruments",
+      "headings": [
+        "Testing Standards"
+      ]
+    },
+    {
+      "path": "/clients",
+      "status": 200,
+      "title": "PAKMOO Testing Instruments",
+      "headings": [
+        "Our Clients",
+        "Our Valued Clients",
+        "Industries Served",
+        "What Our Clients Say"
+      ]
+    },
+    {
+      "path": "/why-choose-us",
+      "status": 200,
+      "title": "PAKMOO Testing Instruments",
+      "headings": [
+        "Why Choose Us",
+        "High Accuracy",
+        "Standards Compliance",
+        "Advanced Technology",
+        "Expert Support",
+        "Durable Equipment",
+        "Custom Solutions",
+        "Our Quality Process",
+        "Design Review",
+        "Component Sourcing",
+        "Manufacturing",
+        "Testing &amp; Calibration",
+        "Final Inspection",
+        "Manufacturing Scale"
+      ]
+    },
+    {
+      "path": "/blog",
+      "status": 200,
+      "title": "Blog &amp; Insights | PAKMOO Testing Instruments",
+      "headings": [
+        "Blog &amp; Insights"
+      ]
+    },
+    {
+      "path": "/contact",
+      "status": 200,
+      "title": "PAKMOO Testing Instruments",
+      "headings": [
+        "Contact Us",
+        "Contact Information",
+        "Send Us a Message"
+      ]
+    },
+    {
+      "path": "/privacy-policy",
+      "status": 404,
+      "title": "PAKMOO Testing Instruments",
+      "headings": [
+        "404"
+      ]
+    },
+    {
+      "path": "/terms-of-service",
+      "status": 404,
+      "title": "PAKMOO Testing Instruments",
+      "headings": [
+        "404"
+      ]
+    },
+    {
+      "path": "/privacy",
+      "status": 404,
+      "title": "PAKMOO Testing Instruments",
+      "headings": [
+        "404"
+      ]
+    },
+    {
+      "path": "/terms",
+      "status": 404,
+      "title": "PAKMOO Testing Instruments",
+      "headings": [
+        "404"
+      ]
+    },
+    {
+      "path": "/services/manufacture",
+      "status": 200,
+      "title": "PAKMOO Testing Instruments",
+      "headings": [
+        "Our Services / Manufacture",
+        "Manufacturing of Testing Instruments"
+      ]
+    },
+    {
+      "path": "/services/calibration",
+      "status": 200,
+      "title": "PAKMOO Testing Instruments",
+      "headings": [
+        "Our Services / Calibration Services",
+        "Calibration Services"
+      ]
+    },
+    {
+      "path": "/services/maintenance",
+      "status": 200,
+      "title": "PAKMOO Testing Instruments",
+      "headings": [
+        "Our Services / Repair and Maintenance Services",
+        "Repair and Maintenance Services"
+      ]
+    },
+    {
+      "path": "/services/documentation",
+      "status": 200,
+      "title": "PAKMOO Testing Instruments",
+      "headings": [
+        "Our Services / Validation Documentation",
+        "Validation Documentation"
+      ]
+    },
+    {
+      "path": "/services/instrument",
+      "status": 200,
+      "title": "PAKMOO Testing Instruments",
+      "headings": [
+        "Our Services / Custom Instrument",
+        "Custom Instrument"
+      ]
+    },
+    {
+      "path": "/services/support",
+      "status": 200,
+      "title": "PAKMOO Testing Instruments",
+      "headings": [
+        "Our Services / Technical Support",
+        "Technical Support"
+      ]
+    },
+    {
+      "path": "/services/installation",
+      "status": 200,
+      "title": "PAKMOO Testing Instruments",
+      "headings": [
+        "Our Services / Installation and Setup Services",
+        "Installation and Setup Services"
+      ]
+    },
+    {
+      "path": "/services/consultation",
+      "status": 200,
+      "title": "PAKMOO Testing Instruments",
+      "headings": [
+        "Our Services / Consultation Services",
+        "Consultation Services"
+      ]
+    },
+    {
+      "path": "/applications/adhesive-testing-instruments",
+      "status": 200,
+      "title": "PAKMOO Testing Instruments",
+      "headings": [
+        "Adhesive Testing Instruments",
+        "Products for Adhesive Testing Instruments",
+        "Specialized Solutions for Adhesive Testing Instruments"
+      ]
+    },
+    {
+      "path": "/applications/aerospace-testing-instruments",
+      "status": 200,
+      "title": "PAKMOO Testing Instruments",
+      "headings": [
+        "Aerospace Testing Instruments",
+        "Products for Aerospace Testing Instruments",
+        "Specialized Solutions for Aerospace Testing Instruments"
+      ]
+    },
+    {
+      "path": "/applications/aluminium-composite-panel-testing-instruments",
+      "status": 200,
+      "title": "PAKMOO Testing Instruments",
+      "headings": [
+        "Aluminium Composite Panel Testing Instruments",
+        "Products for Aluminium Composite Panel Testing Instruments",
+        "Specialized Solutions for Aluminium Composite Panel Testing Instruments"
+      ]
+    },
+    {
+      "path": "/applications/automotive-material-parts-testing-instruments",
+      "status": 200,
+      "title": "PAKMOO Testing Instruments",
+      "headings": [
+        "Automotive Material &amp; Parts Testing Instruments",
+        "Products for Automotive Material &amp; Parts Testing Instruments",
+        "Specialized Solutions for Automotive Material &amp; Parts Testing Instruments"
+      ]
+    },
+    {
+      "path": "/applications/bathware-testing-instruments",
+      "status": 200,
+      "title": "PAKMOO Testing Instruments",
+      "headings": [
+        "Bathware Testing Instruments",
+        "Products for Bathware Testing Instruments",
+        "Specialized Solutions for Bathware Testing Instruments"
+      ]
+    },
+    {
+      "path": "/applications/blow-molding-testing-instruments",
+      "status": 200,
+      "title": "PAKMOO Testing Instruments",
+      "headings": [
+        "Blow Molding Testing Instruments",
+        "Products for Blow Molding Testing Instruments",
+        "Specialized Solutions for Blow Molding Testing Instruments"
+      ]
+    },
+    {
+      "path": "/applications/electronics-and-electrical-testing-instruments",
+      "status": 200,
+      "title": "PAKMOO Testing Instruments",
+      "headings": [
+        "Electronics And Electrical Testing Instruments",
+        "Products for Electronics And Electrical Testing Instruments",
+        "Specialized Solutions for Electronics And Electrical Testing Instruments"
+      ]
+    },
+    {
+      "path": "/applications/color-measurement-testing-instruments",
+      "status": 200,
+      "title": "PAKMOO Testing Instruments",
+      "headings": [
+        "Color Measurement Testing Instruments",
+        "Products for Color Measurement Testing Instruments",
+        "Specialized Solutions for Color Measurement Testing Instruments"
+      ]
+    },
+    {
+      "path": "/applications/environmental-chamber-testing-instruments",
+      "status": 200,
+      "title": "PAKMOO Testing Instruments",
+      "headings": [
+        "Environmental Chamber Testing Instruments",
+        "Products for Environmental Chamber Testing Instruments",
+        "Specialized Solutions for Environmental Chamber Testing Instruments"
+      ]
+    },
+    {
+      "path": "/applications/cable-testing-instruments",
+      "status": 200,
+      "title": "PAKMOO Testing Instruments",
+      "headings": [
+        "Cable Testing Instruments",
+        "Products for Cable Testing Instruments",
+        "Specialized Solutions for Cable Testing Instruments"
+      ]
+    },
+    {
+      "path": "/products/pinhole-tester",
+      "status": 200,
+      "title": "PAKMOO Testing Instruments",
+      "headings": [
+        "",
+        "Key Features",
+        "Maintenance Tips",
+        "Applications",
+        "Interested in this instrument?",
+        "Conclusion",
+        "Frequently Asked Questions"
+      ]
+    },
+    {
+      "path": "/products/salt-spray-chamber-hmi-450l",
+      "status": 200,
+      "title": "PAKMOO Testing Instruments",
+      "headings": [
+        "",
+        "Key Features",
+        "Maintenance Tips",
+        "Applications",
+        "Interested in this instrument?",
+        "Conclusion",
+        "Frequently Asked Questions"
+      ]
+    },
+    {
+      "path": "/products/hardness-tester-shore-d",
+      "status": 200,
+      "title": "PAKMOO Testing Instruments",
+      "headings": [
+        "",
+        "Key Features",
+        "Maintenance Tips",
+        "Applications",
+        "Interested in this instrument?",
+        "Conclusion",
+        "Frequently Asked Questions"
+      ]
+    }
+  ]
+}

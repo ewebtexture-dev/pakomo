@@ -7,9 +7,10 @@ export function assertSameOrigin(request) {
   const expected = process.env.SITE_URL ? new URL(process.env.SITE_URL).origin : new URL(request.url).origin;
   if (!origin || origin !== expected) throw new HttpError(403, 'This request must come from this website.');
 }
-export async function requireAdmin(request) {
+export async function requireAdmin(request,roles=null) {
   const admin = await currentAdmin();
   if (!admin) throw new HttpError(401, 'Please sign in to continue.');
+  if(roles&&!roles.includes(admin.role))throw new HttpError(403,'This action requires a Super Admin.');
   if (!['GET','HEAD'].includes(request.method)) assertSameOrigin(request);
   return admin;
 }
@@ -28,6 +29,7 @@ export async function readBody(request, maxBytes) {
   return Buffer.concat(chunks);
 }
 export function apiError(error) {
+  if(error?.name==='ZodError')return NextResponse.json({error:error.issues.map(issue=>issue.path.join('.')+': '+issue.message).join('; ')},{status:422});
   if (error instanceof HttpError) return NextResponse.json({error:error.message},{status:error.status});
   console.error('Backend request failed:', error.message);
   return NextResponse.json({error:'The request could not be completed. Please try again.'},{status:500});

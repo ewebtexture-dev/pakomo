@@ -1,25 +1,32 @@
 'use client';
 
+
+/* cms:2910 */
+import {useCmsCollection,useCmsBlock,cmsArray,cmsRender} from '@/components/cms/ContentProvider';
 import React from 'react';
 import { useQuote } from '@/lib/QuoteContext';
 import PageHeader from '@/components/shared/PageHeader';
 import { Button } from '@/components/ui/button';
-import { motion } from 'framer-motion';
+
 import { ArrowRight } from 'lucide-react';
 import Setup from '@assets/Services/Setup.jpg'
 import services_1 from '@assets/Unsplash/services-1.jpg';
 
 
 export default function ServicesPage() {
+  const cms=useCmsBlock("service-installation","detail");
+ const service=useCmsCollection("service").find(s=>s._slug==="installation")||{};
+  
+
     const { openQuote } = useQuote();
 
     return (
         <>
             <PageHeader
-                title="Our Services / Installation and Setup Services"
-                subtitle="End-to-end support services to ensure your testing instruments perform at their best."
-                breadcrumbs={[{ label: 'Services' }]}
-                image={services_1?.src}
+                title={cms.title_1??"Our Services / Installation and Setup Services"}
+                subtitle={cms.subtitle_2??"End-to-end support services to ensure your testing instruments perform at their best."}
+                breadcrumbs={cmsArray([{ label: 'Services' }],cms.list_3)}
+                image={cms.image_4??(services_1?.src)}
             />
 
             <section className="py-12 sm:py-20">
@@ -28,8 +35,8 @@ export default function ServicesPage() {
 
                         <div className="relative w-full md:w-[45%] h-[320px] overflow-hidden rounded-xl">
                             <img
-                                src={Setup?.src}
-                                alt="Setup"
+                                src={cms.image_5??(Setup?.src)}
+                                alt={cms.alt_6??"Setup"}
                                 className="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
                             />
                             <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
@@ -37,22 +44,18 @@ export default function ServicesPage() {
 
                         <div className="w-full md:w-[45%]">
                             <h3 className="text-2xl font-bold text-foreground">
-                                Installation and Setup Services
-                            </h3>
+                                {cmsRender(service.detail_title??cms.text_7??"Installation and Setup Services")}</h3>
                             <p className="text-sm text-muted-foreground mt-3 leading-relaxed">
-                                Ensure seamless integration of your instruments with our installation services: <br />
+                                {cmsRender(service.body??cms.text_8??"Ensure seamless integration of your instruments with our installation services: ")}<br />
 
-                                Professional installation and setup by our qualified technicians.
-                                Initial testing and verification to ensure optimal performance.
-                                Training on operational procedures for smooth handover.
-                            </p>
+                                {cmsRender(service.body_continued??cms.text_9??"Professional installation and setup by our qualified technicians. Initial testing and verification to ensure optimal performance. Training on operational procedures for smooth handover.")}</p>
                         </div>
 
                     </div>
 
                     <div className="mt-12 text-center">
-                        <Button onClick={openQuote} className="bg-primary text-primary-foreground h-11 px-8 text-sm font-semibold gap-2">
-                            Get Service Quote <ArrowRight className="w-4 h-4" />
+                        <Button onClick={cms.button_link_1?()=>window.location.assign(cms.button_link_1):openQuote} className="bg-primary text-primary-foreground h-11 px-8 text-sm font-semibold gap-2">
+                            {cmsRender(cms.text_10??"Get Service Quote ")}<ArrowRight className="w-4 h-4" />
                         </Button>
                     </div>
                 </div>

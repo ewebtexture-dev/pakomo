@@ -1,4 +1,5 @@
 'use client';
+import SafeImage from '@/components/shared/SafeImage';
 
 
 /* cms:2910 */
@@ -21,7 +22,7 @@ export default function CTABanner() {
   return (
     <section className="relative py-20 sm:py-28 overflow-hidden">
       <div className="absolute inset-0">
-        <img
+        <SafeImage
           src={cms.image_1??(testing_standards_1?.src)}
           alt={cms.alt_2??"Quality testing laboratory"}
           className="w-full h-full object-cover"

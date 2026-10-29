@@ -1,4 +1,5 @@
 "use client";
+import SafeImage from '@/components/shared/SafeImage';
 
 
 /* cms:2910 */
@@ -9,7 +10,7 @@ import {ArrowLeft,CheckCircle2,ChevronRight,Home,FileText,Phone,Wrench} from "lu
 import { Button } from "@/components/ui/button";
 import {motion} from "framer-motion";
 import Link from "next/link";
-import FAQSection from "./FAQ";
+
 import products from "../products";
 
 
@@ -51,7 +52,7 @@ export default function ProductDetail({ params }) {
     <>
       <section className="relative bg-[#0a0f1e] pt-24 pb-16 overflow-hidden">
         <div className="absolute inset-0">
-          <img
+          <SafeImage
             src={product?.imageUrl}
             alt={product.name}
             className="w-full h-full object-cover opacity-15"
@@ -108,7 +109,7 @@ export default function ProductDetail({ params }) {
                 animate={{ opacity: 1 }}
                 className="rounded-2xl overflow-hidden border"
               >
-                <img
+                <SafeImage
                   src={galleryImage||product.imageUrl}
                   alt={product.name}
                   // className="w-full aspect-[4/3] object-cover"
@@ -117,7 +118,7 @@ export default function ProductDetail({ params }) {
                 />
               </motion.div>
 
-              {product.gallery?.length>0&&<div className="flex gap-2 flex-wrap">{product.gallery.map((entry,index)=>{const image=typeof entry==='string'?entry:entry.image?.src||entry.image;return <button key={index} type="button" onClick={()=>setGalleryImage(image)}><img src={image} alt={entry.alt||product.name} className="h-16 w-20 object-contain border rounded-lg"/></button>;})}</div>}
+              {product.gallery?.length>0&&<div className="flex gap-2 flex-wrap">{product.gallery.map((entry,index)=>{const image=typeof entry==='string'?entry:entry.image?.src||entry.image;return <button key={index} type="button" onClick={()=>setGalleryImage(image)}><SafeImage src={image} alt={entry.alt||product.name} className="h-16 w-20 object-contain border rounded-lg"/></button>;})}</div>}
               {product.brochure&&<a href={product.brochure} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-sm font-semibold text-primary"><FileText className="w-4 h-4"/>Download brochure (PDF)</a>}
               {/* Specs */}
               <div className="rounded-2xl border bg-card overflow-hidden">
@@ -213,7 +214,6 @@ export default function ProductDetail({ params }) {
         </div>
       </section>
 
-      <FAQSection faqs={product.faqs} />
     </>
   );
 }

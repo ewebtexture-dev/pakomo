@@ -1,4 +1,5 @@
 'use client';
+import SafeImage from '@/components/shared/SafeImage';
 
 
 /* cms:2910 */
@@ -34,7 +35,7 @@ export default function ServicesPage() {
                     <div className="flex flex-col md:flex-row md:justify-evenly items-center gap-6 rounded-2xl border border-border overflow-hidden bg-card p-4">
 
                         <div className="relative w-full md:w-[45%] h-[320px] overflow-hidden rounded-xl">
-                            <img
+                            <SafeImage
                                 src={cms.image_5??(TechnicalSupport?.src)}
                                 alt={cms.alt_6??"TechnicalSupport"}
                                 className="w-full h-full object-cover hover:scale-105 transition-transform duration-500"

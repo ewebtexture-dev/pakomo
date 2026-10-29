@@ -1,8 +1,10 @@
 'use client';
+import SafeImage from '@/components/shared/SafeImage';
 
 
 /* cms:2910 */
 import {useSiteSettings,useCmsBlock,cmsArray,cmsRender} from '@/components/cms/ContentProvider';
+import SocialLinks from '@/components/shared/SocialLinks';
 import React, { useState, useEffect } from 'react';
 import dynamic from 'next/dynamic';
 import PageHeader from '@/components/shared/PageHeader';
@@ -66,7 +68,7 @@ export default function ContactPage() {
       />
 
       <div className="relative h-48 sm:h-64 overflow-hidden">
-        <img
+        <SafeImage
           src={cms.image_4??(clients_1?.src)}
           alt={cms.alt_5??"Our office"}
           className="w-full h-full object-cover"
@@ -174,7 +176,7 @@ export default function ContactPage() {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mx-3 mb-5">
 
         <div className="hidden lg:block rounded-xl overflow-hidden h-[450px]">
-          <img
+          <SafeImage
             src={cms.image_27??(contact_1?.src)}
             alt={cms.alt_28??"Pakmoo team"}
             className="w-full h-full object-cover"
@@ -195,6 +197,7 @@ export default function ContactPage() {
         </div>
 
       </div>
+      <div className="max-w-7xl mx-auto px-6"><SocialLinks/></div>
     </>
   );
 }

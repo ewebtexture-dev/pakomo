@@ -1,4 +1,5 @@
 'use client';
+import SafeImage from '@/components/shared/SafeImage';
 
 
 /* cms:2910 */
@@ -47,7 +48,7 @@ export default function AboutPage() {
         image={cms.image_4??(About?.src)}
       />
 
-      <section className="py-16 sm:py-24">
+      <section className="py-16 sm:py-24 overflow-x-clip">
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             <div>
@@ -61,7 +62,7 @@ export default function AboutPage() {
                 {cmsRender(cms.text_9??"From our state-of-the-art manufacturing facility, we design and produce 200+ testing instruments that are trusted by 445+ industries across India and internationally.")}</p>
             </div>
             <div className="relative">
-              <img
+              <SafeImage
                 src={cms.image_10??(AboutUsBanner?.src)}
                 alt={cms.alt_11??"Pakmoo manufacturing facility"}
                 className="w-full aspect-[4/3] object-cover rounded-2xl"
@@ -96,7 +97,7 @@ export default function AboutPage() {
         </div>
       </section>
 
-      <section className="py-16 sm:py-24">
+      <section className="py-16 sm:py-24 overflow-x-clip">
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
           <span className="text-[11px] font-mono uppercase tracking-widest text-primary mb-2 block">{cmsRender(cms.text_14??"Our Journey")}</span>
           <h2 className="text-2xl sm:text-3xl font-bold text-foreground mb-10">{cmsRender(cms.text_15??"Company History")}</h2>

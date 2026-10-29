@@ -1,3 +1,4 @@
+import GallerySection from '@/components/gallery/GallerySection';
 import React from 'react';
 import HeroSection from '@/components/home/HeroSection';
 import StatsSection from '@/components/home/StatsSection';
@@ -21,7 +22,7 @@ export default function Page() {
       {/* <ApplicationsPreview /> */}
       <ClientsPreview />
       <CTABanner />
-      <BlogPreview />
+      <GallerySection /><BlogPreview />
     </>
   );
 }

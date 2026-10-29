@@ -1,4 +1,5 @@
 'use client';
+import SafeImage from '@/components/shared/SafeImage';
 
 
 /* cms:2910 */
@@ -24,7 +25,7 @@ export default function HeroSection() {
     <section className="relative min-h-screen flex items-center overflow-hidden bg-[#0a0f1e]">
       {/* Background Image with gradient overlay */}
       <div className="absolute inset-0">
-        <img
+        <SafeImage
           src={cms.image_1??(why_choose_us_1?.src)}
           alt={cms.alt_2??"Industrial testing laboratory"}
           className="w-full h-full object-cover opacity-30"

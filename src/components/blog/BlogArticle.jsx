@@ -1,12 +1,16 @@
 'use client'
+import SafeImage from '@/components/shared/SafeImage';
 
 /* cms:2910 */
 import {useCmsBlock,cmsArray,cmsRender} from '@/components/cms/ContentProvider';
+import RichContent from '@/components/shared/RichContent';
+import FaqSection from '@/components/shared/FaqSection';
+import SocialLinks from '@/components/shared/SocialLinks';
 import React from 'react';
 import { ArrowLeft, Calendar, User, Clock, Home, ChevronRight } from 'lucide-react';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
-import styles from './BlogArticle.module.css';
+
 
 
 
@@ -28,7 +32,7 @@ export default function BlogArticle({ post, blogPosts }) {
     const getDate = (timestamp) => {
         const date = new Date(timestamp.seconds * 1000);
         const formattedDate = date.toLocaleDateString("en-US", {
-            month: "long",
+            month: "long",day:"numeric",
             year: "numeric",
         });
         return formattedDate;
@@ -52,7 +56,7 @@ export default function BlogArticle({ post, blogPosts }) {
             {/* Hero */}
             <section className="relative bg-[#0a0f1e] pt-24 pb-16 overflow-hidden">
                 <div className="absolute inset-0">
-                    <img src={post.imageUrl} alt={post.imageAlt || post.title} className="w-full h-full object-cover opacity-15" />
+                    <SafeImage src={post.imageUrl} alt={post.imageAlt || post.title} className="w-full h-full object-cover opacity-15" />
                     <div className="absolute inset-0 bg-gradient-to-br from-[#0a0f1e]/90 via-[#0a0f1e]/75 to-blue-950/60" />
                     <div className="absolute inset-0" style={{ backgroundImage: 'radial-gradient(rgba(59,130,246,0.05) 1px, transparent 1px)', backgroundSize: '28px 28px' }} />
                 </div>
@@ -76,7 +80,7 @@ export default function BlogArticle({ post, blogPosts }) {
                 </div>
             </section>
 
-            {/* Article Body */}
+            <div className="max-w-6xl mx-auto px-6"><div className="flex flex-wrap gap-3 mt-5">{post.categoryProfiles?.map(c=><Link className="text-primary text-sm" key={c.key} href={'/blog/category/'+c.slug}>{c.name}</Link>)}</div><SocialLinks share title={post.title}/></div>{/* Article Body */}
             <section className="py-12 sm:py-16">
                 <div className="max-w-6xl mx-auto px-4 sm:px-6">
                     <div className="flex flex-col lg:flex-row gap-10">
@@ -88,18 +92,16 @@ export default function BlogArticle({ post, blogPosts }) {
                             className="flex-1 min-w-0"
                         >
                             {/* Featured Image */}
-                            <div className="rounded-2xl overflow-hidden border border-border mb-8">
-                                <img src={post.imageUrl} alt={post.imageAlt || post.title} className="w-full aspect-[16/7] object-cover" />
-                            </div>
+                            <figure className={'rounded-2xl overflow-hidden border border-border mb-8 image-size-'+(post.featured_size||'full')+' image-align-'+(post.featured_align||'center')}>
+                                <SafeImage src={post.imageUrl} alt={post.imageAlt || post.title} className="w-full aspect-[16/9] object-cover" />{post.featured_caption&&<figcaption className="text-sm text-muted-foreground p-3">{post.featured_caption}</figcaption>}
+                            </figure>
 
                             {/* Markdown Content */}
                             {/* <div className="prose prose-slate max-w-none prose-headings:font-bold prose-headings:text-foreground prose-p:text-muted-foreground prose-p:leading-relaxed prose-li:text-muted-foreground prose-strong:text-foreground prose-table:text-sm prose-th:text-foreground prose-td:text-muted-foreground prose-blockquote:text-muted-foreground prose-blockquote:border-primary prose-code:text-primary prose-code:bg-secondary prose-code:px-1 prose-code:rounded">
                                 <ReactMarkdown>{post.description}</ReactMarkdown>
                             </div> */}
 
-                            <div className={styles.content + " prose prose-slate max-w-none prose-headings:font-bold prose-headings:text-foreground prose-p:text-muted-foreground prose-p:leading-relaxed prose-li:text-muted-foreground prose-strong:text-foreground prose-table:text-sm prose-th:text-foreground prose-td:text-muted-foreground prose-blockquote:text-muted-foreground prose-blockquote:border-primary prose-code:text-primary prose-code:bg-secondary prose-code:px-1 prose-code:rounded"}
-                                dangerouslySetInnerHTML={{ __html: post.description }}
-                            />
+                            <RichContent html={post.description}/>
 
                             {/* Back Link */}
                             <div className="mt-10 pt-8 border-t border-border">
@@ -126,7 +128,7 @@ export default function BlogArticle({ post, blogPosts }) {
                                                 href={`/blog/${related.id}`}
                                                 className="group block rounded-xl border border-border bg-card hover:shadow-md hover:-translate-y-0.5 transition-all duration-200 overflow-hidden"
                                             >
-                                                <img src={related.imageUrl} alt={related.title} className="w-full aspect-[16/9] object-cover group-hover:scale-105 transition-transform duration-300" />
+                                                <SafeImage src={related.imageUrl} alt={related.title} className="w-full aspect-[16/9] object-cover group-hover:scale-105 transition-transform duration-300" />
                                                 <div className="p-3">
                                                     <h4 className="text-xs font-semibold text-foreground group-hover:text-primary transition-colors leading-snug line-clamp-2">{related.title}</h4>
                                                     <span className="text-[10px] text-muted-foreground mt-1 block">{related.readTime || "8 Min "} {cmsRender(cms.text_13??" read")}</span>
@@ -140,6 +142,7 @@ export default function BlogArticle({ post, blogPosts }) {
                     </div>
                 </div>
             </section>
+            <FaqSection key={post.slug} value={post.faqSection}/>
         </>
     );
 }

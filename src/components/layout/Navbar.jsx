@@ -1,4 +1,5 @@
 'use client';
+import SafeImage from '@/components/shared/SafeImage';
 
 
 /* cms:2910 */
@@ -47,7 +48,7 @@ export default function Navbar({ onRequestQuote }) {
           {/* Logo */}
           <Link href={cms.href_1??"/"} className="flex items-center gap-3 shrink-0">
             <div className="w-10 h-10 bg-gradient-to-br from-primary to-blue-700 rounded-xl flex items-center justify-center shadow-lg shadow-primary/40">
-              <img
+              <SafeImage
                 src={cms.image_2??(Logo?.src)}
                 alt={cms.alt_3??"Pakmoo team"}
                 height={100}

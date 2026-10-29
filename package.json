@@ -1,7 +1,7 @@
 {
   "name": "laboratory-app",
   "private": true,
-  "version": "1.0.2910",
+  "version": "1.0.291002",
   "type": "module",
   "engines": {
     "node": ">=24 <25"

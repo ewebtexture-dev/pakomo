@@ -1,3 +1,5 @@
+import fs from 'node:fs';
+import path from 'node:path';
 export function migrateCms(db) {
   db.exec(`PRAGMA foreign_keys=ON;
     CREATE TABLE IF NOT EXISTS schema_migrations(version TEXT PRIMARY KEY,applied_at TEXT NOT NULL);
@@ -26,6 +28,7 @@ export function migrateCms(db) {
     CREATE TABLE IF NOT EXISTS post_publications(post_id TEXT PRIMARY KEY REFERENCES posts(id) ON DELETE CASCADE,slug TEXT NOT NULL UNIQUE,payload_json TEXT NOT NULL);
     CREATE TABLE IF NOT EXISTS post_extras(post_id TEXT PRIMARY KEY REFERENCES posts(id) ON DELETE CASCADE,draft_json TEXT NOT NULL DEFAULT '{}',published_json TEXT NOT NULL DEFAULT '{}');
   `);
+  if(!db.prepare("SELECT version FROM schema_migrations WHERE version='2910:02'").get()){const location=db.prepare('PRAGMA database_list').all().find(row=>row.name==='main')?.file;if(location){const backup=path.join(path.dirname(location),'pre-2910-02-backup.sqlite');if(!fs.existsSync(backup))db.exec("VACUUM INTO '"+backup.replaceAll("'","''")+"'");}db.prepare('INSERT INTO schema_migrations VALUES(?,?)').run('2910:02',new Date().toISOString());}
   const contentColumns=new Set(db.prepare('PRAGMA table_info(content_records)').all().map(c=>c.name));
   for(const [column,type]of [['published_title','TEXT'],['published_updated_at','TEXT']])if(!contentColumns.has(column)){db.exec('ALTER TABLE content_records ADD COLUMN '+column+' '+type);db.exec('UPDATE content_records SET '+column+'='+(column==='published_title'?'title':'updated_at')+' WHERE published_json IS NOT NULL');}
   if(!contentColumns.has('draft_enabled')){db.exec('ALTER TABLE content_records ADD COLUMN draft_enabled INTEGER NOT NULL DEFAULT 1');db.exec('UPDATE content_records SET draft_enabled=enabled');}

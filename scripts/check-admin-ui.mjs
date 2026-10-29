@@ -16,7 +16,7 @@ async function file(selector){const {root}=await call('DOM.getDocument');const {
 async function api(path,options={}){return evaluate(`fetch(${JSON.stringify(path)},${JSON.stringify(options)}).then(async response=>{const data=await response.json();if(!response.ok)throw Error(data.error);return data;})`);}
 const credentials=fs.readFileSync('.data/local-admin.txt','utf8');
 const username=credentials.match(/Username: (.+)/)[1].trim(),password=credentials.match(/Password: (.+)/)[1].trim();
-let postId='',authorId='';const uploaded=[];
+let postId='',authorId='';const uploaded=[];const consoleErrors=[];socket.addEventListener('message',e=>{const m=JSON.parse(e.data);if(m.method==='Runtime.consoleAPICalled'&&m.params.type==='error')consoleErrors.push(m.params.args.map(a=>a.value||a.description).join(' '));});
 try {
  await call('Page.enable');await call('Runtime.enable');await call('Network.enable');await call('Network.setCacheDisabled',{cacheDisabled:true});await call('Emulation.setDeviceMetricsOverride',{width:1440,height:1000,deviceScaleFactor:1,mobile:false});
  await navigate('/login');await until('Boolean(document.querySelector("form"))');
@@ -38,7 +38,7 @@ try {
  await evaluate('document.querySelector(".ql-image").click()');await until('Boolean(document.querySelector("dialog[open]"))');
  await file('#article-image-file');await fill('#article-image-alt','Inline laboratory image');await fill('#article-image-caption','Uploaded inside the rich text editor.');await clickText('Upload & insert image');
  await until('!document.querySelector("dialog[open]") && Boolean(document.querySelector(".ql-editor img"))');
- const embedded=await evaluate('({src:document.querySelector(".ql-editor img").getAttribute("src"),alt:document.querySelector(".ql-editor img").alt})');uploaded.push(embedded.src);assert.equal(embedded.alt,'Inline laboratory image');
+ const embedded=await evaluate('({src:document.querySelector(".ql-editor img").getAttribute("src"),alt:document.querySelector(".ql-editor img").alt})');uploaded.push(embedded.src);assert.equal(embedded.alt,'Inline laboratory image');await evaluate('document.querySelector(".ql-editor img").click();window.prompt=(()=>{const answers=["small","right","Edited inline caption"];return()=>answers.shift();})()');await clickText('Format selected image');assert.equal(await evaluate('document.querySelector(".ql-editor img").getAttribute("data-size")'),'small');assert.equal(await evaluate('document.querySelector(".ql-editor img").getAttribute("data-align")'),'right');
  await file('#featured-image-file');await until('document.querySelector("#image_url").value.startsWith("/media/")');uploaded.push(await evaluate('document.querySelector("#image_url").value'));
  await fill('#image_alt','Featured laboratory instrument');await fill('#meta_title','Testing SEO title');await fill('#meta_description','Search description created in the SEO form.');await fill('#focus_keyword','testing');await fill('#meta_keywords','testing, laboratory');
  await evaluate('document.querySelector("details").open=true');await fill('#og_title','Custom social title');await fill('#og_description','Custom social description');
@@ -47,7 +47,7 @@ try {
  assert.equal(await evaluate('document.querySelector(".ql-editor img").alt'),'Inline laboratory image');
  const defaultAuthor=(await api('/api/admin/authors')).authors.find(author=>author.active && author.id!==authorId);
  await fill('#author_id',defaultAuthor.id);await fill('#meta_title','Updated rich text SEO title');await evaluate('document.querySelector("form").requestSubmit()');await until('document.body.innerText.includes("Article published.")');
- const saved=(await api('/api/admin/posts/'+postId)).post;assert.equal(saved.author_id,defaultAuthor.id);assert.match(saved.content,/<strong>bold<\/strong>/);assert.match(saved.content,/alt="Inline laboratory image"/);assert.equal(saved.og_title,'Custom social title');
+ const saved=(await api('/api/admin/posts/'+postId)).post;assert.equal(saved.author_id,defaultAuthor.id);assert.match(saved.content,/<strong>bold<\/strong>/);assert.match(saved.content,/alt="Inline laboratory image"/);assert.match(saved.content,/data-size="small"/);assert.match(saved.content,/data-caption="Edited inline caption"/);assert.equal(saved.og_title,'Custom social title');
  fs.mkdirSync('review',{recursive:true});await evaluate('window.scrollTo(0,0)');await wait(300);const admin=await call('Page.captureScreenshot',{format:'png'});fs.writeFileSync('review/rich-editor.png',Buffer.from(admin.data,'base64'));
  await navigate('/blog/'+slug);await until('document.querySelector("h1")?.textContent === "Testing rich text workflow"');
  assert.equal(await evaluate('document.title'),'Updated rich text SEO title');assert.equal(await evaluate('Array.from(document.querySelectorAll("meta")).find(meta=>meta.getAttribute("property")==="og:title").content'),'Custom social title');
@@ -57,7 +57,7 @@ try {
  await evaluate('document.querySelector(".ql-image").click()');await until('Boolean(document.querySelector("dialog[open]"))');assert.equal(await evaluate('document.querySelector("dialog").getBoundingClientRect().width <= innerWidth'),true);await evaluate('document.querySelector("dialog").close()');
  await api('/api/admin/posts/'+postId,{method:'DELETE'});postId='';await api('/api/admin/authors/'+authorId,{method:'DELETE'});authorId='';
  await call('Emulation.setDeviceMetricsOverride',{width:1440,height:1000,deviceScaleFactor:1,mobile:false});await navigate('/admin/authors');await until('document.body.innerText.includes("PAKMOO")');
- console.log('PASS: author creation/edit/photo, visual editor typing, HTML mode, inline image upload/alt/caption, add/edit author assignment, SEO/social fields, draft/publish, public rendering, mobile layout. Test records removed.');
+ assert.deepEqual(consoleErrors,[]);console.log('PASS: author creation/edit/photo, visual editor typing, HTML mode, inline image upload/alt/caption, add/edit author assignment, SEO/social fields, draft/publish, public rendering, mobile layout. Test records removed.');
 }finally {
  if(postId)await api('/api/admin/posts/'+postId,{method:'DELETE'}).catch(()=>{});
  if(authorId)await api('/api/admin/authors/'+authorId,{method:'DELETE'}).catch(()=>{});

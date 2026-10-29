@@ -1,4 +1,5 @@
 'use client';
+import SafeImage from '@/components/shared/SafeImage';
 
 
 /* cms:2910 */
@@ -32,7 +33,7 @@ export default function BlogPreview() {
   const getDate = (timestamp) => {
     const date = new Date(timestamp.seconds * 1000);
     const formattedDate = date.toLocaleDateString("en-US", {
-      month: "long",
+      month: "long",day:"numeric",
       year: "numeric",
     });
     return formattedDate;
@@ -62,7 +63,7 @@ export default function BlogPreview() {
             >
               <Link href={`/blog/${post.id}`} className="group block rounded-2xl border border-border bg-card overflow-hidden hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
                 <div className="relative overflow-hidden aspect-[16/9]">
-                  <img
+                  <SafeImage
                     src={post.imageUrl}
                     alt={post.title}
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
@@ -78,7 +79,7 @@ export default function BlogPreview() {
                     <span className="flex items-center gap-1"><Calendar className="w-3 h-3" /> {getDate(post.date)}</span>
                     {/* <span className="flex items-center gap-1"><Clock className="w-3 h-3" /> {post.readTime} read</span> */}
                   </div>
-                  <h3 className="font-bold text-foreground leading-snug group-hover:text-primary transition-colors line-clamp-2">
+                  <div className="flex flex-wrap gap-2 mb-2">{post.categoryProfiles?.map(c=><span key={c.key} className="text-xs text-primary">{c.name}</span>)}</div><h3 className="font-bold text-foreground leading-snug group-hover:text-primary transition-colors line-clamp-2">
                     {post.title}
                   </h3>
                   <p className="text-sm text-muted-foreground mt-2 leading-relaxed line-clamp-2">{post.excerpt}</p>

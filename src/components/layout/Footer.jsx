@@ -1,11 +1,13 @@
 'use client';
+import SafeImage from '@/components/shared/SafeImage';
 
 /* cms:2910 */
 import MenuBranch from '@/components/cms/MenuBranch';
 import {useSiteSettings,useCmsBlock,cmsArray,cmsRender} from '@/components/cms/ContentProvider';
+import SocialLinks from '@/components/shared/SocialLinks';
 import React from 'react';
 import Link from 'next/link';
-import { Mail, Phone, MapPin, Facebook, Instagram } from 'lucide-react';
+import { Mail, Phone, MapPin } from 'lucide-react';
 import Logo from '@assets/Logo.jpeg';
 
 const quickLinks = [
@@ -61,7 +63,7 @@ export default function Footer() {
           <div className="lg:col-span-2">
             <div className="flex items-center gap-2 mb-4">
               <div className="w-12 h-11 bg-gradient-to-br from-primary to-blue-700 rounded-xl flex items-center justify-center shadow-lg shadow-primary/40">
-                <img
+                <SafeImage
                   src={cms.image_2??(Logo?.src)}
                   alt={cms.alt_3??"Pakmoo"}
                   height={100}
@@ -136,14 +138,7 @@ export default function Footer() {
                 <ArrowRight className="w-4 h-4" />
               </Button>
             </div> */}
-            <div className="flex items-center gap-3 mt-6">
-              <a href={cms.href_18??"https://www.facebook.com/share/1DmcSx8XwQ/"} target='/blank' className="w-8 h-8 flex items-center justify-center border border-white/10 text-white/40 hover:text-primary hover:border-primary/30 transition-colors">
-                <Facebook className="w-3.5 h-3.5" />
-              </a>
-              <a href={cms.href_19??"https://www.instagram.com/pakmootesting?igsh=dnl6dTNkbnQ2cTYw"} target='/blank' className="w-8 h-8 flex items-center justify-center border border-white/10 text-white/40 hover:text-primary hover:border-primary/30 transition-colors">
-                <Instagram className="w-3.5 h-3.5" />
-              </a>
-            </div>
+            <SocialLinks/>
           </div>
         </div>
       </div>

@@ -1,4 +1,5 @@
 'use client';
+import SafeImage from '@/components/shared/SafeImage';
 
 /* cms:2910 */
 import {useCmsBlock,useCmsCollection,cmsArray,cmsRender} from '@/components/cms/ContentProvider';
@@ -68,7 +69,7 @@ export default function StandardsSection() {
               >
 
                 <p className='text-[11px] text-align-center text-muted-foreground group-hover:text-white/70 mt-1.5 leading-tight transition-colors min-h-[32px]'>
-                  <img src={std.image?.src} alt={'Image missing'} className="w-16 h-auto mx-auto" />
+                  <SafeImage src={std.image?.src} alt={'Image missing'} className="w-16 h-auto mx-auto" />
                 </p>
 
                 <p className="text-2xl font-bold text-foreground group-hover:text-white transition-colors mt-2">

@@ -1,4 +1,5 @@
 'use client';
+import SafeImage from '@/components/shared/SafeImage';
 
 /* cms:2910 */
 import {useCmsBlock,cmsArray,cmsRender} from '@/components/cms/ContentProvider';
@@ -25,7 +26,7 @@ export default function WhyChooseSection() {
     <section className="py-20 sm:py-18 relative overflow-hidden bg-[#0b1120]">
       {/* Background image with moderate overlay */}
       <div className="absolute inset-0">
-        <img
+        <SafeImage
           src={cms.image_1??(why_choose_us_1?.src)}
           alt={cms.alt_2??"Laboratory background"}
           className="w-full h-full object-cover opacity-15"

@@ -1,4 +1,5 @@
 'use client';
+import SafeImage from '@/components/shared/SafeImage';
 
 /* cms:2910 */
 import {useCmsBlock,useCmsCollection,cmsArray,cmsRender} from '@/components/cms/ContentProvider';
@@ -89,7 +90,7 @@ export default function ClientsPreview() {
                 transition={{ duration: 0.3, delay: i * 0.02 }}
                 className="flex flex-col items-center justify-center gap-2 p-5 h-24 border border-border bg-card hover:border-primary/30 hover:shadow-md transition-all duration-300 group"
               >
-                <img
+                <SafeImage
                   src={getImageSrc(client.logo)}
                   alt={client.name}
                   className="h-10 w-full object-contain  group-hover:grayscale-0 opacity-100 group-hover:opacity-50 transition-all duration-300"

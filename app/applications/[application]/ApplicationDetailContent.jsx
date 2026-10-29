@@ -1,4 +1,5 @@
 'use client'
+import SafeImage from '@/components/shared/SafeImage';
 
 /* cms:2910 */
 import {useCmsBlock,useCmsCollection,cmsArray,cmsRender} from '@/components/cms/ContentProvider';
@@ -122,7 +123,7 @@ export default function ApplicationDetail({ params }) {
                                     onClick={() => router.push(`/products/${product._slug||product.id}`)}
                                 >
                                     <div className="aspect-[4/3] bg-secondary overflow-hidden">
-                                        <img src={product?.imageUrl} alt={product.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                                        <SafeImage src={product?.imageUrl} alt={product.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
                                     </div>
                                     <div className="p-4">
                                         <h3 className="font-semibold text-foreground text-sm">{product.name}</h3>

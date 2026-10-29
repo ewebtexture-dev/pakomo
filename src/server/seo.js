@@ -18,7 +18,7 @@ export function articleSchema(post) {
   const result={'@context':'https://schema.org','@graph':[
     {'@type':'BlogPosting','@id':url+'#article',headline:post.title,description:post.meta_description || post.excerpt,
       datePublished:post.published_at,dateModified:post.updated_at,
-      articleSection:post.category.replaceAll('_',' '), keywords:post.meta_keywords || post.focus_keyword || undefined,
+      articleSection:post.categoryProfiles?.map(c=>c.name).join(', ')||post.category.replaceAll('_',' '), keywords:post.meta_keywords || post.focus_keyword || undefined,
       author:{'@type':'Person',name:post.author,
         ...(post.authorProfile?.bio?{description:post.authorProfile.bio}:{}),
         ...(post.authorProfile?.job_title?{jobTitle:post.authorProfile.job_title}:{}),
@@ -31,6 +31,6 @@ export function articleSchema(post) {
       {'@type':'ListItem',position:3,name:post.title,item:url}]}
   ]};
   if(post.schema?.customJson){const custom=JSON.parse(post.schema.customJson);result['@graph'].push(...(Array.isArray(custom)?custom:custom['@graph']||[custom]));}
-  if(post.schema?.type&&post.schema.type!=='WebPage')result['@graph'][0]['@type']=post.schema.type;
-  return result;
+  if(post.schema?.type&&post.schema.type!=='WebPage'&&post.schema.type!=='FAQPage')result['@graph'][0]['@type']=post.schema.type;
+  result['@graph']=result['@graph'].filter(item=>item['@type']!=='FAQPage');return result;
 }

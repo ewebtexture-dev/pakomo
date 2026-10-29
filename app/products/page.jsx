@@ -1,4 +1,5 @@
 "use client";
+import SafeImage from '@/components/shared/SafeImage';
 
 
 /* cms:2910 */
@@ -101,10 +102,10 @@ export default function ProductsPage({initialCategory="all"}) {
                     onClick={() => setSelectedProduct(product)}
                   >
                     <div className="aspect-[4/3] bg-secondary overflow-hidden">
-                      <img
+                      <SafeImage
                         src={product.imageUrl}
                         alt={product.name}
-                        className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-500"
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                       />
                     </div>
                     <div className="p-4">
@@ -149,7 +150,7 @@ export default function ProductsPage({initialCategory="all"}) {
             onClick={(e) => e.stopPropagation()}
           >
             <div className="aspect-[16/9] bg-secondary relative">
-              <img
+              <SafeImage
                 src={selectedProduct?.imageUrl}
                 alt={selectedProduct.name}
                 className="w-full h-full object-contain"

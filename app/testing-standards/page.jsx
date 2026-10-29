@@ -1,4 +1,5 @@
 'use client';
+import SafeImage from '@/components/shared/SafeImage';
 
 
 /* cms:2910 */
@@ -78,7 +79,7 @@ export default function TestingStandardsPage() {
                     </span>
                   </div>
                   <p className='text-[11px] text-muted-foreground group-hover:text-white/70 mt-1.5 leading-tight transition-colors min-h-[32px]'>
-                    <img src={std.image?.src} alt={'Image missing'} className="w-16 h-auto mx-auto" />
+                    <SafeImage src={std.image?.src} alt={'Image missing'} className="w-16 h-auto mx-auto" />
                   </p>
                 </div>
               </motion.button>

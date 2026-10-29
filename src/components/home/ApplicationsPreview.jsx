@@ -1,4 +1,5 @@
 'use client';
+import SafeImage from '@/components/shared/SafeImage';
 
 import React from 'react';
 import Link from 'next/link';
@@ -92,7 +93,7 @@ export default function ApplicationsPreview() {
             >
               <Link href="/applications" className="group block overflow-hidden rounded-2xl border border-border bg-card shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
                 <div className="relative overflow-hidden aspect-[4/3]">
-                  <img
+                  <SafeImage
                     src={app.image}
                     alt={app.name}
                     className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"

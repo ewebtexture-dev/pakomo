@@ -1,4 +1,5 @@
 'use client';
+import SafeImage from '@/components/shared/SafeImage';
 
 
 /* cms:2910 */
@@ -39,7 +40,7 @@ export default function ApplicationsPage() {
                 className="group rounded-2xl border border-border bg-card overflow-hidden hover:shadow-xl hover:-translate-y-1 transition-all duration-300"
               >
                 <div className="relative h-44 overflow-hidden">
-                  <img
+                  <SafeImage
                     src={app.image}
                     alt={app.name}
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"

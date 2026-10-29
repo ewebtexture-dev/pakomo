@@ -1,9 +1,10 @@
 'use client';
+import SafeImage from '@/components/shared/SafeImage';
 
 
 /* cms:2910 */
-import {useCmsBlock,cmsArray,cmsRender} from '@/components/cms/ContentProvider';
-import React from 'react';
+import {useCmsBlock,useCmsCollection,cmsArray,cmsRender} from '@/components/cms/ContentProvider';
+import React,{useState,useEffect} from 'react';
 import PageHeader from '@/components/shared/PageHeader';
 import { Calendar, ArrowRight, User } from 'lucide-react';
 import { motion } from 'framer-motion';
@@ -12,14 +13,15 @@ import blog_1 from '@assets/Unsplash/blog-1.jpg';
 
 import Link from 'next/link';
 
-export default function BlogListing({ blogsData }) {
+export default function BlogListing({ blogsData,initialCategory="all" }) {
+  const [active,setActive]=useState(initialCategory);useEffect(()=>setActive(initialCategory),[initialCategory]);const categories=useCmsCollection('blogcategory');const filtered=active==='all'?blogsData:blogsData.filter(p=>(p.category_ids||[p.category]).includes(active));
   const cms=useCmsBlock("blog","listing");
   
 
   const getDate = (timestamp) => {
     const date = new Date(timestamp.seconds * 1000);
     const formattedDate = date.toLocaleDateString("en-US", {
-      month: "long",
+      month: "long", day:"numeric",
       year: "numeric",
     });
     return formattedDate;
@@ -28,7 +30,7 @@ export default function BlogListing({ blogsData }) {
   return (
     <>
       <PageHeader
-        title={cms.title_1??"Blog & Insights"}
+        title={initialCategory!=="all"?(categories.find(c=>c._key===initialCategory)?.name||"Blog & Insights"):(cms.title_1??"Blog & Insights")}
         subtitle={cms.subtitle_2??"Industry insights, testing standards guides, and product updates from our experts."}
         breadcrumbs={cmsArray([{ label: 'Blog' }],cms.list_3)}
         image={cms.image_4??(blog_1?.src)}
@@ -65,10 +67,10 @@ export default function BlogListing({ blogsData }) {
               </div>
             </div> */}
 
-            <div className="flex-1">
-              <p className="text-xs text-muted-foreground font-mono">{blogsData.length} {cmsRender(cms.text_5??" articles found")}</p>
+            <div className="flex-1 min-w-0"><nav aria-label="Blog category filter" className="flex flex-wrap gap-3 mb-6"><button type="button" className={active==='all'?'text-primary font-bold':''} onClick={()=>setActive('all')}>All articles</button>{categories.map(c=><Link key={c._key} href={'/blog/category/'+c._slug} aria-current={active===c._key?'page':undefined} className={active===c._key?'text-primary font-bold':''}>{c.name}</Link>)}</nav>
+              <p className="text-xs text-muted-foreground font-mono">{filtered.length} {cmsRender(cms.text_5??" articles found")}</p>
               <div className="space-y-4">
-                {blogsData.map((post, i) => (
+                {filtered.map((post, i) => (
                   <Link href={`/blog/${post.id}`} key={i} className="block">
                     <motion.article
                       key={i}
@@ -77,8 +79,8 @@ export default function BlogListing({ blogsData }) {
                       transition={{ duration: 0.3, delay: i * 0.03 }}
                       className="group flex flex-col sm:flex-row gap-5 p-5 rounded-2xl border border-border bg-card hover:shadow-xl hover:-translate-y-1 transition-all duration-300 cursor-pointer overflow-hidden"
                     >
-                      <div className="sm:w-52 shrink-0 aspect-[4/3] sm:aspect-auto sm:h-full bg-secondary overflow-hidden rounded-xl">
-                        <img src={post.imageUrl} alt={post.imageAlt || post.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                      <div className="sm:w-52 shrink-0 aspect-[4/3] sm:aspect-[4/3] sm:h-40 bg-secondary overflow-hidden rounded-xl">
+                        <SafeImage src={post.imageUrl} alt={post.imageAlt || post.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
                       </div>
                       <div className="flex-1">
                         <div className="flex items-center gap-3 mb-2">
@@ -86,7 +88,7 @@ export default function BlogListing({ blogsData }) {
                             <Calendar className="w-3 h-3" /> {getDate(post.date)}
                           </span>
                         </div>
-                        <h3 className="font-semibold text-foreground leading-snug group-hover:text-primary transition-colors">
+                        <div className="flex flex-wrap gap-2 mb-2">{post.categoryProfiles?.map(c=><span key={c.key} className="text-xs text-primary">{c.name}</span>)}</div><h3 className="font-semibold text-foreground leading-snug group-hover:text-primary transition-colors">
                           {post.title}
                         </h3>
                         <p className="text-xs text-muted-foreground mt-2 leading-relaxed line-clamp-2">{post.shortDescription}</p>

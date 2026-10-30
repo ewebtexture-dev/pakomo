@@ -1,6 +1,10 @@
 
 **About**
 
+Release `301001` packages the 30 October CMS fixes and optional Firebase setup. See [release notes](docs/RELEASE-301001.md); old Firebase image links stay intact while file migration is pending.
+
+Local updates (30 October 2026): see [testing, commit and deployment commands](docs/LOCAL-TEST-AND-DEPLOY.md) and [new Firebase project setup](docs/FIREBASE-SETUP.md). The optional Firebase connection is configured at `/admin/firebase`; CMS data and image uploads remain on persistent local/Hostinger storage.
+
 ## CMS release 2910
 
 The site now extends the original admin into a page and collection CMS, with draft/published snapshots, revisions, media/PDF management, SEO and schema forms, an enquiry inbox, roles and email-based OTP password reset. The existing public design is retained. Product management now uses SQLite after importing the authoritative 85-record Firebase snapshot; Firebase records are not deleted. The older Firebase-only notes below describe the previous release.

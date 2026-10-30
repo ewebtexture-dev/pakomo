@@ -92,8 +92,8 @@ export default function BlogArticle({ post, blogPosts }) {
                             className="flex-1 min-w-0"
                         >
                             {/* Featured Image */}
-                            <figure className={'rounded-2xl overflow-hidden border border-border mb-8 image-size-'+(post.featured_size||'full')+' image-align-'+(post.featured_align||'center')}>
-                                <SafeImage src={post.imageUrl} alt={post.imageAlt || post.title} className="w-full aspect-[16/9] object-cover" />{post.featured_caption&&<figcaption className="text-sm text-muted-foreground p-3">{post.featured_caption}</figcaption>}
+                            <figure className="blog-featured-image w-full max-w-full rounded-2xl overflow-hidden border border-border mb-8">
+                                <SafeImage src={post.imageUrl} alt={post.imageAlt || post.title} width={1920} height={1080} className="w-full h-auto max-w-full object-contain" />{post.featured_caption&&<figcaption className="text-sm text-muted-foreground p-3">{post.featured_caption}</figcaption>}
                             </figure>
 
                             {/* Markdown Content */}
@@ -101,7 +101,7 @@ export default function BlogArticle({ post, blogPosts }) {
                                 <ReactMarkdown>{post.description}</ReactMarkdown>
                             </div> */}
 
-                            <RichContent html={post.description}/>
+                            <RichContent html={post.description} autoImageSize/>
 
                             {/* Back Link */}
                             <div className="mt-10 pt-8 border-t border-border">
@@ -128,7 +128,7 @@ export default function BlogArticle({ post, blogPosts }) {
                                                 href={`/blog/${related.id}`}
                                                 className="group block rounded-xl border border-border bg-card hover:shadow-md hover:-translate-y-0.5 transition-all duration-200 overflow-hidden"
                                             >
-                                                <SafeImage src={related.imageUrl} alt={related.title} className="w-full aspect-[16/9] object-cover group-hover:scale-105 transition-transform duration-300" />
+                                                <SafeImage src={related.imageUrl} alt={related.title} width={1920} height={1080} className="w-full h-auto max-w-full object-contain" />
                                                 <div className="p-3">
                                                     <h4 className="text-xs font-semibold text-foreground group-hover:text-primary transition-colors leading-snug line-clamp-2">{related.title}</h4>
                                                     <span className="text-[10px] text-muted-foreground mt-1 block">{related.readTime || "8 Min "} {cmsRender(cms.text_13??" read")}</span>

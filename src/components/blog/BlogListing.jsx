@@ -79,8 +79,8 @@ export default function BlogListing({ blogsData,initialCategory="all" }) {
                       transition={{ duration: 0.3, delay: i * 0.03 }}
                       className="group flex flex-col sm:flex-row gap-5 p-5 rounded-2xl border border-border bg-card hover:shadow-xl hover:-translate-y-1 transition-all duration-300 cursor-pointer overflow-hidden"
                     >
-                      <div className="sm:w-52 shrink-0 aspect-[4/3] sm:aspect-[4/3] sm:h-40 bg-secondary overflow-hidden rounded-xl">
-                        <SafeImage src={post.imageUrl} alt={post.imageAlt || post.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                      <div className="w-full sm:w-64 shrink-0 self-start aspect-video bg-secondary overflow-hidden rounded-xl">
+                        <SafeImage src={post.imageUrl} alt={post.imageAlt || post.title} width={1920} height={1080} className="w-full h-auto max-w-full object-contain" />
                       </div>
                       <div className="flex-1">
                         <div className="flex items-center gap-3 mb-2">

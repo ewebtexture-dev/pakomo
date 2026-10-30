@@ -28,8 +28,8 @@ export default function AdminDashboard() {
   if (!admin) return null;
 
   return (
-    <div className="min-h-screen bg-[#0a0f1e] flex flex-col">
-      <div className="absolute inset-0" style={{ backgroundImage: 'radial-gradient(rgba(59,130,246,0.06) 1px, transparent 1px)', backgroundSize: '28px 28px' }} />
+    <div className="relative isolate min-h-screen bg-[#0a0f1e] flex flex-col">
+      <div aria-hidden="true" className="pointer-events-none absolute inset-0" style={{ backgroundImage: 'radial-gradient(rgba(59,130,246,0.06) 1px, transparent 1px)', backgroundSize: '28px 28px' }} />
 
       {/* Top bar */}
       <header className="relative z-10 border-b border-white/10 px-6 py-4 flex items-center justify-between">

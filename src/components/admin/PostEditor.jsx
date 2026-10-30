@@ -475,6 +475,7 @@ export default function PostEditor({ id }) {
               />
             </label>
             <RichTextEditor
+              autoImageSize
               value={form.content}
               onChange={(content) => set("content", content)}
               disabled={saving || uploading}
@@ -525,43 +526,18 @@ export default function PostEditor({ id }) {
           </section>
           <section className="border border-white/15 rounded-xl p-5 space-y-4">
             <h2>Featured image display</h2>
-            {[
-              ["featured_size", ["small", "medium", "large", "full"]],
-              ["featured_align", ["left", "center", "right"]],
-            ].map(([key, values]) => (
-              <label key={key} className="block">
-                {key.replace("featured_", "")}
-                <select
-                  className={adminInput}
-                  value={form[key]}
-                  onChange={(e) => set(key, e.target.value)}
-                >
-                  {values.map((v) => (
-                    <option key={v} className="bg-slate-900">
-                      {v}
-                    </option>
-                  ))}
-                </select>
-              </label>
-            ))}
             {field("featured_caption", "Caption", 1000)}
-            <div
-              className={
-                "featured-preview image-size-" +
-                form.featured_size +
-                " image-align-" +
-                form.featured_align
-              }
-            >
+            <div className="featured-preview w-full max-w-full">
               <img
                 src={form.image_url || "/image-placeholder.svg"}
                 alt={form.image_alt || "Crop preview"}
-                className="w-full aspect-[16/9] object-cover"
+                width={1920} height={1080} className="w-full h-auto max-w-full object-contain"
               />
             </div>
             <p className="text-xs text-white/50">
-              Recommended: 1600 × 900 (16:9). Preview uses the same crop as blog
-              thumbnails. Up to 5 MB.
+              Recommended: 1920 × 1080 (16:9), up to 5 MB. Featured images scale
+              responsively without cropping. Content images use their natural size
+              and scale down to fit the article.
             </p>
           </section>
           <FaqEditor

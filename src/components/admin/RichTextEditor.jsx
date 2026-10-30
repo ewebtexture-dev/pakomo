@@ -11,6 +11,7 @@ export default function RichTextEditor({
   disabled = false,
   onBusyChange = () => {},
   idPrefix = "article",
+  autoImageSize = false,
 }) {
   const instanceId = useId();
   const fieldId = (name) =>
@@ -443,7 +444,7 @@ export default function RichTextEditor({
       </button>
       {showPreview && (
         <div className="bg-white text-slate-900 rounded-lg p-5 min-w-0">
-          <RichContent html={value} />
+        <RichContent html={value} autoImageSize={autoImageSize} />
         </div>
       )}
       <p role="status" className="text-amber-300 text-xs my-2">

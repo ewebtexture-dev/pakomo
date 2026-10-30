@@ -209,7 +209,7 @@ export default function ContentEditor({ id, kind, base }) {
               }
             />
           )}
-        {!["gallery", "testimonial"].includes(kind) && (
+        {!["gallery", "testimonial", "client"].includes(kind) && (
           <>
             <SeoPanel
               value={payload.seo || {}}

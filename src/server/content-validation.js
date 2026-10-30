@@ -176,12 +176,13 @@ const validators = {
     .passthrough(),
   client: z
     .object({
-      ...common,
       name: short.min(1),
       logo: image,
+      image_alt: short.optional(),
+      industries: z.array(short).max(100).optional(),
       website: url.optional(),
     })
-    .passthrough(),
+    .strip(),
   testimonial: z
     .object({
       name: short.min(1),

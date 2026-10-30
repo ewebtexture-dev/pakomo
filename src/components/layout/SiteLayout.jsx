@@ -19,6 +19,8 @@ export default function SiteLayout({ children }) {
     window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
   }, [pathname]);
 
+  if (/^\/(admin|login)(\/|$)/.test(pathname)) return <>{children}</>;
+
   return (
     <div className="min-h-screen flex flex-col">
       <ImageSafety/><Navbar onRequestQuote={openQuote} />

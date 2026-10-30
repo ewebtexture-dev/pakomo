@@ -1,4 +1,5 @@
 import './globals.css';
+import 'font-awesome/css/font-awesome.min.css';
 import SiteLayout from '@/components/layout/SiteLayout';
 import RootProviders from '@/components/RootProviders';
 import ErrorBoundary from './ErrorBoundary';

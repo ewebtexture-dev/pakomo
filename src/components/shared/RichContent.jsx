@@ -2,7 +2,7 @@
 import { normalizeRichHtml } from "@/cms/rich-text";
 import parse, { domToReact } from "html-react-parser";
 import SafeImage from "./SafeImage";
-export default function RichContent({ html = "" }) {
+export default function RichContent({ html = "", autoImageSize = false }) {
   const options = {
     replace(node) {
       if (["script", "style", "iframe", "object", "embed"].includes(node.name))
@@ -29,13 +29,23 @@ export default function RichContent({ html = "" }) {
             : "center";
         return (
           <span
-            className={"block image-size-" + size + " image-align-" + align}
+            className={
+              "block " +
+              (autoImageSize ? "" : "image-size-" + size + " ") +
+              "image-align-" +
+              align
+            }
           >
             <SafeImage
               src={a.src}
               alt={a.alt}
               data-size={size}
               data-align={align}
+              style={
+                autoImageSize
+                  ? { width: "auto", height: "auto", maxWidth: "100%" }
+                  : undefined
+              }
             />
             {a["data-caption"] && (
               <span className="image-caption block">{a["data-caption"]}</span>

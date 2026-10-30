@@ -66,7 +66,7 @@ export default function BlogPreview() {
                   <SafeImage
                     src={post.imageUrl}
                     alt={post.title}
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                    width={1920} height={1080} className="w-full h-auto max-w-full object-contain"
                   />
                   <div className="absolute top-3 left-3">
                     <span className={`px-3 py-1 text-[11px] font-bold rounded-full ${post.color}`}>

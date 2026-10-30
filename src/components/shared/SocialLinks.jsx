@@ -2,25 +2,16 @@
 import { usePathname } from "next/navigation";
 import usePublicContent from "@/components/cms/usePublicContent";
 import { useEffect, useState } from "react";
-import {
-  Facebook,
-  Instagram,
-  Linkedin,
-  Youtube,
-  Twitter,
-  MessageCircle,
-  Link as LinkIcon,
-} from "lucide-react";
 import { useSiteSettings } from "@/components/cms/ContentProvider";
 const icons = {
-  Facebook,
-  Instagram,
-  LinkedIn: Linkedin,
-  YouTube: Youtube,
-  "X/Twitter": Twitter,
-  WhatsApp: MessageCircle,
-  Pinterest: LinkIcon,
-  Other: LinkIcon,
+  Facebook: "fa-facebook",
+  Instagram: "fa-instagram",
+  LinkedIn: "fa-linkedin",
+  YouTube: "fa-youtube-play",
+  "X/Twitter": "fa-twitter",
+  WhatsApp: "fa-whatsapp",
+  Pinterest: "fa-pinterest-p",
+  Other: "fa-link",
 };
 export default function SocialLinks({ share = false, title = "" }) {
   const initial = useSiteSettings("social"),
@@ -37,7 +28,7 @@ export default function SocialLinks({ share = false, title = "" }) {
       aria-label={share ? "Share article" : "Social media"}
     >
       {items.map((item) => {
-        const Icon = icons[item.platform] || LinkIcon;
+        const icon = icons[item.platform] || icons.Other;
         let href = item.url;
         if (share && currentUrl) {
           const url = encodeURIComponent(currentUrl),
@@ -68,7 +59,7 @@ export default function SocialLinks({ share = false, title = "" }) {
             }
             className="w-8 h-8 flex items-center justify-center border border-current/20 rounded hover:text-primary focus-visible:outline-primary"
           >
-            <Icon className="w-4 h-4" aria-hidden />
+            <i className={"fa fa-fw " + icon} aria-hidden="true" />
           </a>
         );
       })}

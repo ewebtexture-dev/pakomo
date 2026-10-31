@@ -7,6 +7,7 @@ import { audit } from "./security.js";
 import { HttpError } from "./http.js";
 import { validateContentPayload } from "./content-validation.js";
 import {plainText,testimonialText} from '../cms/plain-text.js';
+import {isSafeImagePlaceholder} from '../cms/image-placeholder.js';
 const kinds = [
   "page",
   "product",
@@ -89,8 +90,7 @@ export function cleanPayload(value, key = "", depth = 0) {
   if (typeof value === "string") {
     if (
       key === "blurDataURL" &&
-      value.length <= 3000 &&
-      /^data:image\/webp;base64,[a-z0-9+/=]+$/i.test(value)
+      isSafeImagePlaceholder(value)
     )
       return value;
     if (value.length > 200000)

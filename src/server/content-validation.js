@@ -1,4 +1,5 @@
 import { faqSchema } from "../cms/features.js";
+import {isSafeImagePlaceholder} from '../cms/image-placeholder.js';
 import { z } from "zod";
 const short = z.string().max(250),
   rich = z.string().max(200000),
@@ -99,7 +100,7 @@ const validators = {
       blurDataURL: z
         .string()
         .max(3000)
-        .regex(/^data:image\/webp;base64,[a-z0-9+/=]+$/i)
+        .refine(isSafeImagePlaceholder, 'Use a raster image blur thumbnail up to 3000 characters.')
         .optional(),
     })
     .strip(),

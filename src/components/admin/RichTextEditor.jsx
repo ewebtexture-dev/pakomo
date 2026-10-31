@@ -1,6 +1,6 @@
 "use client";
 import {adminFetch as fetch} from './admin-request';
-import { normalizeRichHtml } from "@/cms/rich-text";
+import { editorLinkUrl, normalizeRichHtml } from "@/cms/rich-text";
 import ImageField from './ImageField';
 import RichContent from "@/components/shared/RichContent";
 import { useEffect, useMemo, useRef, useState, useId } from "react";
@@ -44,6 +44,65 @@ export default function RichTextEditor({
     [editorError, setEditorError] = useState("");
   const sourceRef = useRef(null);
   const uploadHandler = useRef(null);
+  const linkDialogRef = useRef(null), linkSelection = useRef(null),
+    linkHandler = useRef(null), quillRef = useRef(null);
+  const [linkUrl, setLinkUrl] = useState(""),
+    [linkTarget, setLinkTarget] = useState("_blank"),
+    [linkText, setLinkText] = useState(""),
+    [linkError, setLinkError] = useState(""),
+    [editingLink, setEditingLink] = useState(false),
+    [insertingLinkText, setInsertingLinkText] = useState(false);
+  function openLink(anchor = null) {
+    if (disabled || busy || source || !editorRef.current) return;
+    const editor = editorRef.current;
+    let range = editor.getSelection(true) || {index: Math.max(0, editor.getLength() - 1), length: 0};
+    if (!anchor) {
+      const [leaf] = editor.getLeaf(range.index);
+      const node = leaf?.domNode;
+      anchor = (node?.nodeType === 3 ? node.parentElement : node)?.closest?.("a");
+    }
+    if (anchor && editor.root.contains(anchor)) {
+      const blot = quillRef.current.find(anchor);
+      if (blot) range = {index: editor.getIndex(blot), length: blot.length()};
+    } else anchor = null;
+    linkSelection.current = range;
+    setLinkUrl(anchor?.getAttribute("href") || "");
+    setLinkTarget(anchor ? (anchor.getAttribute("target") === "_blank" ? "_blank" : "_self") : "_blank");
+    setLinkText("");
+    setInsertingLinkText(!range.length);
+    setEditingLink(Boolean(anchor));
+    setLinkError("");
+    editor.theme.tooltip?.hide();
+    linkDialogRef.current?.showModal();
+  }
+  linkHandler.current = openLink;
+  function closeLink() {
+    linkDialogRef.current.close();
+    const range = linkSelection.current;
+    if (range) editorRef.current?.setSelection(range.index, range.length, "silent");
+  }
+  function saveLink(remove = false) {
+    const editor = editorRef.current, range = linkSelection.current;
+    if (!editor || !range || disabled || busy) return;
+    const href = remove ? null : editorLinkUrl(linkUrl);
+    if (!remove && !href) {
+      setLinkError("Enter a valid https://, http://, mailto:, tel:, or relative URL.");
+      return;
+    }
+    editor.history.cutoff();
+    if (remove) {
+      editor.formatText(range.index, range.length, {link: false}, "user");
+    } else if (range.length) {
+      editor.formatText(range.index, range.length, {link: {href, target: linkTarget}}, "user");
+    } else {
+      const text = linkText.trim() || href;
+      editor.insertText(range.index, text, {link: {href, target: linkTarget}}, "user");
+      linkSelection.current = {index: range.index + text.length, length: 0};
+    }
+    editor.history.cutoff();
+    changeRef.current(editor.getSemanticHTML());
+    closeLink();
+  }
   useEffect(() => {
     if (!file) {
       setPreview("");
@@ -81,7 +140,7 @@ export default function RichTextEditor({
           ["link", "image"],
           ["clean"],
         ],
-        handlers: { image: () => uploadHandler.current() },
+        handlers: { image: () => uploadHandler.current(), link: () => linkHandler.current() },
       },
       history: { delay: 500, maxStack: 100, userOnly: true },
     }),
@@ -90,10 +149,30 @@ export default function RichTextEditor({
   useEffect(() => {
     let cancelled = false,
       editor,
-      handleChange;
+      handleChange, tooltipRoot, handleTooltipEdit;
     const host = hostRef.current;
     import("quill")
       .then(({ default: Quill }) => {
+        quillRef.current = Quill;
+        const BaseLink = Quill.import("formats/link");
+        class TargetLink extends BaseLink {
+          static create(value) {
+            const node = super.create(typeof value === "string" ? value : value.href);
+            node.setAttribute("target", value?.target === "_blank" ? "_blank" : "_self");
+            return node;
+          }
+          static formats(node) {
+            return {href: node.getAttribute("href"), target: node.getAttribute("target") === "_blank" ? "_blank" : "_self"};
+          }
+          format(name, value) {
+            if (name === "link" && value) {
+              this.domNode.setAttribute("href", this.constructor.sanitize(typeof value === "string" ? value : value.href));
+              this.domNode.setAttribute("target", value?.target === "_blank" ? "_blank" : "_self");
+              this.domNode.setAttribute("rel", "noopener noreferrer");
+            } else super.format(name, value);
+          }
+        }
+        Quill.register(TargetLink, true);
         const BaseImage = Quill.import("formats/image");
         class SizedImage extends BaseImage {
           static formats(node) {
@@ -160,11 +239,26 @@ export default function RichTextEditor({
           changeRef.current(html);
         };
         editor.root.addEventListener("click", (event) => {
+          const anchor = event.target.closest?.("a");
+          if (anchor) {
+            event.preventDefault();
+            linkHandler.current(anchor);
+          }
           if (event.target.tagName === "IMG") {
             const blot = Quill.find(event.target);
             if (blot) editor.setSelection(editor.getIndex(blot), 1, "silent");
           }
         });
+        tooltipRoot = editor.theme.tooltip?.root;
+        handleTooltipEdit = (event) => {
+          if (!event.target.closest?.(".ql-action")) return;
+          event.preventDefault();
+          event.stopImmediatePropagation();
+          const range = editor.theme.tooltip.linkRange;
+          if (range) editor.setSelection(range.index, range.length, "silent");
+          linkHandler.current();
+        };
+        tooltipRoot?.addEventListener("click", handleTooltipEdit, true);
         editor.on("text-change", handleChange);
         editorRef.current = editor;
         setReady(true);
@@ -177,6 +271,7 @@ export default function RichTextEditor({
     return () => {
       cancelled = true;
       if (editor) {
+        tooltipRoot?.removeEventListener("click", handleTooltipEdit, true);
         editor.off("text-change", handleChange);
         editor.disable();
       }
@@ -453,6 +548,40 @@ export default function RichTextEditor({
         to upload a photo, or paste/drop an image. Article content is sanitised
         when saved.
       </p>
+      <dialog
+        ref={linkDialogRef}
+        className={styles.imageDialog}
+        aria-labelledby={fieldId("link-dialog-title")}
+        onCancel={(event) => {event.preventDefault();closeLink();}}
+        onKeyDown={(event) => {
+          if (event.key === "Enter" && event.target.tagName === "INPUT") {
+            event.preventDefault();
+            saveLink();
+          }
+        }}
+      >
+        <div className={styles.modalHeader}>
+          <h2 id={fieldId("link-dialog-title")}>{editingLink ? "Edit link" : "Insert link"}</h2>
+          <button type="button" className={styles.close} aria-label="Close link editor" onClick={closeLink}>×</button>
+        </div>
+        <div className={styles.modalBody}>
+          <label htmlFor={fieldId("link-url")}>Link URL</label>
+          <input autoFocus id={fieldId("link-url")} className="form-control" value={linkUrl} maxLength={2048} placeholder="https://example.com or /contact" onChange={e=>setLinkUrl(e.target.value)} />
+          {insertingLinkText && <><label htmlFor={fieldId("link-text")}>Link text (optional)</label><input id={fieldId("link-text")} className="form-control" value={linkText} maxLength={2000} placeholder="Use the URL as link text" onChange={e=>setLinkText(e.target.value)}/></>}
+          <label htmlFor={fieldId("link-target")}>Open link in</label>
+          <select id={fieldId("link-target")} className="form-control" value={linkTarget} onChange={e=>setLinkTarget(e.target.value)}>
+            <option value="_self">Same tab / window</option>
+            <option value="_blank">New tab / window</option>
+          </select>
+          <small>The browser decides whether a new tab or a new window opens.</small>
+          {linkError && <p role="alert" className={styles.error}>{linkError}</p>}
+        </div>
+        <div className={styles.modalFooter}>
+          {editingLink && <button type="button" className="btn btn-secondary" onClick={()=>saveLink(true)}>Remove link</button>}
+          <button type="button" className="btn btn-secondary" onClick={closeLink}>Cancel</button>
+          <button type="button" className="btn btn-primary" disabled={disabled || busy} onClick={()=>saveLink()}>Save link</button>
+        </div>
+      </dialog>
       <dialog
         ref={dialogRef}
         className={styles.imageDialog}

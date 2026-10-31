@@ -307,6 +307,10 @@ export default function PostEditor({ id }) {
                 }));
               }}
             />
+            <div aria-labelledby="featured-heading" className="space-y-3">
+              <h2 id="featured-heading" className="font-semibold">Featured image</h2>
+              <ImageField label="Featured image" value={form.image_url} onChange={v=>set('image_url',v)} alt={form.image_alt} onAltChange={v=>set('image_alt',v)} onBusyChange={setUploading} recommended="1920 × 1080 (16:9)."/>
+            </div>
             <AdminField
               id="slug"
               label="URL slug"
@@ -491,15 +495,6 @@ export default function PostEditor({ id }) {
               onBusyChange={setEditorBusy}
             />
             <FaqEditor allowPostImport postId={id} value={form.faqSection} onChange={value=>set("faqSection",value)} onBusyChange={setFaqBusy}/>
-          </section>
-          <section
-            className="rounded-xl border border-white/10 bg-white/5 p-5 sm:p-7 space-y-5"
-            aria-labelledby="featured-heading"
-          >
-            <h2 id="featured-heading" className="font-semibold">
-              Featured image
-            </h2>
-            <ImageField label="Featured image" value={form.image_url} onChange={v=>set('image_url',v)} alt={form.image_alt} onAltChange={v=>set('image_alt',v)} onBusyChange={setUploading} recommended="1920 × 1080 (16:9)."/>
           </section>
           <section className="border border-white/15 rounded-xl p-5 space-y-4">
             <h2>Featured image display</h2>

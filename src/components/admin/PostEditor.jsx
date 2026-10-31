@@ -3,6 +3,8 @@ import {adminFetch as fetch} from './admin-request';
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import ReviewerFields from './ReviewerFields';
+import {emptyReviewer} from '@/cms/blog-features';
 import ImageField from './ImageField';
 import FaqEditor from "./FaqEditor";
 import RichTextEditor from "./RichTextEditor";
@@ -16,6 +18,8 @@ const initial = {
   title: "",
   slug: "",
   excerpt: "",
+  short_summary: "",
+  reviewer: {...emptyReviewer},
   content: "",
   category: "industry_insights",
   author_id: "",
@@ -64,6 +68,7 @@ async function jsonResponse(response) {
 export default function PostEditor({ id }) {
   const [form, setForm] = useState(initial),
     [authors, setAuthors] = useState([]),
+    [reviewers,setReviewers]=useState([]),
     [blogCategories, setBlogCategories] = useState([]),
     [loading, setLoading] = useState(true),
     [loadError, setLoadError] = useState("");
@@ -72,6 +77,7 @@ export default function PostEditor({ id }) {
     [saving, setSaving] = useState(false),
     [uploading, setUploading] = useState(false),
     [editorBusy, setEditorBusy] = useState(false),
+    [faqBusy,setFaqBusy]=useState(false),
     [slugTouched, setSlugTouched] = useState(Boolean(id)),
     [origin, setOrigin] = useState("");
   const router = useRouter();
@@ -80,7 +86,7 @@ export default function PostEditor({ id }) {
     const controller = new AbortController();
     async function load() {
       try {
-        const [authorData, postData, categoryData] = await Promise.all([
+        const [authorData, postData, categoryData, reviewerData] = await Promise.all([
           fetch("/api/admin/authors", {
             signal: controller.signal,
             cache: "no-store",
@@ -92,8 +98,10 @@ export default function PostEditor({ id }) {
               }).then(jsonResponse)
             : Promise.resolve(null),
           fetch("/api/admin/content?kind=blogcategory",{signal:controller.signal,cache:"no-store"}).then(jsonResponse),
+          fetch("/api/admin/reviewers",{signal:controller.signal,cache:"no-store"}).then(jsonResponse),
         ]);
         setAuthors(authorData.authors);
+        setReviewers(reviewerData.reviewers||[]);
         setBlogCategories(categoryData.records||[]);
         const next = {
           ...initial,
@@ -167,7 +175,7 @@ export default function PostEditor({ id }) {
     }
   }
   async function save(status) {
-    if (saving || uploading || editorBusy) return;
+    if (saving || uploading || editorBusy || faqBusy) return;
     setError("");
     setNotice("");
     setSaving(true);
@@ -459,20 +467,22 @@ export default function PostEditor({ id }) {
               </small>
             </label>
             <label
-              htmlFor="excerpt"
+              htmlFor="short_summary"
               className="block space-y-2 text-xs text-white/70"
             >
-              <span>Excerpt / short description *</span>
+              <span>Short summary / excerpt (plain text)</span>
               <textarea
-                id="excerpt"
+                id="short_summary"
                 className={adminInput}
                 rows={3}
-                value={form.excerpt}
-                maxLength={500}
-                onChange={(event) => set("excerpt", event.target.value)}
-                placeholder="A clear summary for your blog cards and search results."
+                value={form.short_summary||""}
+                maxLength={200}
+                onChange={(event) => set("short_summary", event.target.value)}
+                placeholder="A short plain-text summary. Leave blank to use the meta description."
               />
             </label>
+            <p className="text-xs text-white/50" aria-live="polite">{(form.short_summary||'').length}/200 characters</p>
+            <ReviewerFields value={form.reviewer} reviewers={reviewers} onChange={v=>set('reviewer',v)}/>
             <RichTextEditor
               autoImageSize
               value={form.content}
@@ -480,6 +490,7 @@ export default function PostEditor({ id }) {
               disabled={saving || uploading}
               onBusyChange={setEditorBusy}
             />
+            <FaqEditor allowPostImport postId={id} value={form.faqSection} onChange={value=>set("faqSection",value)} onBusyChange={setFaqBusy}/>
           </section>
           <section
             className="rounded-xl border border-white/10 bg-white/5 p-5 sm:p-7 space-y-5"
@@ -506,10 +517,6 @@ export default function PostEditor({ id }) {
               and scale down to fit the article.
             </p>
           </section>
-          <FaqEditor
-            value={form.faqSection}
-            onChange={(value) => set("faqSection", value)}
-          />
           <SeoFields
             form={form}
             set={set}
@@ -519,10 +526,11 @@ export default function PostEditor({ id }) {
           />
           <SeoScoreChecker
             title={form.meta_title || form.title}
-            metaDescription={form.meta_description || form.excerpt}
+            metaDescription={form.meta_description || form.short_summary}
             slug={form.slug}
             focusKeyword={form.focus_keyword}
             contentHtml={form.content}
+            faqSection={form.faqSection}
             images={[{ alt: form.image_alt }]}
             isBlog
           />
@@ -558,14 +566,14 @@ export default function PostEditor({ id }) {
             <button
               type="button"
               onClick={() => save("draft")}
-              disabled={saving || uploading || editorBusy}
+              disabled={saving || uploading || editorBusy || faqBusy}
               className="px-5 py-3 rounded-lg border border-white/20 text-sm disabled:opacity-50"
             >
               {saving ? "Saving…" : "Save draft"}
             </button>
             <button
               type="submit"
-              disabled={saving || uploading || editorBusy}
+              disabled={saving || uploading || editorBusy || faqBusy}
               className="px-6 py-3 rounded-lg bg-blue-600 hover:bg-blue-500 text-sm font-semibold disabled:opacity-50"
             >
               {saving
@@ -577,7 +585,7 @@ export default function PostEditor({ id }) {
             <Link href="/admin/blogs" className="text-sm text-white/50 px-3">
               Back to posts
             </Link>
-            {editorBusy && (
+            {(editorBusy||faqBusy) && (
               <p className="w-full text-xs text-amber-200">
                 Finish uploading or apply HTML source changes before saving.
               </p>

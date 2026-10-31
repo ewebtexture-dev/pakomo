@@ -1,7 +1,7 @@
-import BlogListing from '@/components/blog/BlogListing';
-import {cmsMetadata} from '@/server/cms-seo';
-import { listPosts, siteUrl } from '@/server/posts';
+﻿import BlogListing from '@/components/blog/BlogListing';
+import {blogListingData,listingMetadata} from '@/server/blog-listing';
+import {pageNumber} from '@/cms/blog-features';
 export const dynamic='force-dynamic';
 export const runtime='nodejs';
-export function generateMetadata(){return cmsMetadata('/blog');}
-export default function BlogPage(){return <BlogListing blogsData={listPosts().map(post=>({...post,id:post.slug}))} />;}
+export async function generateMetadata({searchParams}){return listingMetadata('/blog',pageNumber((await searchParams)?.page));}
+export default async function BlogPage({searchParams}){return <BlogListing model={blogListingData({page:pageNumber((await searchParams)?.page)})}/>;}

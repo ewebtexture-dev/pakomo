@@ -150,3 +150,13 @@ main img,footer img{max-width:100%;box-sizing:border-box}
 @media(prefers-reduced-motion:reduce){.faq-answer{animation:none}.faq-plus{transition:none}}
 
 .cms-rich-fragment{max-width:100%;overflow-wrap:anywhere;box-sizing:border-box}h2.cms-rich-fragment{font-size:1.6rem;font-weight:700;margin:1.5em 0 .6em}h3.cms-rich-fragment{font-size:1.3rem;font-weight:700;margin:1.5em 0 .6em}table.cms-rich-fragment{display:block;overflow-x:auto;max-width:100%}pre.cms-rich-fragment{overflow-x:auto;white-space:pre}img.cms-rich-fragment{max-width:100%;height:auto}a.cms-rich-fragment{color:hsl(var(--primary));text-decoration:underline}
+
+/* Blog FAQs share the site accordion, with a plus/minus disclosure icon. */
+.post-faqs .faq-item[open] .faq-plus { transform: none; }
+.post-faqs .faq-item[open] .faq-plus path:first-child { opacity: 0; }
+@supports (interpolate-size: allow-keywords) {
+  .post-faqs .faq-item { interpolate-size: allow-keywords; }
+  .post-faqs .faq-item::details-content { height: 0; opacity: 0; overflow: clip; transition: height .2s ease, opacity .2s ease, content-visibility .2s allow-discrete; }
+  .post-faqs .faq-item[open]::details-content { height: auto; opacity: 1; }
+}
+@media(prefers-reduced-motion:reduce) { .post-faqs .faq-item::details-content { transition: none; } }

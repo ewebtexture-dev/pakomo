@@ -11,7 +11,7 @@ export default function SeoFields({form,set,origin,onImageUpload,uploading=false
   const field=(key,label,maxLength,placeholder='',type='text')=><AdminField key={key} id={key} label={label} value={form[key]} onChange={value=>set(key,value)} maxLength={maxLength} placeholder={placeholder} type={type} />;
   const keyword=form.focus_keyword.trim().toLowerCase();
   const content=form.content.replace(/<[^>]*>/g,' '),words=content.trim().split(/\s+/).filter(Boolean).length;
-  const title=form.meta_title || form.title,description=form.meta_description || form.excerpt;
+  const title=form.meta_title || form.title,description=form.meta_description || form.short_summary || form.excerpt;
   const checks=[['Focus keyword in article title',form.title.toLowerCase().includes(keyword)],['Focus keyword in description',description.toLowerCase().includes(keyword)],['Focus keyword in article content',content.toLowerCase().includes(keyword)]];
   return <section className="rounded-xl border border-white/10 bg-white/5 p-5 sm:p-7 space-y-5" aria-labelledby="seo-heading">
     <div><h2 id="seo-heading" className="font-semibold">SEO & sharing</h2><p className="text-xs text-white/40 mt-1">Set search metadata, control indexing, and customise shared links.</p></div>

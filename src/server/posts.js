@@ -1,4 +1,6 @@
 import {plainText} from '../cms/plain-text.js';
+import {reviewerSchema} from '../cms/blog-features.js';
+import {getSettings} from './settings.js';
 import { normalizeRichHtml } from "../cms/rich-text.js";
 import { randomUUID } from "node:crypto";
 import sanitizeHtml from "sanitize-html";
@@ -150,6 +152,9 @@ function serialize(row) {
   return {
     ...row,
     ...extra,
+    short_summary: plainText(extra.short_summary ?? row.excerpt).slice(0,200),
+    reviewer: extra.reviewer?.name ? extra.reviewer : null,
+    faqSection: extra.faqSection || {heading:'Frequently Asked Questions',description:'',items:[]},
     categoryProfiles: listContent("blogcategory", true)
       .filter((c) => (extra.category_ids || [row.category]).includes(c.key))
       .map((c) => ({ key: c.key, name: c.payload.name, slug: c.slug })),
@@ -159,7 +164,7 @@ function serialize(row) {
     nofollow: Boolean(row.nofollow),
     imageUrl: row.image_url,
     imageAlt: row.image_alt,
-    shortDescription: row.excerpt,
+    shortDescription: plainText(extra.short_summary ?? row.excerpt).slice(0,200) || plainText(row.meta_description).slice(0,200),
     description: row.content,
     readTime: Math.max(1, Math.ceil(words / 200)) + " Min",
     date: {
@@ -192,12 +197,8 @@ export function listPosts(includeDrafts = false) {
         _extra_json: row.published_json || "{}",
       }),
     )
-    .filter((p) => !p.published_at || Date.parse(p.published_at) <= Date.now())
-    .sort((a, b) =>
-      String(b.published_at || b.created_at).localeCompare(
-        String(a.published_at || a.created_at),
-      ),
-    );
+    .filter((p) => p.status==='published'&&(!p.published_at || Date.parse(p.published_at) <= Date.now()))
+    .sort((a, b) => Date.parse(b.published_at||b.created_at)-Date.parse(a.published_at||a.created_at)||a.id.localeCompare(b.id));
 }
 export function findPost(id) {
   return serialize(
@@ -241,7 +242,8 @@ export function savePost(input, id, actor = null) {
   if (id && !existing) throw new HttpError(404, "Article not found.");
   const title = text(input.title, 180, "Title");
   const slug = slugify(text(input.slug, 180, "Slug") || title);
-  const excerpt = text(input.excerpt, 500, "Excerpt");
+  const shortSummary = input.short_summary === undefined ? (existing?.short_summary ?? undefined) : z.object({short_summary:z.string().max(200).transform(plainText)}).parse(input).short_summary;
+  const excerpt = plainText(text(input.excerpt, 500, "Excerpt") || shortSummary || '');
   const content = cleanContent(text(input.content, 200000, "Content"));
   const status = input.status || "draft";
   if (!title || !slug)
@@ -276,7 +278,7 @@ export function savePost(input, id, actor = null) {
   }
   if (
     status === "published" &&
-    (!excerpt ||
+    (!(shortSummary || excerpt || metaDescription) ||
       !sanitizeHtml(content, {
         allowedTags: [],
         allowedAttributes: {},
@@ -286,7 +288,7 @@ export function savePost(input, id, actor = null) {
   )
     throw new HttpError(
       422,
-      "Published articles need an excerpt, content, a featured image, and image alt text.",
+      "Published articles need a summary or meta description, content, a featured image, and image alt text.",
     );
   let authorId = text(input.author_id, 36, "Author ID") || existing?.author_id;
   if (!authorId) {
@@ -331,11 +333,15 @@ export function savePost(input, id, actor = null) {
         .get(key)
     )
       throw new HttpError(422, "Unknown blog category.");
+  const reviewer=reviewerSchema.parse(input.reviewer || existing?.reviewer || {});
+  if(reviewer.id&&reviewer.id!==existing?.reviewer?.id&&!(getSettings('reviewers').items||[]).some(r=>r.id===reviewer.id))throw new HttpError(422,'Choose a saved reviewer or enter a reviewer manually.');
   const extra = cleanPayload({
+    short_summary:shortSummary,
+    reviewer,
     category_ids: categoryIds,
     faqSection: input.faqSection
-      ? faqSchema.parse(input.faqSection)
-      : undefined,
+      ? faqSchema.parse({heading:"Frequently Asked Questions",description:"",...input.faqSection})
+      : existing?.faqSection || {heading:'Frequently Asked Questions',description:'',items:[]},
     featured_size: z
       .enum(["small", "medium", "large", "full"])
       .parse(input.featured_size || "full"),

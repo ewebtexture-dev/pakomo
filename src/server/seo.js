@@ -1,7 +1,8 @@
+import {activeFaqs,faqPlainText} from '../cms/features.js';
 import { siteUrl } from './posts.js';
 export function articleMetadata(post) {
   const title=post.meta_title || post.title;
-  const description=post.meta_description || post.excerpt;
+  const description=post.meta_description || post.short_summary || post.excerpt;
   const url=post.canonical_url || siteUrl()+'/blog/'+post.slug;
   const socialImage=post.og_image || post.image_url;
   const image=socialImage?new URL(socialImage,siteUrl()).href:null;
@@ -16,7 +17,7 @@ export function articleMetadata(post) {
 export function articleSchema(post) {
   const url=post.canonical_url || siteUrl()+'/blog/'+post.slug;
   const result={'@context':'https://schema.org','@graph':[
-    {'@type':'BlogPosting','@id':url+'#article',headline:post.title,description:post.meta_description || post.excerpt,
+    {'@type':'BlogPosting','@id':url+'#article',headline:post.title,description:post.meta_description || post.short_summary || post.excerpt,
       datePublished:post.published_at,dateModified:post.updated_at,
       articleSection:post.categoryProfiles?.map(c=>c.name).join(', ')||post.category.replaceAll('_',' '), keywords:post.meta_keywords || post.focus_keyword || undefined,
       author:{'@type':'Person',name:post.author,
@@ -24,6 +25,7 @@ export function articleSchema(post) {
         ...(post.authorProfile?.job_title?{jobTitle:post.authorProfile.job_title}:{}),
         ...(post.authorProfile?.website_url?{url:post.authorProfile.website_url}:{}),
         ...(post.authorProfile?.avatar_url?{image:new URL(post.authorProfile.avatar_url,siteUrl()).href}:{})},
+      ...(post.reviewer?.name?{reviewedBy:{'@type':'Person',name:post.reviewer.name,...(post.reviewer.role?{jobTitle:post.reviewer.role}:{}),...(post.reviewer.profileUrl?{url:post.reviewer.profileUrl}:{})}}:{}),
       publisher:{'@type':'Organization',name:'PAKMOO Testing Instruments',url:siteUrl()},
       mainEntityOfPage:{'@type':'WebPage','@id':url},...(post.image_url?{image:new URL(post.image_url,siteUrl()).href}:{})},
     {'@type':'BreadcrumbList',itemListElement:[{'@type':'ListItem',position:1,name:'Home',item:siteUrl()},
@@ -32,5 +34,5 @@ export function articleSchema(post) {
   ]};
   if(post.schema?.customJson){const custom=JSON.parse(post.schema.customJson);result['@graph'].push(...(Array.isArray(custom)?custom:custom['@graph']||[custom]));}
   if(post.schema?.type&&post.schema.type!=='WebPage'&&post.schema.type!=='FAQPage')result['@graph'][0]['@type']=post.schema.type;
-  result['@graph']=result['@graph'].filter(item=>item['@type']!=='FAQPage');return result;
+  result['@graph']=result['@graph'].filter(item=>!([].concat(item['@type']||[]).includes('FAQPage')));const faqs=activeFaqs(post.faqSection);if(faqs.length)result['@graph'].push({'@type':'FAQPage','@id':url+'#faqs',mainEntity:faqs.map(item=>({'@type':'Question',name:faqPlainText(item.q),acceptedAnswer:{'@type':'Answer',text:faqPlainText(item.a)}}))});return result;
 }

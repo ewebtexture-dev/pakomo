@@ -1,5 +1,6 @@
 import { faqSchema } from "../cms/features.js";
 import {isSafeImagePlaceholder} from '../cms/image-placeholder.js';
+import {blogListingSchema} from '../cms/blog-features.js';
 import { z } from "zod";
 const short = z.string().max(250),
   rich = z.string().max(200000),
@@ -110,6 +111,7 @@ const validators = {
   page: z
     .object({
       ...common,
+      blogListing:blogListingSchema.optional(),
       sections: z.record(z.record(z.unknown())).optional(),
       title: short.optional(),
       body: rich.optional(),

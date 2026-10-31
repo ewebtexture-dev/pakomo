@@ -231,7 +231,7 @@ export function schemaGraph(path) {
   }
   return {
     "@context": "https://schema.org",
-    "@graph": graph.filter((item) => item["@type"] !== "FAQPage"),
+    "@graph": graph.filter((item) => ![].concat(item["@type"] || []).includes("FAQPage")),
   };
 }
 

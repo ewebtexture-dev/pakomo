@@ -102,6 +102,7 @@ export default function BlogArticle({ post, blogPosts }) {
                             </div> */}
 
                             <RichContent html={post.description} autoImageSize/>
+                            <FaqSection key={post.slug} value={post.faqSection} emitSchema={false} anchorId="post-faqs"/>
 
                             {/* Back Link */}
                             <div className="mt-10 pt-8 border-t border-border">
@@ -142,7 +143,6 @@ export default function BlogArticle({ post, blogPosts }) {
                     </div>
                 </div>
             </section>
-            <FaqSection key={post.slug} value={post.faqSection}/>
         </>
     );
 }

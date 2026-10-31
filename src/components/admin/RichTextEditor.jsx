@@ -24,7 +24,7 @@ export default function RichTextEditor({
     selection = useRef(null);
   const valueRef = useRef(value),
     changeRef = useRef(onChange),
-    lastHtml = useRef(value);
+    lastHtml = useRef(normalizeRichHtml(value));
   valueRef.current = value;
   changeRef.current = onChange;
   const [imageUrl,setImageUrl]=useState("");
@@ -100,7 +100,7 @@ export default function RichTextEditor({
       linkSelection.current = {index: range.index + text.length, length: 0};
     }
     editor.history.cutoff();
-    changeRef.current(editor.getSemanticHTML());
+    changeRef.current(normalizeRichHtml(editor.getSemanticHTML()));
     closeLink();
   }
   useEffect(() => {
@@ -232,9 +232,9 @@ export default function RichTextEditor({
         editor.root.classList.add("cms-rich");
         editor.root.setAttribute("role", "textbox");
         editor.root.setAttribute("aria-multiline", "true");
-        lastHtml.current = valueRef.current;
+        lastHtml.current = normalizeRichHtml(valueRef.current);
         handleChange = () => {
-          const html = editor.getSemanticHTML();
+          const html = normalizeRichHtml(editor.getSemanticHTML());
           lastHtml.current = html;
           changeRef.current(html);
         };
@@ -280,11 +280,12 @@ export default function RichTextEditor({
     };
   }, [modules]);
   useEffect(() => {
-    if (editorRef.current && value !== lastHtml.current) {
+    const html = normalizeRichHtml(value);
+    if (editorRef.current && html !== lastHtml.current) {
       const editor = editorRef.current;
       const range = editor.getSelection();
-      editor.clipboard.dangerouslyPasteHTML(normalizeRichHtml(value), "silent");
-      lastHtml.current = value;
+      editor.clipboard.dangerouslyPasteHTML(html, "silent");
+      lastHtml.current = html;
       if (range)
         editor.setSelection(
           Math.min(range.index, editor.getLength() - 1),
@@ -332,7 +333,7 @@ export default function RichTextEditor({
       );
       editor.insertText(index + 1, "\n", "user");
       editor.setSelection(index + 2, 0, "silent");
-      onChange(editor.getSemanticHTML());
+      onChange(normalizeRichHtml(editor.getSemanticHTML()));
       dialogRef.current.close();
       setFile(null);
     } catch (e) {
@@ -344,11 +345,11 @@ export default function RichTextEditor({
   }
   function switchMode() {
     if (source) {
-      onChange(sourceText);
+      onChange(normalizeRichHtml(sourceText));
       setSource(false);
       onBusyChange(false);
     } else {
-      setSourceText(value);
+      setSourceText(normalizeRichHtml(value));
       setSource(true);
       onBusyChange(true);
     }
@@ -389,7 +390,7 @@ export default function RichTextEditor({
       "</tbody></table><p><br></p>";
     const range = editor.getSelection(true);
     editor.clipboard.dangerouslyPasteHTML(range?.index || 0, html, "user");
-    onChange(editor.getSemanticHTML());
+    onChange(normalizeRichHtml(editor.getSemanticHTML()));
   }
   return (
     <div className={styles.editor}>
@@ -522,7 +523,7 @@ export default function RichTextEditor({
               { imageSize: size, imageAlign: align, imageCaption: text || "" },
               "user",
             );
-            onChange(editor.getSemanticHTML());
+            onChange(normalizeRichHtml(editor.getSemanticHTML()));
           }}
         >
           Format selected image

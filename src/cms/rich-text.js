@@ -1,5 +1,3 @@
-// Normalize nonbreaking spaces pasted from office documents and keep article
-// subsection headings in the site's h2/h3 hierarchy without changing the text.
 export function editorLinkUrl(value = "") {
   let url = String(value).trim();
   if (/^www\./i.test(url)) url = "https://" + url;
@@ -15,9 +13,11 @@ export function editorLinkUrl(value = "") {
   }
 }
 
+// Normalize pasted/exported spaces without trimming text while the user types.
+// Keep article subsection headings in the site's h2/h3 hierarchy.
 export function normalizeRichHtml(value = "") {
   return String(value)
-    .replace(/\u00a0|&nbsp;|&#160;/gi, " ")
+    .replace(/\u00a0|&nbsp;|&#0*160;|&#x0*a0;/gi, " ")
     .replace(/<h4([^>]*)>([\s\S]*?)<\/h4>/gi, (all, attrs, inner) =>
       /^(?:tensile strength|yield strength|maximum load|breaking load|extensometer|modulus)$/i.test(
         inner.replace(/<[^>]*>/g, "").trim(),

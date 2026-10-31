@@ -1,4 +1,5 @@
 "use client";
+import {adminFetch as fetch} from './admin-request';
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -9,6 +10,7 @@ import { collectionDefinitions } from "@/cms/collection-definitions";
 import FaqEditor from "./FaqEditor";
 import SeoPanel from "./SeoPanel";
 import SchemaFields from "./SchemaFields";
+import {notify} from './ActionButtons';
 const slugify = (s) =>
   s
     .toLowerCase()
@@ -21,7 +23,7 @@ export default function ContentEditor({ id, kind, base }) {
     [relations, setRelations] = useState({}),
     [dirty, setDirty] = useState(false),
     [busy, setBusy] = useState(false),
-    [message, setMessage] = useState("");
+    [message, setMessage] = useState(""),[fieldErrors,setFieldErrors]=useState({});
   async function load() {
     if (id === "new") {
       setRecord({
@@ -85,6 +87,7 @@ export default function ContentEditor({ id, kind, base }) {
   async function save(status) {
     setBusy(true);
     setMessage("");
+    setFieldErrors({});
     try {
       const r = await fetch(
           "/api/admin/content" + (id === "new" ? "" : "/" + id),
@@ -99,9 +102,12 @@ export default function ContentEditor({ id, kind, base }) {
           },
         ),
         d = await r.json();
-      if (!r.ok) throw Error(d.error);
+      if (!r.ok) {setFieldErrors(d.fieldErrors||{});throw Error(d.error);}
       setRecord(d.record);
       setDirty(false);
+      notify(status==='published'?'Published. Public content updated.':'Draft saved. Click Publish to update the website.');
+      window.dispatchEvent(new Event('cms:updated'));
+      router.refresh();
       setMessage(
         status === "published"
           ? "Published. Public content updated."
@@ -114,6 +120,7 @@ export default function ContentEditor({ id, kind, base }) {
       }
     } catch (e) {
       setMessage(e.message);
+      notify(e.message,true);
     } finally {
       setBusy(false);
     }
@@ -166,6 +173,7 @@ export default function ContentEditor({ id, kind, base }) {
           save("published");
         }}
       >
+        {Object.keys(fieldErrors).length>0&&<div role="alert" className="border border-red-400 p-4 rounded-lg"><p>Please correct these fields:</p>{Object.entries(fieldErrors).map(([field,error])=><p key={field} className="text-red-300" data-field-error={field}>{field}: {error}</p>)}</div>}
         <CmsField
           label="Admin title / name"
           value={record.title}
@@ -242,7 +250,7 @@ export default function ContentEditor({ id, kind, base }) {
             onClick={() => save("draft")}
             className="px-5 py-3 border border-white/30 rounded-lg"
           >
-            Save draft
+            Save draft (private)
           </button>
           <button
             disabled={busy}

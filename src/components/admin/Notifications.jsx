@@ -1,0 +1,3 @@
+'use client';
+import {useEffect,useState} from 'react';
+export default function Notifications(){const [notice,setNotice]=useState(null);useEffect(()=>{let timer;const show=e=>{setNotice(e.detail);clearTimeout(timer);timer=setTimeout(()=>setNotice(null),7000);};window.addEventListener('cms:notice',show);return()=>{window.removeEventListener('cms:notice',show);clearTimeout(timer);};},[]);return notice?<div role={notice.error?'alert':'status'} className={'fixed bottom-5 right-5 z-[200] max-w-sm p-4 rounded-xl shadow-xl text-white '+(notice.error?'bg-red-800':'bg-emerald-800')}>{notice.message}<button type="button" className="ml-4" aria-label="Dismiss notification" onClick={()=>setNotice(null)}>×</button></div>:null;}

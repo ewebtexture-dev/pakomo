@@ -1,5 +1,7 @@
 "use client";
 import Link from "next/link";
+import Notifications from './Notifications';
+import {FieldErrorsProvider} from './FieldErrors';
 import { usePathname } from "next/navigation";
 const links = [
   ["Dashboard", "/admin"],
@@ -28,6 +30,7 @@ export default function AdminShell({ children, admin }) {
   const path = usePathname();
   return (
     <div className="bg-[#0a0f1e] text-white min-h-screen lg:flex">
+      <Notifications/>
       <aside className="relative z-20 lg:w-56 shrink-0 border-b lg:border-r border-white/10 p-4">
         <Link href="/admin" className="font-bold block mb-4">
           PAKMOO CMS
@@ -75,7 +78,7 @@ export default function AdminShell({ children, admin }) {
           </button>
         </div>
       </aside>
-      <div className="min-w-0 flex-1">{children}</div>
+      <div className="min-w-0 flex-1"><FieldErrorsProvider>{children}</FieldErrorsProvider></div>
     </div>
   );
 }

@@ -1,3 +1,4 @@
+import {plainText} from '../cms/plain-text.js';
 import { normalizeRichHtml } from "../cms/rich-text.js";
 import { randomUUID } from "node:crypto";
 import sanitizeHtml from "sanitize-html";
@@ -250,7 +251,6 @@ export function savePost(input, id, actor = null) {
   const db = database();
   const category = text(input.category, 180, "Category", "industry_insights");
   if (
-    !CATEGORIES.includes(category) &&
     !db
       .prepare(
         "SELECT id FROM content_records WHERE kind='blogcategory' AND record_key=?",
@@ -260,8 +260,8 @@ export function savePost(input, id, actor = null) {
     throw new HttpError(422, "Select a valid category.");
   const image = validImage(text(input.image_url, 2000, "Image URL"));
   const alt = text(input.image_alt, 250, "Image alt text");
-  const metaTitle = text(input.meta_title, 180, "SEO title");
-  const metaDescription = text(input.meta_description, 320, "Meta description");
+  const metaTitle = text(plainText(input.meta_title), 180, "SEO title");
+  const metaDescription = text(plainText(input.meta_description), 320, "Meta description");
   const canonical = text(input.canonical_url, 2000, "Canonical URL");
   if (canonical) {
     try {
@@ -305,8 +305,8 @@ export function savePost(input, id, actor = null) {
     throw new HttpError(422, "Choose an active author from the author module.");
   const focusKeyword = text(input.focus_keyword, 150, "Focus keyword");
   const metaKeywords = text(input.meta_keywords, 500, "Topic tags");
-  const ogTitle = text(input.og_title, 180, "Social title");
-  const ogDescription = text(input.og_description, 320, "Social description");
+  const ogTitle = text(plainText(input.og_title), 180, "Social title");
+  const ogDescription = text(plainText(input.og_description), 320, "Social description");
   const ogImage = validImage(text(input.og_image, 2000, "Social image"));
   const taken = db.prepare("SELECT id FROM posts WHERE slug=?").get(slug);
   const reserved = db
@@ -328,8 +328,7 @@ export function savePost(input, id, actor = null) {
         .prepare(
           "SELECT id FROM content_records WHERE kind='blogcategory' AND record_key=?",
         )
-        .get(key) &&
-      !CATEGORIES.includes(key)
+        .get(key)
     )
       throw new HttpError(422, "Unknown blog category.");
   const extra = cleanPayload({

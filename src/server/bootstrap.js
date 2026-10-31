@@ -1,3 +1,5 @@
+import {locationDefaults} from '../cms/location.js';
+import {publicAlbum} from '../cms/gallery.js';
 import {pageSeeds} from '../cms/page-seeds.js';
 import products from '../cms/products.seed.json';
 import serviceBindings from '../cms/service-bindings.json';
@@ -14,6 +16,7 @@ export function ensureCmsSeed(){if(seeded)return;const page=key=>pageSeeds.find(
  if(!Object.keys(getSettings('contact')).length)setSettings('contact',{address:'Plot No. 574, Aasharam Marg, Siddiq Nagar, Sihani Road, Ghaziabad 201001',phones:[{number:'+918595362719',display:'8595362719'},{number:'+918586962719',display:'8586962719'}],emails:['info@pakmoo.in'],whatsapp:'918595362719',whatsappMessage:'Hi, I need information about testing instruments',hours:'Mon – Sat: 9:00 AM – 6:00 PM (IST)'},null);
  if(!Object.keys(getSettings('seo')).length)setSettings('seo',{siteName:'PAKMOO Testing Instruments',titleTemplate:'%title% | PAKMOO Testing Instruments',defaultDescription:'Precision testing instruments and industry-standard laboratory solutions.',defaultOgImage:'',googleVerification:'',bingVerification:'',allowIndex:true,sitemapEnabled:true},null);
  if(!Object.keys(getSettings('social')).length){const footer=page('global').footer;setSettings('social',{shareBlog:false,items:[{id:'facebook',platform:'Facebook',url:footer.href_18||'https://www.facebook.com/share/1DmcSx8XwQ/',enabled:true},{id:'instagram',platform:'Instagram',url:footer.href_19||'https://www.instagram.com/pakmootesting',enabled:true}]},null);}
+ const currentContact=getSettings('contact');if(currentContact.latitude===undefined||currentContact.mapLink===undefined)setSettings('contact',{...locationDefaults,...currentContact},null);
  seeded=true;
 }
-export function publicCmsSnapshot(){ensureCmsSeed();const pages=Object.fromEntries(listContent('page',true).map(row=>[row.key,row.payload]));const collections=Object.fromEntries(['product','category','application','standard','client','testimonial','service','gallery','blogcategory'].map(kind=>[kind,listContent(kind,true).map(row=>({...row.payload,_cmsId:row.id,_slug:row.slug,_key:row.key}))]));const settings=Object.fromEntries(['header','footer','contact','seo','schema','social','gallery'].map(scope=>[scope,getSettings(scope)]));return {pages,collections,settings};}
+export function publicCmsSnapshot(){ensureCmsSeed();const pages=Object.fromEntries(listContent('page',true).map(row=>[row.key,row.payload]));const collections=Object.fromEntries(['product','category','application','standard','client','testimonial','service','gallery','blogcategory'].map(kind=>[kind,listContent(kind,true).map(row=>({...((kind==='gallery')?publicAlbum(row.payload):row.payload),_cmsId:row.id,_slug:row.slug,_key:row.key}))]));const settings=Object.fromEntries(['header','footer','contact','seo','schema','social','gallery'].map(scope=>[scope,getSettings(scope)]));return {pages,collections,settings};}

@@ -1,4 +1,5 @@
 "use client";
+import {testimonialText} from '@/cms/plain-text';
 import SafeImage from '@/components/shared/SafeImage';
 
 
@@ -84,14 +85,15 @@ export default function ClientsPage() {
   const industries=cmsArray(cmsSeed_clients_industries,cms.items_industries);
 
   const [current, setCurrent] = useState(0);
+  const activeTestimonial=testimonials[current % Math.max(1,testimonials.length)];
 
   useEffect(() => {
     const timer = setInterval(
-      () => setCurrent((p) => (p + 1) % testimonials.length),
+      () => setCurrent((p) => (p + 1) % Math.max(1,testimonials.length)),
       5000,
     );
     return () => clearInterval(timer);
-  }, []);
+  }, [testimonials.length]);
 
   return (
     <>
@@ -171,14 +173,14 @@ export default function ClientsPage() {
                 transition={{ duration: 0.4 }}
               >
                 <p className="text-base sm:text-lg text-foreground leading-relaxed italic">
-                  {cmsRender(cms.text_13??"\"")}{testimonials[current].quote}{cmsRender(cms.text_14??"\"")}</p>
+                  {cmsRender(cms.text_13??"\"")}{testimonialText(activeTestimonial.quote)}{cmsRender(cms.text_14??"\"")}</p>
                 <div className="mt-6">
                   <p className="font-semibold text-foreground text-sm">
-                    {testimonials[current].name}
+                    {activeTestimonial.name}
                   </p>
                   <p className="text-xs text-muted-foreground">
-                    {testimonials[current].role}{cmsRender(cms.text_15??",")}{" "}
-                    {testimonials[current].company}
+                    {activeTestimonial.role}{cmsRender(cms.text_15??",")}{" "}
+                    {activeTestimonial.company}
                   </p>
                 </div>
               </motion.div>
@@ -189,7 +191,7 @@ export default function ClientsPage() {
             <button
               onClick={() =>
                 setCurrent(
-                  (current - 1 + testimonials.length) % testimonials.length,
+                  (current - 1 + testimonials.length) % Math.max(1,testimonials.length),
                 )
               }
               className="w-8 h-8 flex items-center justify-center border border-border hover:border-primary/30 text-muted-foreground hover:text-foreground transition-colors"
@@ -206,7 +208,7 @@ export default function ClientsPage() {
               ))}
             </div>
             <button
-              onClick={() => setCurrent((current + 1) % testimonials.length)}
+              onClick={() => setCurrent((current + 1) % Math.max(1,testimonials.length))}
               className="w-8 h-8 flex items-center justify-center border border-border hover:border-primary/30 text-muted-foreground hover:text-foreground transition-colors"
             >
               <ChevronRight className="w-4 h-4" />

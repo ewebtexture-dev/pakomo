@@ -79,7 +79,7 @@ export default function TestingStandardsPage() {
                     </span>
                   </div>
                   <p className='text-[11px] text-muted-foreground group-hover:text-white/70 mt-1.5 leading-tight transition-colors min-h-[32px]'>
-                    <SafeImage src={std.image?.src} alt={'Image missing'} className="w-16 h-auto mx-auto" />
+                    <SafeImage src={typeof std.image==='string'?std.image:std.image?.src} alt={std.image_alt||std.name} className="w-16 h-auto mx-auto" />
                   </p>
                 </div>
               </motion.button>

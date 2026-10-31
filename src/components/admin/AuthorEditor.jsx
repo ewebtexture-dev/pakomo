@@ -1,7 +1,9 @@
 'use client';
+import {adminFetch as fetch} from './admin-request';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import ImageField from './ImageField';
 import {AdminField,adminInput} from './SeoFields';
 
 const empty={name:'',slug:'',bio:'',job_title:'',avatar_url:'',website_url:'',active:true};
@@ -22,8 +24,7 @@ export default function AuthorEditor({id}) {
     <AdminField id="author-job" label="Job title / expertise" value={author.job_title} maxLength={160} placeholder="e.g. Quality Testing Specialist" onChange={value=>set('job_title',value)} />
     <label htmlFor="author-bio" className="block space-y-2 text-xs text-white/70"><span>Biography</span><textarea id="author-bio" className={adminInput} rows={5} maxLength={5000} value={author.bio} onChange={event=>set('bio',event.target.value)} placeholder="Professional background and areas of expertise" /></label>
     <AdminField id="author-website" label="Website / professional profile" type="url" value={author.website_url} maxLength={2000} placeholder="https://example.com" onChange={value=>set('website_url',value)} />
-    <label htmlFor="author-photo-file" className="block space-y-2 text-xs text-white/70"><span>Upload author photo (JPG, PNG, WebP; up to 5 MB)</span><input id="author-photo-file" type="file" accept="image/jpeg,image/png,image/webp" disabled={uploading||saving} onChange={upload} className="block w-full text-sm" /></label>{uploading&&<p className="text-xs text-blue-300">Uploading photo…</p>}
-    <AdminField id="author-photo" label="Photo URL" value={author.avatar_url} maxLength={2000} placeholder="Upload a photo or enter an HTTPS image URL" onChange={value=>set('avatar_url',value)} />{author.avatar_url&&<img src={author.avatar_url} alt={author.name || 'Author photo preview'} className="h-24 w-24 rounded-full object-cover" />}
+    <ImageField label="Author photo" value={author.avatar_url} onChange={v=>set('avatar_url',v)} onBusyChange={setUploading} recommended="400 × 400 square."/>
     <label className="flex items-start gap-3 text-sm text-white/70"><input id="author-active" type="checkbox" checked={author.active} onChange={event=>set('active',event.target.checked)} className="mt-1" /><span>Active author<small className="block text-white/40 mt-1">Inactive authors keep their existing articles but cannot be assigned to new ones.</small></span></label>
     <div className="flex flex-wrap gap-4 items-center pt-2"><button type="submit" disabled={saving||uploading} className="bg-blue-600 hover:bg-blue-500 disabled:opacity-50 rounded-lg px-6 py-3 text-sm font-semibold">{saving?'Saving…':id?'Save author':'Create author'}</button><Link href="/admin/authors" className="text-sm text-white/50">Cancel</Link></div>
   </form></div></section>;

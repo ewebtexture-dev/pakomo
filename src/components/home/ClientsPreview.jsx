@@ -1,4 +1,5 @@
 'use client';
+import {testimonialText} from '@/cms/plain-text';
 import SafeImage from '@/components/shared/SafeImage';
 
 /* cms:2910 */
@@ -64,11 +65,12 @@ export default function ClientsPreview() {
   const clients=cmsArray(cmsSeed_clients_clients,useCmsCollection("client",cms.items_clients));
 
   const [current, setCurrent] = useState(0);
+  const activeTestimonial=testimonials[current % Math.max(1,testimonials.length)];
 
   useEffect(() => {
-    const timer = setInterval(() => setCurrent((p) => (p + 1) % testimonials.length), 5000);
+    const timer = setInterval(() => setCurrent((p) => (p + 1) % Math.max(1,testimonials.length)), 5000);
     return () => clearInterval(timer);
-  }, []);
+  }, [testimonials.length]);
 
   return (
     <section className="py-20 sm:py-16 bg-secondary/40">
@@ -117,16 +119,16 @@ export default function ClientsPreview() {
                 transition={{ duration: 0.4 }}
               >
                 <div className="flex gap-1 mb-4">
-                  {[...Array(testimonials[current].rating)].map((_, i) => (
+                  {[...Array(activeTestimonial.rating)].map((_, i) => (
                     <Star key={i} className="w-4 h-4 fill-amber-400 text-amber-400" />
                   ))}
                 </div>
                 <p className="text-lg sm:text-xl text-foreground leading-relaxed font-medium">
-                  {cmsRender(cms.text_4??"\"")}{testimonials[current].quote}{cmsRender(cms.text_5??"\"")}</p>
+                  {cmsRender(cms.text_4??"\"")}{testimonialText(activeTestimonial.quote)}{cmsRender(cms.text_5??"\"")}</p>
                 <div className="flex items-center gap-4 mt-8">
                   <div>
-                    <p className="font-bold text-foreground">{testimonials[current].name}</p>
-                    <p className="text-sm text-muted-foreground">{testimonials[current].role}{cmsRender(cms.text_6??", ")}{testimonials[current].company}</p>
+                    <p className="font-bold text-foreground">{activeTestimonial.name}</p>
+                    <p className="text-sm text-muted-foreground">{activeTestimonial.role}{cmsRender(cms.text_6??", ")}{activeTestimonial.company}</p>
                   </div>
                 </div>
               </motion.div>

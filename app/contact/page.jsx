@@ -1,4 +1,5 @@
 'use client';
+import LocationMap from '@/components/shared/LocationMap';
 import SafeImage from '@/components/shared/SafeImage';
 
 
@@ -183,18 +184,7 @@ export default function ContactPage() {
           />
         </div>
 
-        <div className="w-full h-[450px] rounded-2xl overflow-hidden" style={{border: '2px solid gray'}}>
-          <iframe
-            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3499.9564514436584!2d77.42441507505502!3d28.69094927563284!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x390cf103375d329f%3A0xf11bece228800c11!2sMOVETECH%20ENGINEERS!5e0!3m2!1sen!2sin!4v1785333736009!5m2!1sen!2sin"
-            width="100%"
-            height="100%"
-            style={{ border: 0 }}
-            allowFullScreen=""
-            loading="lazy"
-            referrerPolicy="no-referrer-when-downgrade"
-            title={cms.title_29??"Office Location"}
-          />
-        </div>
+        <LocationMap contact={contact}/>
 
       </div>
       <div className="max-w-7xl mx-auto px-6"><SocialLinks/></div>

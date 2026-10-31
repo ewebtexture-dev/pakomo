@@ -1,0 +1,10 @@
+import {existsSync} from 'node:fs';
+import path from 'node:path';
+import {database} from './database.js';
+import {dataDirectory} from './data-directory.js';
+export function mediaStem(name){return String(name).replace(/\.[^.]*$/,'').normalize('NFKD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'').slice(0,100)||'image';}
+export function uniqueMediaName(name,ext,excludeId=''){const db=database(),stem=mediaStem(name);let n=0,filename;do{filename=stem+(n?'-'+n:'')+'.'+ext;n++;}while(db.prepare('SELECT 1 FROM media WHERE filename=? AND id<>?').get(filename,excludeId)||db.prepare('SELECT 1 FROM media_aliases WHERE filename=?').get(filename)||existsSync(path.join(dataDirectory(),'uploads',filename)));return filename;}
+export function replaceMediaReferences(db,oldUrl,newUrl){const replace=value=>typeof value==='string'?value.replaceAll(oldUrl,newUrl):Array.isArray(value)?value.map(replace):value&&typeof value==='object'?Object.fromEntries(Object.entries(value).map(([k,v])=>[k,replace(v)])):value;
+ for(const [table,key,columns]of /** @type {[string,string,string[]][]} */ ([['content_records','id',['draft_json','published_json']],['site_settings','scope',['value_json']],['post_extras','post_id',['draft_json','published_json']],['post_publications','post_id',['payload_json']],['content_revisions','id',['snapshot_json']]]))for(const row of db.prepare(`SELECT ${key},${columns.join(',')} FROM ${table}`).all()){const next=columns.map(c=>row[c]?JSON.stringify(replace(JSON.parse(row[c]))):row[c]);if(next.some((v,i)=>v!==row[columns[i]]))db.prepare(`UPDATE ${table} SET ${columns.map(c=>c+'=?').join(',')} WHERE ${key}=?`).run(...next,row[key]);}
+ for(const [table,key,columns]of /** @type {[string,string,string[]][]} */ ([['posts','id',['content','image_url','og_image']],['authors','id',['avatar_url']]]))for(const row of db.prepare(`SELECT ${key},${columns.join(',')} FROM ${table}`).all()){const next=columns.map(c=>replace(row[c]));if(next.some((v,i)=>v!==row[columns[i]]))db.prepare(`UPDATE ${table} SET ${columns.map(c=>c+'=?').join(',')} WHERE ${key}=?`).run(...next,row[key]);}
+}

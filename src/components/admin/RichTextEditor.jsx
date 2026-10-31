@@ -1,5 +1,7 @@
 "use client";
+import {adminFetch as fetch} from './admin-request';
 import { normalizeRichHtml } from "@/cms/rich-text";
+import ImageField from './ImageField';
 import RichContent from "@/components/shared/RichContent";
 import { useEffect, useMemo, useRef, useState, useId } from "react";
 import "quill/dist/quill.snow.css";
@@ -25,6 +27,7 @@ export default function RichTextEditor({
     lastHtml = useRef(value);
   valueRef.current = value;
   changeRef.current = onChange;
+  const [imageUrl,setImageUrl]=useState("");
   const [file, setFile] = useState(null),
     [alt, setAlt] = useState(""),
     [caption, setCaption] = useState("");
@@ -57,6 +60,7 @@ export default function RichTextEditor({
     if (disabled || busy || source) return;
     selection.current = editorRef.current?.getSelection();
     setFile(image);
+    setImageUrl("");
     setAlt("");
     setCaption("");
     setError("");
@@ -195,15 +199,15 @@ export default function RichTextEditor({
     }
   }, [value, ready]);
   async function insertImage() {
-    if (!file || !alt.trim()) {
+    if ((!file&&!imageUrl) || !alt.trim()) {
       setError("Choose an image and add descriptive alt text.");
       return;
     }
     if (
-      file.size > 5 * 1024 * 1024 ||
+      file && (file.size > 5 * 1024 * 1024 ||
       !["image/jpeg", "image/png", "image/webp", "image/avif"].includes(
         file.type,
-      )
+      ))
     ) {
       setError("Choose a JPG, PNG, or WebP file up to 5 MB.");
       return;
@@ -212,14 +216,8 @@ export default function RichTextEditor({
     setBusy(true);
     onBusyChange(true);
     try {
-      const payload = new FormData();
-      payload.set("image", file);
-      const response = await fetch("/api/admin/uploads", {
-        method: "POST",
-        body: payload,
-      });
-      const data = await response.json();
-      if (!response.ok) throw Error(data.error || "The upload failed.");
+      let data={url:imageUrl};
+      if(file){const payload=new FormData();payload.set('image',file);const response=await fetch('/api/admin/uploads',{method:'POST',body:payload});data=await response.json();if(!response.ok)throw Error(data.error||'Upload failed.');}
       setResolutionWarning(data.warning || "");
       const editor = editorRef.current;
       editor.enable(true);
@@ -482,25 +480,8 @@ export default function RichTextEditor({
           </div>
           <div className={styles.modalBody}>
             <label htmlFor={fieldId("article-image-file")}>Image file</label>
-            <input
-              id={fieldId("article-image-file")}
-              className="form-control"
-              type="file"
-              accept="image/jpeg,image/png,image/webp,image/avif"
-              disabled={busy}
-              onChange={(event) => setFile(event.target.files?.[0] || null)}
-            />
-            <small>JPG, PNG, or WebP. Maximum 5 MB.</small>
-            {preview && (
-              <img
-                src={preview}
-                alt="Selected upload preview"
-                className={styles.preview}
-              />
-            )}
-            <p className="text-xs text-slate-500">
-              Recommended: 1600 × 900 (16:9), at least 640 px wide. Up to 5 MB.
-            </p>
+            <ImageField label="Content image" value={imageUrl} onChange={v=>{setImageUrl(v);setFile(null);}} alt={alt} onAltChange={setAlt} onBusyChange={setBusy} recommended="1600 × 900; images keep their natural proportions."/>
+            {file&&preview&&<><img src={preview} alt="Pasted image preview" className={styles.preview}/><p>slug: {file.name}</p></>}
             <label>
               Image size
               <select

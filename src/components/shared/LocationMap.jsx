@@ -1,0 +1,3 @@
+'use client';
+import {mapSource,locationDefaults} from '@/cms/location';
+export default function LocationMap({contact={}}){return <div className="w-full overflow-hidden rounded-2xl border border-border"><iframe src={mapSource(contact)} className="w-full h-[360px] sm:h-[450px] border-0" loading="lazy" title="Pakmoo Testing Instruments location" referrerPolicy="no-referrer-when-downgrade" allowFullScreen/><a className="block p-4 text-primary font-semibold" href={contact.mapLink||locationDefaults.mapLink} target="_blank" rel="noopener noreferrer">{contact.directionsLabel||'Get Directions'}</a></div>;}

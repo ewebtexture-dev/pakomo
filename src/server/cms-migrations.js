@@ -1,6 +1,9 @@
 import fs from 'node:fs';
 import path from 'node:path';
+import {testimonialText,plainText} from '../cms/plain-text.js';
 export function migrateCms(db) {
+  db.exec('CREATE TABLE IF NOT EXISTS cms_seed_ledger(kind TEXT NOT NULL,record_key TEXT NOT NULL,PRIMARY KEY(kind,record_key))');
+  db.exec('CREATE TABLE IF NOT EXISTS media_aliases(filename TEXT PRIMARY KEY,media_id TEXT NOT NULL)');
   db.exec(`PRAGMA foreign_keys=ON;
     CREATE TABLE IF NOT EXISTS schema_migrations(version TEXT PRIMARY KEY,applied_at TEXT NOT NULL);
     CREATE TABLE IF NOT EXISTS content_records(
@@ -42,4 +45,16 @@ export function migrateCms(db) {
     db.prepare("INSERT INTO schema_migrations VALUES('2910-post-snapshots',?)").run(new Date().toISOString());
   }
   db.prepare("INSERT OR IGNORE INTO schema_migrations VALUES('2910-cms',?)").run(new Date().toISOString());
+  if(!db.prepare("SELECT version FROM schema_migrations WHERE version='311001-clean-text'").get()){
+    const location=db.prepare('PRAGMA database_list').all().find(row=>row.name==='main')?.file;
+    if(location){const backup=path.join(path.dirname(location),'pre-311001-backup.sqlite');if(!fs.existsSync(backup))db.exec("VACUUM INTO '"+backup.replaceAll("'","''")+"'");}
+    const clean=value=>{if(Array.isArray(value))return value.map(clean);if(value&&typeof value==='object')return Object.fromEntries(Object.entries(value).map(([k,v])=>[k,k==='quote'&&typeof v==='string'?testimonialText(v):/^(meta_?title|meta_?description|og_?title|og_?description|twitterTitle|twitterDescription|breadcrumbTitle)$/i.test(k)&&typeof v==='string'?plainText(v):clean(v)]));return value;};
+    db.exec('BEGIN IMMEDIATE');try{for(const row of db.prepare('SELECT id,draft_json,published_json FROM content_records').all())db.prepare('UPDATE content_records SET draft_json=?,published_json=? WHERE id=?').run(JSON.stringify(clean(JSON.parse(row.draft_json))),row.published_json?JSON.stringify(clean(JSON.parse(row.published_json))):null,row.id);db.prepare('INSERT INTO schema_migrations VALUES(?,?)').run('311001-clean-text',new Date().toISOString());db.exec('COMMIT');}catch(e){db.exec('ROLLBACK');throw e;}
+  }
+  if(!db.prepare("SELECT version FROM schema_migrations WHERE version='311001-navigation'").get()){
+    const global=db.prepare("SELECT id,draft_json,published_json FROM content_records WHERE kind='page' AND record_key='global'").get();
+    if(global){const add=json=>{if(!json)return null;const p=JSON.parse(json),header=p.sections?.header;if(header){const items=header.items_navLinks||[];if(!items.some(i=>i.path==='/gallery'))header.items_navLinks=[...items,{id:'gallery-navigation',label:'Gallery',path:'/gallery',enabled:true,newTab:false,children:[]}];}return JSON.stringify(p);};db.prepare('UPDATE content_records SET draft_json=?,published_json=? WHERE id=?').run(add(global.draft_json),add(global.published_json),global.id);}
+    db.prepare('INSERT INTO schema_migrations VALUES(?,?)').run('311001-navigation',new Date().toISOString());
+  }
+
 }

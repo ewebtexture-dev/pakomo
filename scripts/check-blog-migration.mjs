@@ -21,6 +21,6 @@ db.close();delete globalThis.__pakmooDatabase;
 db=database();assert.equal(db.prepare('SELECT count(*) AS count FROM authors').get().count,count);
 assert.equal(db.prepare('SELECT author_id FROM posts WHERE id=?').get('legacy-id').author_id,post.author_id);
 db.close();delete globalThis.__pakmooDatabase;
-for(const filename of ['website.sqlite','website.sqlite-wal','website.sqlite-shm','pre-2910-02-backup.sqlite'])fs.rmSync(path.join(directory,filename),{force:true});
+for(const filename of ['website.sqlite','website.sqlite-wal','website.sqlite-shm','pre-2910-02-backup.sqlite','pre-311001-backup.sqlite'])fs.rmSync(path.join(directory,filename),{force:true});
 fs.rmdirSync(directory);
 console.log('PASS: existing article content and authors preserved; foreign keys enforced; migration is repeatable.');

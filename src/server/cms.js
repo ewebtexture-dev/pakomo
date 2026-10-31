@@ -6,6 +6,7 @@ import { database } from "./database.js";
 import { audit } from "./security.js";
 import { HttpError } from "./http.js";
 import { validateContentPayload } from "./content-validation.js";
+import {plainText,testimonialText} from '../cms/plain-text.js';
 const kinds = [
   "page",
   "product",
@@ -99,6 +100,8 @@ export function cleanPayload(value, key = "", depth = 0) {
       /(?:url|src|href|link|image|logo|avatar)/i.test(key)
     )
       throw new HttpError(422, "Use a safe URL.");
+    if(key==='quote')return testimonialText(value);
+    if(/^(title|meta_?title|meta_?description|og_?title|og_?description|twitterTitle|twitterDescription|breadcrumbTitle)$/i.test(key))return plainText(value);
     return /<\/?[a-z][\s\S]*>/i.test(value) ? sanitizeRich(value) : value;
   }
   if (Array.isArray(value)) {
@@ -358,7 +361,13 @@ export function deleteContent(id, actor) {
       409,
       "This record is referenced by other content. Remove those relationships first.",
     );
-  db.prepare("DELETE FROM content_records WHERE id=?").run(id);
+  db.exec('BEGIN IMMEDIATE');
+  try {
+    db.prepare('INSERT OR IGNORE INTO cms_seed_ledger(kind,record_key) VALUES(?,?)').run(existing.kind,existing.key);
+    const result=db.prepare("DELETE FROM content_records WHERE id=?").run(id);
+    if(!result.changes)throw new HttpError(404,'Content not found.');
+    db.exec('COMMIT');
+  } catch(error){db.exec('ROLLBACK');throw error;}
   audit(actor, "content.delete", existing.kind, id);
 }
 export function unpublishContent(id, actor) {
@@ -381,6 +390,7 @@ export function seedRecords(seeds) {
   db.exec("BEGIN IMMEDIATE");
   try {
     for (const [index, seed] of seeds.entries()) {
+      if(db.prepare('SELECT 1 FROM cms_seed_ledger WHERE kind=? AND record_key=?').get(seed.kind,seed.key))continue;
       const json = JSON.stringify(seed.payload),
         published = seed.status !== "draft";
       insert.run(
@@ -401,6 +411,7 @@ export function seedRecords(seeds) {
         db.prepare(
           "UPDATE content_records SET published_title=?,published_updated_at=? WHERE kind=? AND record_key=? AND published_title IS NULL",
         ).run(seed.title, now, seed.kind, seed.key);
+      db.prepare('INSERT OR IGNORE INTO cms_seed_ledger(kind,record_key) VALUES(?,?)').run(seed.kind,seed.key);
     }
     db.exec("COMMIT");
   } catch (e) {

@@ -1,7 +1,9 @@
 "use client";
+import {adminFetch as fetch} from './admin-request';
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import ImageField from './ImageField';
 import FaqEditor from "./FaqEditor";
 import RichTextEditor from "./RichTextEditor";
 import SeoScoreChecker from "./SeoScoreChecker";
@@ -75,13 +77,10 @@ export default function PostEditor({ id }) {
   const router = useRouter();
   useEffect(() => {
     setOrigin(window.location.origin);
-    fetch("/api/admin/content?kind=blogcategory")
-      .then((r) => r.json())
-      .then((d) => setBlogCategories(d.records || []));
     const controller = new AbortController();
     async function load() {
       try {
-        const [authorData, postData] = await Promise.all([
+        const [authorData, postData, categoryData] = await Promise.all([
           fetch("/api/admin/authors", {
             signal: controller.signal,
             cache: "no-store",
@@ -92,13 +91,16 @@ export default function PostEditor({ id }) {
                 cache: "no-store",
               }).then(jsonResponse)
             : Promise.resolve(null),
+          fetch("/api/admin/content?kind=blogcategory",{signal:controller.signal,cache:"no-store"}).then(jsonResponse),
         ]);
         setAuthors(authorData.authors);
+        setBlogCategories(categoryData.records||[]);
         const next = {
           ...initial,
           published_at: new Date().toISOString(),
           ...(postData?.post || {}),
         };
+        if(!(categoryData.records||[]).some(c=>c.key===next.category)){next.category=categoryData.records?.[0]?.key||"";next.category_ids=next.category?[next.category]:[];}
         if (!next.author_id)
           next.author_id =
             (
@@ -381,10 +383,7 @@ export default function PostEditor({ id }) {
                   }}
                   className={adminInput}
                 >
-                  {(blogCategories.length
-                    ? blogCategories.map((c) => [c.key, c.payload.name])
-                    : categories
-                  ).map(([key, label]) => (
+                  {blogCategories.map((c) => [c.key,c.payload.name]).map(([key, label]) => (
                     <option className="bg-slate-900" key={key} value={key}>
                       {label}
                     </option>
@@ -489,40 +488,7 @@ export default function PostEditor({ id }) {
             <h2 id="featured-heading" className="font-semibold">
               Featured image
             </h2>
-            <label
-              htmlFor="featured-image-file"
-              className="block space-y-2 text-xs text-white/70"
-            >
-              <span>Upload JPG, PNG, or WebP (up to 5 MB)</span>
-              <input
-                id="featured-image-file"
-                type="file"
-                accept="image/jpeg,image/png,image/webp"
-                onChange={upload}
-                disabled={uploading || saving}
-                className="block w-full text-sm"
-              />
-            </label>
-            {uploading && <p className="text-blue-300 text-sm">Uploading…</p>}
-            {field(
-              "image_url",
-              "Image URL",
-              2000,
-              "Upload an image or enter an HTTPS URL",
-            )}
-            {form.image_url && (
-              <img
-                src={form.image_url}
-                alt={form.image_alt || "Featured image preview"}
-                className="max-h-56 max-w-full rounded-lg object-contain"
-              />
-            )}
-            {field(
-              "image_alt",
-              "Image alt text",
-              250,
-              "Describe what the image shows",
-            )}
+            <ImageField label="Featured image" value={form.image_url} onChange={v=>set('image_url',v)} alt={form.image_alt} onAltChange={v=>set('image_alt',v)} onBusyChange={setUploading} recommended="1920 × 1080 (16:9)."/>
           </section>
           <section className="border border-white/15 rounded-xl p-5 space-y-4">
             <h2>Featured image display</h2>

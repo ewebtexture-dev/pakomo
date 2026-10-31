@@ -1,3 +1,4 @@
+import {plainText} from '../cms/plain-text.js';
 import { getSettings } from "./settings.js";
 import { listContent, publicContentBySlug } from "./cms.js";
 import { ensureCmsSeed } from "./bootstrap.js";
@@ -81,8 +82,8 @@ export function cmsMetadata(path) {
       follow: !seo.nofollow,
     },
     openGraph: {
-      title: seo.ogTitle || title,
-      description: seo.ogDescription || description,
+      title: plainText(seo.ogTitle || title),
+      description: plainText(seo.ogDescription || description),
       url,
       siteName: settings.siteName || "PAKMOO Testing Instruments",
       type: "website",
@@ -113,7 +114,7 @@ export function schemaGraph(path) {
     schema = row?.payload?.schema || {},
     graph = [];
   const organization = {
-    "@type": org.type === "LocalBusiness" ? "LocalBusiness" : "Organization",
+    "@type": ["Organization","LocalBusiness"],
     "@id": base + "/#organization",
     name: org.name || "PAKMOO Testing Instruments",
     url: base,
@@ -126,12 +127,13 @@ export function schemaGraph(path) {
       .filter((s) => s.enabled && s.url)
       .map((s) => s.url),
     openingHours: org.openingHours || contact.hours || undefined,
-    ...(org.latitude && org.longitude
+    hasMap: contact.mapLink||'https://maps.app.goo.gl/fhGb3YTsKg9ZsC4z5',
+    ...((contact.latitude||org.latitude) && (contact.longitude||org.longitude)
       ? {
           geo: {
             "@type": "GeoCoordinates",
-            latitude: org.latitude,
-            longitude: org.longitude,
+            latitude: contact.latitude||org.latitude,
+            longitude: contact.longitude||org.longitude,
           },
         }
       : {}),

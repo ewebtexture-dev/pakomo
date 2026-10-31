@@ -14,7 +14,8 @@ import blog_1 from '@assets/Unsplash/blog-1.jpg';
 import Link from 'next/link';
 
 export default function BlogListing({ blogsData,initialCategory="all" }) {
-  const [active,setActive]=useState(initialCategory);useEffect(()=>setActive(initialCategory),[initialCategory]);const categories=useCmsCollection('blogcategory');const filtered=active==='all'?blogsData:blogsData.filter(p=>(p.category_ids||[p.category]).includes(active));
+  const [posts,setPosts]=useState(blogsData);useEffect(()=>{let alive=true;const refresh=()=>fetch('/api/blog/posts',{cache:'no-store'}).then(r=>r.json()).then(d=>{if(alive&&Array.isArray(d.posts))setPosts(d.posts);}).catch(()=>{});refresh();window.addEventListener('focus',refresh);return()=>{alive=false;window.removeEventListener('focus',refresh);};},[blogsData]);
+  const [active,setActive]=useState(initialCategory);useEffect(()=>setActive(initialCategory),[initialCategory]);const categories=useCmsCollection('blogcategory');const filtered=active==='all'?posts:posts.filter(p=>(p.category_ids||[p.category]).includes(active));
   const cms=useCmsBlock("blog","listing");
   
 
@@ -67,7 +68,7 @@ export default function BlogListing({ blogsData,initialCategory="all" }) {
               </div>
             </div> */}
 
-            <div className="flex-1 min-w-0"><nav aria-label="Blog category filter" className="flex flex-wrap gap-3 mb-6"><button type="button" className={active==='all'?'text-primary font-bold':''} onClick={()=>setActive('all')}>All articles</button>{categories.map(c=><Link key={c._key} href={'/blog/category/'+c._slug} aria-current={active===c._key?'page':undefined} className={active===c._key?'text-primary font-bold':''}>{c.name}</Link>)}</nav>
+            <div className="flex-1 min-w-0"><nav aria-label="Blog category filter" className="flex flex-wrap gap-3 mb-6"><button type="button" className={active==='all'?'text-primary font-bold':''} onClick={()=>setActive('all')}>{cms.allArticlesLabel??'All articles'}</button>{categories.map(c=><Link key={c._key} href={'/blog/category/'+c._slug} aria-current={active===c._key?'page':undefined} className={active===c._key?'text-primary font-bold':''}>{c.name}</Link>)}</nav>
               <p className="text-xs text-muted-foreground font-mono">{filtered.length} {cmsRender(cms.text_5??" articles found")}</p>
               <div className="space-y-4">
                 {filtered.map((post, i) => (

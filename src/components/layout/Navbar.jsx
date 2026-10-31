@@ -3,8 +3,9 @@ import SafeImage from '@/components/shared/SafeImage';
 
 
 /* cms:2910 */
+import {albumImages} from '@/cms/gallery';
 import MenuBranch from '@/components/cms/MenuBranch';
-import {useCmsBlock,cmsArray,cmsRender} from '@/components/cms/ContentProvider';
+import {useCmsBlock,useCmsCollection,useSiteSettings,cmsArray,cmsRender} from '@/components/cms/ContentProvider';
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
@@ -29,7 +30,8 @@ const navLinks = [
 const cmsSeed_header_navLinks=navLinks;
 export default function Navbar({ onRequestQuote }) {
   const cms=useCmsBlock("global","header");
-  const navLinks=cmsArray(cmsSeed_header_navLinks,cms.items_navLinks);
+  const gallery=useCmsCollection('gallery'),settings=useSiteSettings('gallery');
+  const navLinks=cmsArray(cmsSeed_header_navLinks,cms.items_navLinks).filter(link=>link.path!=='/gallery'||settings.enabled!==false&&gallery.some(album=>albumImages(album).length));
 
   const [mobileOpen, setMobileOpen] = useState(false);
   const pathname = usePathname();

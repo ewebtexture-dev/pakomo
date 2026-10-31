@@ -1,10 +1,11 @@
 'use client';
-import {createContext,useContext} from 'react';
+import {createContext,useContext,useState,useEffect} from 'react';
+import {usePathname} from 'next/navigation';
 import {Circle,Target,Eye,Award,Users,Factory,ShieldCheck,Crosshair,Cpu,HeadphonesIcon,Wrench,Settings2,Gauge,FileCheck,GraduationCap,Package,Plane,PanelsTopLeft,Car,Bath,FlaskConical,CircuitBoard,Palette,Thermometer,Cable,MapPin,Phone,Mail,Clock} from 'lucide-react';
 import parse from 'html-react-parser';
 const Icons={Circle,Target,Eye,Award,Users,Factory,ShieldCheck,Crosshair,Cpu,HeadphonesIcon,Wrench,Settings2,Gauge,FileCheck,GraduationCap,Package,Plane,PanelsTopLeft,Car,Bath,FlaskConical,CircuitBoard,Palette,Thermometer,Cable,MapPin,Phone,Mail,Clock};
 const ContentContext=createContext({pages:{},collections:{},settings:{}});
-export default function ContentProvider({value,children}){return <ContentContext.Provider value={value}>{children}</ContentContext.Provider>;}
+export default function ContentProvider({value,children}){const [snapshot,setSnapshot]=useState(value),path=usePathname();useEffect(()=>{setSnapshot(value);},[value]);useEffect(()=>{if(/^\/(admin|login)(\/|$)/.test(path))return;let active=true;const refresh=()=>{if(document.visibilityState==='hidden')return;fetch('/api/public/content?scope=snapshot',{cache:'no-store'}).then(async r=>{if(!r.ok)throw Error('CMS refresh failed');const d=await r.json();if(active)setSnapshot(d.value);}).catch(()=>{});};refresh();const interval=setInterval(refresh,30000);window.addEventListener('focus',refresh);window.addEventListener('cms:updated',refresh);return()=>{active=false;clearInterval(interval);window.removeEventListener('focus',refresh);window.removeEventListener('cms:updated',refresh);};},[path]);return <ContentContext.Provider value={snapshot}>{children}</ContentContext.Provider>;}
 export function useCmsBlock(page,block){return useContext(ContentContext).pages?.[page]?.sections?.[block]||{};}
 export function useCmsCollection(kind,fallback=[]){return useContext(ContentContext).collections?.[kind]||fallback;}
 export function useSiteSettings(scope){return useContext(ContentContext).settings?.[scope]||{};}

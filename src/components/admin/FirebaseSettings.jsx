@@ -1,4 +1,5 @@
 "use client";
+import {adminFetch as fetch} from './admin-request';
 import { useEffect, useState } from "react";
 import { firebaseConfigKeys } from "@/cms/firebase";
 const input =

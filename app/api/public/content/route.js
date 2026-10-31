@@ -1,6 +1,7 @@
+import {publicAlbum} from '@/cms/gallery';
 import { NextResponse } from "next/server";
 import { z } from "zod";
-import { ensureCmsSeed } from "@/server/bootstrap";
+import { ensureCmsSeed,publicCmsSnapshot } from "@/server/bootstrap";
 import { listContent } from "@/server/cms";
 import { getSettings } from "@/server/settings";
 import { faqForPath } from "@/server/cms-seo";
@@ -13,10 +14,11 @@ export function GET(request) {
     ensureCmsSeed();
     const url = new URL(request.url),
       scope = z
-        .enum(["faq", "gallery", "social"])
+        .enum(["faq", "gallery", "social", "snapshot"])
         .parse(url.searchParams.get("scope"));
     let value;
-    if (scope === "faq") {
+    if(scope==='snapshot')value=publicCmsSnapshot();
+    else if (scope === "faq") {
       const path = z
         .string()
         .max(2000)
@@ -40,7 +42,8 @@ export function GET(request) {
       value = {
         settings: { ...galleryDefaults, ...getSettings("gallery") },
         images: listContent("gallery", true).map((row) => ({
-          ...row.payload,
+          ...publicAlbum(row.payload),
+          _slug:row.slug,
           _cmsId: row.id,
         })),
       };

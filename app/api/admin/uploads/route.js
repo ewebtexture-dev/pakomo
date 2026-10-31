@@ -5,6 +5,7 @@ import path from 'node:path';
 import { requireAdmin, readBody, apiError, HttpError } from '@/server/http';
 import sharp from 'sharp';
 import {dataDirectory} from '@/server/data-directory';
+import {uniqueMediaName} from '@/server/media-names';
 import {database} from '@/server/database';
 export const runtime='nodejs';
 export async function POST(request) {
@@ -23,9 +24,9 @@ export async function POST(request) {
     else if(buffer.toString('ascii',4,8)==='ftyp'&&/avif|avis/.test(buffer.toString('ascii',8,32)))ext='webp';else throw new HttpError(422,'Only valid JPG, PNG, WebP, and AVIF images are allowed.');if(webp)ext='webp';
     const directory=path.join(dataDirectory(),'uploads');
     await mkdir(directory,{recursive:true});
-    const id=randomUUID(),filename=id+'.'+ext;
+    const id=randomUUID();let filename;
     let optimized,metadata;try{const image=sharp(buffer,{limitInputPixels:40000000}).rotate().resize({width:2400,height:2400,fit:'inside',withoutEnlargement:true});optimized=await (ext==='jpg'?image.jpeg({quality:85}):ext==='png'?image.png({compressionLevel:9}):image.webp({quality:85})).toBuffer();metadata=await sharp(optimized).metadata();}catch{throw new HttpError(422,'This image could not be decoded. Choose a valid image.');}
-    await writeFile(path.join(directory,filename),optimized,{flag:'wx'});
+    for(let attempt=0;attempt<20;attempt++){filename=uniqueMediaName(file.name||'image',ext);try{await writeFile(path.join(directory,filename),optimized,{flag:'wx'});break;}catch(e){if(e.code!=='EEXIST'||attempt===19)throw e;}}
     database().prepare('INSERT INTO media(id,filename,url,original_name,mime,bytes,width,height,created_by,created_at) VALUES(?,?,?,?,?,?,?,?,?,?)').run(id,filename,'/media/'+filename,String(file.name||filename).slice(0,250),ext==='jpg'?'image/jpeg':'image/'+ext,optimized.length,metadata.width,metadata.height,actor.id,new Date().toISOString());
     const blurDataURL='data:image/webp;base64,'+(await sharp(optimized).resize(16,12,{fit:'inside'}).webp({quality:30}).toBuffer()).toString('base64');
     return NextResponse.json({blurDataURL,url:'/media/'+filename,id,width:metadata.width,height:metadata.height,warning:metadata.width<640||metadata.height<480?'Small image: recommended at least 640 × 480; 1600 × 1200 is ideal.':''},{status:201});

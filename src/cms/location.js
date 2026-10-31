@@ -1,0 +1,3 @@
+export const locationDefaults={address:'Plot No. 574, Aasharam Marg, Siddiq Nagar, Sihani Road, Ghaziabad 201001',mapEmbed:'',directionsLabel:'Get Directions',mapLink:'https://maps.app.goo.gl/fhGb3YTsKg9ZsC4z5',latitude:28.6856046,longitude:77.421174};
+export function mapSource(contact={}){const embed=extractMapEmbed(contact.mapEmbed);return /^https:\/\/www\.google\.com\/maps\/embed(?:[/?]|$)/.test(embed)?embed:'https://www.google.com/maps?q='+encodeURIComponent((contact.latitude??locationDefaults.latitude)+','+(contact.longitude??locationDefaults.longitude))+'&z=17&output=embed';}
+export function extractMapEmbed(value){const text=String(value||'').trim();return text.startsWith('<')?text.match(/\bsrc\s*=\s*["']([^"']+)["']/i)?.[1]?.replaceAll('&amp;','&')||'':text;}

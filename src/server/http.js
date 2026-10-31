@@ -29,7 +29,7 @@ export async function readBody(request, maxBytes) {
   return Buffer.concat(chunks);
 }
 export function apiError(error) {
-  if(error?.name==='ZodError')return NextResponse.json({error:error.issues.map(issue=>issue.path.join('.')+': '+issue.message).join('; ')},{status:422});
+  if(error?.name==='ZodError')return NextResponse.json({error:error.issues.map(issue=>issue.path.join('.')+': '+issue.message).join('; '),fieldErrors:Object.fromEntries(error.issues.map(issue=>[issue.path.join('.'),issue.message]))},{status:422});
   if (error instanceof HttpError) return NextResponse.json({error:error.message},{status:error.status});
   console.error('Backend request failed:', error.message);
   return NextResponse.json({error:'The request could not be completed. Please try again.'},{status:500});

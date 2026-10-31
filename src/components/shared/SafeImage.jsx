@@ -4,7 +4,7 @@ export default function SafeImage({
   src,
   alt = "",
   loading = "lazy",
-  blurDataURL,
+  blurDataURL = "",
   ...props
 }) {
   const [failed, setFailed] = useState(false),

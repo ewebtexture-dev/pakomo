@@ -149,6 +149,7 @@ export default function Footer() {
           <p className="text-xs text-white/30">
             {cmsRender(cms.text_20??"© ")}{new Date().getFullYear()} {cmsRender(cms.text_21??" Pakmoo Testing Instruments All rights reserved.")}</p>
           <div className="flex items-center gap-4 text-xs text-white/30">
+            <span>Developed By <a href="https://iconnectdm.com" target="_blank" rel="noopener noreferrer" className="hover:text-white/70 transition-colors">IConnect DM</a></span>
             <a href={cms.href_22??"#"} className="hover:text-white/50 transition-colors">{cmsRender(cms.text_23??"Privacy Policy")}</a>
             <a href={cms.href_24??"#"} className="hover:text-white/50 transition-colors">{cmsRender(cms.text_25??"Terms of Service")}</a>
           </div>

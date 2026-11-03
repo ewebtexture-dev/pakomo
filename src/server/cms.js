@@ -8,6 +8,9 @@ import { HttpError } from "./http.js";
 import { validateContentPayload } from "./content-validation.js";
 import {plainText,testimonialText} from '../cms/plain-text.js';
 import {isSafeImagePlaceholder} from '../cms/image-placeholder.js';
+import firebaseStorageMap from '../cms/firebase-storage-map.js';
+import {rewriteFirebaseReferences} from '../cms/firebase-migration.js';
+const firebaseAssetUrls=new Map(firebaseStorageMap.files.map(file=>[file.source,file.targetUrl]));
 const kinds = [
   "page",
   "product",
@@ -88,6 +91,7 @@ export function cleanPayload(value, key = "", depth = 0) {
   if (depth > 20)
     throw new HttpError(422, "Content has too many nested levels.");
   if (typeof value === "string") {
+    value=rewriteFirebaseReferences(value,firebaseAssetUrls);
     if (
       key === "blurDataURL" &&
       isSafeImagePlaceholder(value)
@@ -391,7 +395,7 @@ export function seedRecords(seeds) {
   try {
     for (const [index, seed] of seeds.entries()) {
       if(db.prepare('SELECT 1 FROM cms_seed_ledger WHERE kind=? AND record_key=?').get(seed.kind,seed.key))continue;
-      const json = JSON.stringify(seed.payload),
+      const json = JSON.stringify(rewriteFirebaseReferences(seed.payload,firebaseAssetUrls)),
         published = seed.status !== "draft";
       insert.run(
         seed.id || randomUUID(),

@@ -327,10 +327,10 @@ export function deleteContent(id, actor) {
   const db = database(),
     existing = findContent(id);
   if (!existing) throw new HttpError(404, "Content not found.");
-  if (existing.kind === "page")
+  if (existing.kind === "page" && existing.key === "global" && actor.role !== "super_admin")
     throw new HttpError(
-      422,
-      "Core pages cannot be deleted. Unpublish the page instead.",
+      403,
+      "Global navigation requires a Super Admin.",
     );
   if (
     existing.kind === "blogcategory" &&
@@ -373,6 +373,14 @@ export function deleteContent(id, actor) {
     db.exec('COMMIT');
   } catch(error){db.exec('ROLLBACK');throw error;}
   audit(actor, "content.delete", existing.kind, id);
+}
+
+export function isDeletedPagePath(path) {
+  const clean = path.split('?')[0].replace(/\/+$/, '') || '/';
+  const key = clean === '/' ? 'home' : /^\/services\/[^/]+$/.test(clean)
+    ? 'service-' + clean.slice('/services/'.length) : clean.slice(1);
+  const db = database();
+  return Boolean(db.prepare("SELECT 1 FROM cms_seed_ledger WHERE kind='page' AND record_key=? AND NOT EXISTS (SELECT 1 FROM content_records WHERE kind='page' AND record_key=?)").get(key, key));
 }
 export function unpublishContent(id, actor) {
   const item = findContent(id);

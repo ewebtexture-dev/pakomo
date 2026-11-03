@@ -8,6 +8,10 @@ The configured owner/recovery email is `juhityagi09@gmail.com`. Existing admin p
 
 Public pages and images remain readable. All content/media changes require an active admin session; write endpoints also validate the request's Origin. Visitors can still submit enquiries. Keep control of the Hostinger and GitHub accounts, since those credentials can deploy code outside the CMS.
 
+Core pages can be deleted from Pages, individually or with Delete selected, after confirmation. Deletion removes the content record and records its key in the seed ledger so restarting or deploying does not restore it. Deleted page URLs return 404. Global navigation deletion still requires a Super Admin. Run `node scripts/check-page-deletion.mjs` after a production build to verify deletion against a separate local database copy.
+
+A public GitHub repository allows visitors to read and copy source code; it does not grant permission to push changes. Only authorised repository users and integrations can deploy through GitHub. Repository visibility is managed separately from website visibility. Keep environment files, account passwords and the private live database out of Git.
+
 Persistent live data is under `/home/u835816219/domains/pakmoo.in/private-data`. Automatic pre-cutover SQLite backups remain private in that directory. Do not expose `.data`, private-data, environment files, database backups or SMTP credentials in the public document root.
 
 Local `.env` no longer contains `NEXT_PUBLIC_FIREBASE_*` values. Set `ADMIN_RESET_EMAIL=juhityagi09@gmail.com` for a new installation and keep a stable `CMS_SECRET_KEY`. Retired cloud projects and their stored backups are not deleted by this change.

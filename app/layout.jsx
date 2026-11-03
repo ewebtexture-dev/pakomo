@@ -6,6 +6,8 @@ import ErrorBoundary from './ErrorBoundary';
 import ContentProvider from '@/components/cms/ContentProvider';
 import {publicCmsSnapshot} from '@/server/bootstrap';
 import {headers} from 'next/headers';
+import {notFound} from 'next/navigation';
+import {isDeletedPagePath} from '@/server/cms';
 import {cmsMetadata,schemaGraph} from '@/server/cms-seo';
 import {getSettings} from '@/server/settings';
 import {HeadScripts,BodyScripts} from '@/components/cms/GlobalScripts';
@@ -17,6 +19,7 @@ export async function generateMetadata(){return cmsMetadata((await headers()).ge
 
 export default async function RootLayout({ children }) {
   const path=(await headers()).get('x-cms-path')||'/',snapshot=publicCmsSnapshot(),scripts=getSettings('scripts');
+  if(isDeletedPagePath(path))notFound();
   const maintenance=scripts.maintenance&&!/^\/(admin|login)(\/|$)/.test(path);
   return (
     <html lang="en">

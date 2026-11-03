@@ -1,9 +1,5 @@
 import fs from "node:fs";
 import assert from "node:assert/strict";
-import {
-  firebaseDefaults,
-  firebaseSettingsSchema,
-} from "../src/cms/firebase.js";
 
 const base = process.env.TEST_ORIGIN || "http://localhost:3000";
 assert.ok(
@@ -11,8 +7,7 @@ assert.ok(
   "Run this check against the local server only.",
 );
 const credentials = fs.readFileSync(".data/local-admin.txt", "utf8");
-let cookie = "",
-  previousFirebase;
+let cookie = "";
 const ids = [];
 async function request(path, method = "GET", body, authenticated = true) {
   return fetch(base + path, {
@@ -119,38 +114,8 @@ try {
       assert.equal(record.payload.image_alt, "Client alt");
     }
   }
-  previousFirebase = (await json("/api/admin/firebase")).settings;
-  assert.equal(
-    firebaseSettingsSchema.safeParse({ ...firebaseDefaults, enabled: true })
-      .success,
-    false,
-  );
-  assert.equal(
-    firebaseSettingsSchema.safeParse({
-      ...firebaseDefaults,
-      private_key: "not-accepted",
-    }).success,
-    false,
-  );
-  await json(
-    "/api/admin/firebase",
-    "PUT",
-    { ...firebaseDefaults, enabled: true },
-    422,
-  );
-  await json(
-    "/api/admin/firebase",
-    "PUT",
-    { ...firebaseDefaults, private_key: "not-accepted" },
-    422,
-  );
-  const settings = (await json("/api/admin/firebase", "PUT", firebaseDefaults))
-    .settings;
-  assert.deepEqual(settings, firebaseDefaults);
-  assert.deepEqual(
-    (await json("/api/admin/firebase")).settings,
-    firebaseDefaults,
-  );
+  await json('/api/admin/firebase','GET',undefined,410);
+  await json('/api/admin/firebase','PUT',{enabled:true},410);
   assert.equal(
     (await request("/api/public/content?scope=firebase")).status,
     422,
@@ -165,11 +130,9 @@ try {
   ])
     assert.equal((await request(path)).status, 200, path);
   console.log(
-    "PASS: local add/edit SEO exclusion, client fields retained, protected Firebase settings, configuration validation, local persistence, public API privacy and admin routes. No Firebase network requests made.",
+    "PASS: local add/edit SEO exclusion, client fields retained, retired Firebase API, local persistence, public API privacy and admin routes.",
   );
 } finally {
   for (const id of ids) await request("/api/admin/content/" + id, "DELETE");
-  if (previousFirebase)
-    await request("/api/admin/firebase", "PUT", previousFirebase);
   if (cookie) await request("/api/auth/logout", "POST");
 }

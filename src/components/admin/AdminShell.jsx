@@ -22,7 +22,6 @@ const links = [
   ["Menus", "/admin/menus"],
   ["SEO & Redirects", "/admin/seo"],
   ["Site Settings", "/admin/settings"],
-  ["Firebase", "/admin/firebase"],
   ["Users", "/admin/users"],
   ["Profile", "/admin/profile"],
 ];
@@ -49,7 +48,6 @@ export default function AdminShell({ children, admin }) {
                 admin.role === "super_admin" ||
                 ![
                   "Site Settings",
-                  "Firebase",
                   "Users",
                   "Menus",
                   "SEO & Redirects",

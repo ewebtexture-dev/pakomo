@@ -2,7 +2,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import {testimonialText,plainText} from '../cms/plain-text.js';
 import firebaseStorageMap from '../cms/firebase-storage-map.js';
-import {migrateFirebaseStorage} from './firebase-storage-migration.js';
+import {migrateHostingerOnly} from './hostinger-only-migration.js';
 export function migrateCms(db) {
   db.exec('CREATE TABLE IF NOT EXISTS cms_seed_ledger(kind TEXT NOT NULL,record_key TEXT NOT NULL,PRIMARY KEY(kind,record_key))');
   db.exec('CREATE TABLE IF NOT EXISTS media_aliases(filename TEXT PRIMARY KEY,media_id TEXT NOT NULL)');
@@ -59,5 +59,5 @@ export function migrateCms(db) {
     db.prepare('INSERT INTO schema_migrations VALUES(?,?)').run('311001-navigation',new Date().toISOString());
   }
 
-  migrateFirebaseStorage(db,firebaseStorageMap);
+  migrateHostingerOnly(db,firebaseStorageMap);
 }

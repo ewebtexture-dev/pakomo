@@ -14,6 +14,7 @@ const fieldHash=v=>hash(JSON.stringify(sort(v)));
 async function rest(url,options={}){const r=await fetch(url,{...options,signal:AbortSignal.timeout(60000)});if(!r.ok)throw Error(`Source REST request failed: HTTP ${r.status} (${new URL(url).pathname})`);return r.json();}
 async function bytes(url){const r=await fetch(url,{signal:AbortSignal.timeout(60000)});if(!r.ok)throw Error('File read failed: HTTP '+r.status);const parts=[];let size=0;for await(const part of r.body){size+=part.length;if(size>128*1024*1024)throw Error('File exceeds 128 MB; review before copying');parts.push(part);}return Buffer.concat(parts);}
 async function main(){
+  if(args['write-map'])throw Error('The active website is Hostinger-only. Omit --write-map; legacy cloud exports stay in the private migration output.');
   if(args.apply!==undefined&&args.apply!==true)throw Error('Use --apply as a flag; omit it for a fetch-only run');
   nextEnv.loadEnvConfig(process.cwd(),false,{info(){},error(){}});
   const source=args['source-project'],target=args['target-project'],sourceBucket=args['source-bucket'],targetBucket=args['target-bucket'];
@@ -61,7 +62,6 @@ async function main(){
     for(let i=0;i<writes.length;i+=400){const result=await api(`https://firestore.googleapis.com/v1/projects/${target}/databases/(default)/documents:commit`,{method:'POST',body:{writes:writes.slice(i,i+400)}});if(!result.ok)throw Error('Firestore import failed: HTTP '+result.status);}
     for(const doc of expected){const check=await api('https://firestore.googleapis.com/v1/'+doc.name);if(!check.ok||fieldHash(check.data.fields)!==fieldHash(doc.fields))throw Error('Destination document verification failed');report.verifiedDocuments++;}report.importedOrUpdatedDocuments=writes.length;
     const mapping={sourceProject:source,targetProject:target,sourceBucket,targetBucket,verifiedAt:new Date().toISOString(),files:report.files.map(({source,targetUrl,sha256,bytes})=>({source,targetUrl,sha256,bytes}))};fs.writeFileSync(path.join(output,'asset-map.json'),JSON.stringify(mapping,null,2));
-    if(args['write-map']){const mapPath=path.resolve(args['write-map']);if(mapPath!==path.resolve('src/cms/firebase-storage-map.js'))throw Error('Map output must be src/cms/firebase-storage-map.js');fs.writeFileSync(mapPath,'// Verified public asset URLs; contains no Firebase administrator credentials.\nexport default '+JSON.stringify(mapping,null,2)+';\n');}
   }
   report.finishedAt=new Date().toISOString();save();console.log(JSON.stringify({documents:report.documents,files:report.files.length,verifiedFiles:report.verifiedFiles,verifiedDocuments:report.verifiedDocuments,sourceDiscoveryDenied:report.discoveryDenied,output,applied:report.applied}));
 }

@@ -1,5 +1,7 @@
 # update_firebase
 
+Historical migration record. The current website is [Hostinger-only](HOSTINGER-ONLY.md). The legacy import tool can still make private exports, but its former `--write-map` option is disabled so it cannot overwrite the active local-media configuration.
+
 Destination: `pakmoo-bd1d6`, account `pakmootestinginstruments@gmail.com`.
 Default Storage bucket: `pakmoo-bd1d6.firebasestorage.app`, Mumbai (`ASIA-SOUTH1`).
 

@@ -35,7 +35,7 @@ export function pageForPath(path) {
     if (kind) return publicContentBySlug(kind, decodeURIComponent(segments[1]));
   }
   const key = clean === "/" ? "home" : clean.slice(1);
-  return listContent("page", true).find((p) => p.key === key) || null;
+  return listContent("page", true).find((p) => (p.key === 'home' && clean === '/') || p.slug === key) || null;
 }
 export function cmsMetadata(path) {
   ensureCmsSeed();

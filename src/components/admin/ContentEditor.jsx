@@ -33,7 +33,7 @@ export default function ContentEditor({ id, kind, base }) {
         slug: "",
         status: "draft",
         enabled: true,
-        payload: structuredClone(collectionDefinitions[kind].defaults),
+        payload: kind === 'page' ? {title:'',body:'',seo:{}} : structuredClone(collectionDefinitions[kind].defaults),
       });
       return;
     }
@@ -182,14 +182,15 @@ export default function ContentEditor({ id, kind, base }) {
             update({ title, ...(!record.key ? { slug: slugify(title) } : {}) })
           }
         />
-        {kind !== "page" && (
+        {record.key !== "home" && record.key !== "global" && !record.key.endsWith("-template") && (
           <CmsField
-            label="URL slug"
+            label={kind === "page" ? "Page URL slug" : "URL slug"}
             value={record.slug}
             required
             onChange={(slug) => update({ slug })}
           />
         )}
+        {kind === 'page' && id === 'new' && <label className="block">Page type<select className="block bg-slate-900 border border-white/20 p-2 rounded" value={record.key === 'gallery' ? 'gallery' : 'standard'} onChange={e=>update({key:e.target.value==='gallery'?'gallery':'',slug:e.target.value==='gallery'?'gallery':'',payload:{title:'',body:'',seo:{}}})}><option value="standard">Content page</option><option value="gallery">Gallery listing (recreate if deleted)</option></select></label>}
         <CmsField
           label="Enabled"
           value={record.enabled}

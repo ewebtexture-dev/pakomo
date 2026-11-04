@@ -7,6 +7,7 @@ import { audit } from "./security.js";
 import { HttpError } from "./http.js";
 import { validateContentPayload } from "./content-validation.js";
 import {plainText,testimonialText} from '../cms/plain-text.js';
+import {reservedPageSlugs,corePageKeys} from '../cms/page-routing.js';
 import {isSafeImagePlaceholder} from '../cms/image-placeholder.js';
 import firebaseStorageMap from '../cms/firebase-storage-map.js';
 import {rewriteFirebaseReferences} from '../cms/firebase-migration.js';
@@ -217,6 +218,8 @@ export function saveContent(raw, id, actor) {
   if (id && !existing) throw new HttpError(404, "Content not found.");
   if (existing && existing.key !== data.key)
     throw new HttpError(422, "The stable content key cannot change.");
+  if (data.kind === 'page' && reservedPageSlugs.has(data.slug) && !(data.slug === data.key && (corePageKeys.includes(data.key) || existing?.key === data.key)))
+    throw new HttpError(422, 'This URL is reserved for another website module. Choose a different slug.');
   if (existing && existing.key === "global" && actor.role !== "super_admin")
     throw new HttpError(403, "Global content requires a Super Admin.");
   if (existing && data.kind !== existing.kind)
@@ -285,11 +288,15 @@ export function saveContent(raw, id, actor) {
         actor.id,
       );
     if (data.status === "published") {
+      if(data.kind==='page')db.prepare('DELETE FROM redirects WHERE from_path=?').run('/'+data.slug);
+      if(data.kind==='page' && corePageKeys.includes(data.key) && data.key!=='home' && data.key!==data.slug)
+        db.prepare('INSERT INTO redirects(id,from_path,to_url,status,updated_at) VALUES(?,?,?,?,?) ON CONFLICT(from_path) DO UPDATE SET to_url=excluded.to_url,updated_at=excluded.updated_at').run(randomUUID(),'/'+data.key,'/'+data.slug,301,now);
       db.prepare(
         "UPDATE content_records SET published_slug=?,published_json=?,enabled=draft_enabled,published_title=title,published_updated_at=updated_at WHERE id=?",
       ).run(data.slug, json, itemId);
       if (existing && priorPublished && priorPublished !== data.slug) {
         const prefix = {
+          page: data.key === 'home' || data.key === 'global' || data.key.endsWith('-template') ? null : '/',
           product: "/products/",
           application: "/applications/",
           service: "/services/",
@@ -297,6 +304,8 @@ export function saveContent(raw, id, actor) {
           blogcategory: "/blog/category/",
         }[data.kind];
         if (prefix)
+          {
+          db.prepare('DELETE FROM redirects WHERE from_path=?').run(prefix + data.slug);
           db.prepare(
             "INSERT INTO redirects(id,from_path,to_url,status,updated_at) VALUES(?,?,?,?,?) ON CONFLICT(from_path) DO UPDATE SET to_url=excluded.to_url,updated_at=excluded.updated_at",
           ).run(
@@ -306,6 +315,7 @@ export function saveContent(raw, id, actor) {
             301,
             now,
           );
+          }
       }
     }
     audit(

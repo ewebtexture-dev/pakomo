@@ -96,7 +96,7 @@ const validators = {
       location:short.optional(),
       subtitle:short.optional(),
       description:rich.optional(),
-      images:z.array(z.object({id:z.string().optional(),image:url,title:short,alt:short,enabled:z.boolean().default(true),status:z.enum(['draft','published']).default('published'),publishedAt:z.string().refine(v=>!v||Number.isFinite(Date.parse(v)),'Choose a valid date.').optional(),caption:short.optional()}).strip()).max(200).optional(),
+      images:z.array(z.object({id:z.string().optional(),image:url,title:short,alt:short,enabled:z.boolean().default(true),status:z.enum(['draft','published']).default('published'),publishedAt:z.string().refine(v=>!v||Number.isFinite(Date.parse(v)),'Choose a valid date.').optional(),caption:short.optional(),description:z.string().max(5000).optional()}).strip()).max(200).optional(),
       caption: short.optional(),
       blurDataURL: z
         .string()

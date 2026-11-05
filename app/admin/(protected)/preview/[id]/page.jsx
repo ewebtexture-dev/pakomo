@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { currentAdmin } from '@/server/auth';
 import { findPost } from '@/server/posts';
 import BlogArticle from '@/components/blog/BlogArticle';
+export const metadata={title:'Private article preview',robots:{index:false,follow:false}};
 export default async function Preview({params}) {
   if(!await currentAdmin())notFound();
   const post=findPost((await params).id);
